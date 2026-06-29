@@ -6,31 +6,32 @@
   <title>CaliCards — Trading &amp; Collectible Cards</title>
   <meta
     name="description"
-    content="CaliCards — buy graded slabs, sealed packs, and rare singles. California's home for trading and collectible cards."
+    content="CaliCards — a California card vault for graded slabs, sealed packs, and rare singles. Sleeved, toploaded, tracked. Secure Shopify checkout."
   />
-  <link rel="preconnect" href="https://sdks.shopifycdn.com" />
+  <meta name="theme-color" content="#0A0B12" />
+  <link rel="stylesheet" href="css/fonts.css" />
   <link rel="stylesheet" href="css/styles.css" />
   <link
     rel="icon"
-    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%83%8F%3C/text%3E%3C/svg%3E"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230A0B12'/%3E%3Ctext x='50' y='68' font-family='Arial' font-weight='bold' font-size='52' fill='%236E7BFF' text-anchor='middle'%3ECC%3C/text%3E%3C/svg%3E"
   />
 </head>
 <body>
   <!-- Demo-mode banner: hidden automatically once Shopify is connected -->
   <div id="demo-banner" class="demo-banner" hidden>
     <span>
-      🛠️ <strong>Demo mode.</strong> Browsing sample cards. Connect a Shopify
-      store in <code>js/config.js</code> to start selling for real.
+      Demo mode — browsing sample cards. Connect a Shopify store in
+      <code>js/config.js</code> to start selling for real.
     </span>
   </div>
 
   <header class="site-header">
     <div class="container header-inner">
-      <a class="brand" href="#top">
-        <span class="brand-mark" aria-hidden="true">🃏</span>
+      <a class="brand" href="#top" aria-label="CaliCards home">
+        <span class="brand-mark" aria-hidden="true">CC</span>
         <span class="brand-name">CaliCards</span>
       </a>
-      <nav class="nav">
+      <nav class="nav" aria-label="Primary">
         <a href="#shop">Shop</a>
         <a href="#about">About</a>
         <a href="#faq">FAQ</a>
@@ -42,16 +43,43 @@
 
   <main id="top">
     <section class="hero">
+      <div class="aura aura-1" aria-hidden="true"></div>
+      <div class="aura aura-2" aria-hidden="true"></div>
+      <div class="hero-grid-lines" aria-hidden="true"></div>
       <div class="container hero-inner">
-        <p class="eyebrow">California's card shop</p>
-        <h1>Graded slabs, sealed packs &amp; rare singles.</h1>
-        <p class="hero-sub">
-          Hand-picked trading &amp; collectible cards, shipped sleeved, toploaded,
-          and tracked. Secure Shopify checkout.
-        </p>
-        <div class="hero-cta">
-          <a class="btn btn-primary" href="#shop">Browse the collection</a>
-          <a class="btn btn-ghost" href="#about">How it works</a>
+        <div class="hero-copy">
+          <p class="eyebrow">California · Graded · Sealed · Singles</p>
+          <h1>Cards worth <span class="ital">keeping.</span></h1>
+          <p class="hero-sub">
+            A small California vault of graded slabs, sealed product, and rare
+            singles — inspected, photographed, and shipped like they matter.
+          </p>
+          <div class="hero-cta">
+            <a class="btn btn-primary" href="#shop">Browse the vault</a>
+            <a class="btn btn-ghost" href="#about">How it works</a>
+          </div>
+          <ul class="hero-trust" aria-label="Why shop here">
+            <li><span class="dot"></span> Secure Shopify checkout</li>
+            <li><span class="dot"></span> Sleeved · toploaded · tracked</li>
+            <li><span class="dot"></span> Honest grades, real photos</li>
+          </ul>
+        </div>
+
+        <!-- Decorative showcase card (pure CSS/SVG) -->
+        <div class="hero-showcase" aria-hidden="true">
+          <article class="card showcase" data-rarity="psa-10">
+            <div class="card-frame">
+              <div class="card-foil"></div>
+              <div class="card-art">
+                <div class="card-guilloche"></div>
+                <span class="card-set">Pacific Legends</span>
+                <span class="card-sigil">PL</span>
+                <span class="card-wordmark">CALICARDS</span>
+              </div>
+              <div class="card-glare"></div>
+              <span class="card-gem">PSA 10</span>
+            </div>
+          </article>
         </div>
       </div>
     </section>
@@ -59,68 +87,92 @@
     <section id="shop" class="shop">
       <div class="container">
         <div class="section-head">
+          <p class="kicker">The vault</p>
           <h2>Featured cards</h2>
           <p class="muted">Fresh pulls and vault finds, restocked weekly.</p>
         </div>
 
         <!-- Products render here: live Shopify collection, or demo grid -->
         <div id="shop-grid" class="grid" aria-live="polite">
-          <p class="loading">Loading the collection…</p>
+          <p class="loading">Loading the vault…</p>
         </div>
       </div>
     </section>
 
     <section id="about" class="about">
-      <div class="container about-grid">
-        <div>
+      <div class="container">
+        <div class="section-head">
+          <p class="kicker">Why CaliCards</p>
           <h2>Collect with confidence</h2>
-          <p>
+        </div>
+        <div class="about-grid">
+          <p class="about-lede">
             Every card is inspected, photographed, and packed to survive the
             trip. Slabs ship in fitted cases; raw singles ship penny-sleeved in a
-            toploader and team bag.
+            toploader and team bag. What you see is what shows up.
           </p>
+          <ul class="feature-list">
+            <li>
+              <span class="feature-ic">◈</span>
+              <strong>Secure checkout</strong>
+              <span>Powered by Shopify. Your payment details never touch this site.</span>
+            </li>
+            <li>
+              <span class="feature-ic">❖</span>
+              <strong>Protective shipping</strong>
+              <span>Sleeved, toploaded, and tracked on every single order.</span>
+            </li>
+            <li>
+              <span class="feature-ic">✦</span>
+              <strong>Accurate grades</strong>
+              <span>Real photos and honest conditions — no surprises on arrival.</span>
+            </li>
+          </ul>
         </div>
-        <ul class="feature-list">
-          <li><strong>🔒 Secure checkout</strong><span>Powered by Shopify. Cards on the table, none of yours stored here.</span></li>
-          <li><strong>📦 Protective shipping</strong><span>Sleeved, toploaded, and tracked on every order.</span></li>
-          <li><strong>✅ Accurate grades</strong><span>Real photos and honest conditions — what you see is what ships.</span></li>
-        </ul>
       </div>
     </section>
 
     <section id="faq" class="faq">
       <div class="container">
-        <h2>FAQ</h2>
-        <details>
-          <summary>How does checkout work?</summary>
-          <p>
-            Add cards to your cart and check out through Shopify's secure, hosted
-            checkout. Payment and order data are handled entirely by Shopify.
-          </p>
-        </details>
-        <details>
-          <summary>How are cards shipped?</summary>
-          <p>
-            Raw cards: penny sleeve + toploader + team bag in a bubble mailer.
-            Graded slabs: snug-fit case inside a rigid box. Tracking on every order.
-          </p>
-        </details>
-        <details>
-          <summary>Is this a real store yet?</summary>
-          <p>
-            The site is ready to go. When you connect a Shopify store (see
-            <code>js/config.js</code>), the demo cards are replaced by your real
-            inventory and live checkout turns on.
-          </p>
-        </details>
+        <div class="section-head">
+          <p class="kicker">Good to know</p>
+          <h2>FAQ</h2>
+        </div>
+        <div class="faq-list">
+          <details>
+            <summary>How does checkout work?</summary>
+            <p>
+              Add cards to your cart and check out through Shopify's secure, hosted
+              checkout. Payment and order data are handled entirely by Shopify.
+            </p>
+          </details>
+          <details>
+            <summary>How are cards shipped?</summary>
+            <p>
+              Raw cards: penny sleeve + toploader + team bag in a bubble mailer.
+              Graded slabs: snug-fit case inside a rigid box. Tracking on every order.
+            </p>
+          </details>
+          <details>
+            <summary>Is this a real store yet?</summary>
+            <p>
+              The site is ready to go. When you connect a Shopify store (see
+              <code>js/config.js</code>), the demo cards are replaced by your real
+              inventory and live checkout turns on.
+            </p>
+          </details>
+        </div>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
     <div class="container footer-inner">
-      <span>🃏 CaliCards</span>
-      <span class="muted">© <span id="year"></span> CaliCards. Built to sell cards.</span>
+      <a class="brand" href="#top">
+        <span class="brand-mark" aria-hidden="true">CC</span>
+        <span class="brand-name">CaliCards</span>
+      </a>
+      <span class="muted">© <span id="year"></span> CaliCards · Built to sell cards.</span>
     </div>
   </footer>
 

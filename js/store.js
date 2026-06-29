@@ -1,7 +1,8 @@
 /*
  * CaliCards — storefront logic
- * Renders a live Shopify collection when configured, otherwise a demo grid.
- * No build step, no dependencies beyond Shopify's Buy Button SDK (loaded on demand).
+ * Renders a live Shopify collection when configured, otherwise a demo grid of
+ * holographic collectible-card visuals. No build step; the only external piece
+ * is Shopify's Buy Button SDK, loaded on demand when a store is connected.
  */
 (function () {
   "use strict";
@@ -31,69 +32,122 @@
       grid.innerHTML = '<p class="loading">No products configured yet.</p>';
       return;
     }
+    grid.classList.add("grid--demo");
     grid.innerHTML = "";
     products.forEach(function (p) {
       grid.appendChild(buildCard(p));
     });
+    enableTilt();
+  }
+
+  // rarity label -> css modifier key
+  function rarityKey(r) {
+    return String(r || "Common").toLowerCase().replace(/[^a-z0-9]+/g, "-");
   }
 
   function buildCard(p) {
-    var card = document.createElement("article");
-    card.className = "card";
+    var rarity = p.rarity || "Common";
+    var article = el("article", "card");
+    article.setAttribute("data-rarity", rarityKey(rarity));
 
-    var art = document.createElement("div");
-    art.className = "card-art";
-    art.textContent = p.art || "🃏";
-    if (p.rarity) {
-      var tag = document.createElement("span");
-      tag.className = "card-rarity";
-      tag.textContent = p.rarity;
-      art.appendChild(tag);
-    }
+    // --- The collectible card face ---
+    var frame = el("div", "card-frame");
+    var foil = el("div", "card-foil");
+    foil.setAttribute("aria-hidden", "true");
+    var glare = el("div", "card-glare");
+    glare.setAttribute("aria-hidden", "true");
 
-    var body = document.createElement("div");
-    body.className = "card-body";
+    var art = el("div", "card-art");
+    var guilloche = el("div", "card-guilloche");
+    guilloche.setAttribute("aria-hidden", "true");
+    var setLabel = el("span", "card-set", p.set || "CaliCards");
+    var sigil = el("span", "card-sigil", p.sigil || initials(p.title));
+    var wordmark = el("span", "card-wordmark", "CALICARDS");
+    art.appendChild(guilloche);
+    art.appendChild(setLabel);
+    art.appendChild(sigil);
+    art.appendChild(wordmark);
 
-    var title = document.createElement("h3");
-    title.className = "card-title";
-    title.textContent = p.title || "Untitled card";
+    var gem = el("span", "card-gem", rarity);
 
-    var desc = document.createElement("p");
-    desc.className = "card-desc";
-    desc.textContent = p.desc || "";
+    frame.appendChild(foil);
+    frame.appendChild(art);
+    frame.appendChild(glare);
+    frame.appendChild(gem);
 
-    var foot = document.createElement("div");
-    foot.className = "card-foot";
-
-    var price = document.createElement("span");
-    price.className = "card-price";
-    price.textContent = p.price || "";
-
-    var buy = document.createElement("button");
-    buy.className = "btn btn-primary";
+    // --- The "museum label" info strip ---
+    var info = el("div", "card-info");
+    var title = el("h3", "card-title", p.title || "Untitled card");
+    var stat = el("p", "card-stat", p.stat || p.desc || "");
+    var foot = el("div", "card-foot");
+    var price = el("span", "card-price", p.price || "");
+    var buy = el("button", "btn btn-buy", "Add");
     buy.type = "button";
-    buy.textContent = "Add to cart";
     buy.addEventListener("click", function () {
-      alert(
-        "Demo mode — connect a Shopify store in js/config.js to enable real checkout."
-      );
+      flash(buy);
     });
-
     foot.appendChild(price);
     foot.appendChild(buy);
-    body.appendChild(title);
-    body.appendChild(desc);
-    body.appendChild(foot);
-    card.appendChild(art);
-    card.appendChild(body);
-    return card;
+    info.appendChild(title);
+    info.appendChild(stat);
+    info.appendChild(foot);
+
+    article.appendChild(frame);
+    article.appendChild(info);
+    return article;
+  }
+
+  // brief "Demo" feedback on the buy button (no real cart in demo mode)
+  function flash(btn) {
+    if (btn.dataset.busy) return;
+    btn.dataset.busy = "1";
+    var orig = btn.textContent;
+    btn.textContent = "Demo ✓";
+    btn.classList.add("is-demo");
+    setTimeout(function () {
+      btn.textContent = orig;
+      btn.classList.remove("is-demo");
+      delete btn.dataset.busy;
+    }, 1100);
+  }
+
+  /* Pointer-reactive holographic tilt — the signature interaction.
+     Updates --mx/--my (0..1) per card so the foil sheen, specular glare,
+     and a subtle 3D rotation all track the cursor. Skipped on touch. */
+  function enableTilt() {
+    if (!window.matchMedia || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+      return;
+    }
+    var cards = grid.querySelectorAll(".card");
+    cards.forEach(function (card) {
+      var frame = card.querySelector(".card-frame");
+      if (!frame) return;
+      card.addEventListener("pointermove", function (e) {
+        var r = frame.getBoundingClientRect();
+        var mx = (e.clientX - r.left) / r.width;
+        var my = (e.clientY - r.top) / r.height;
+        mx = Math.min(1, Math.max(0, mx));
+        my = Math.min(1, Math.max(0, my));
+        card.style.setProperty("--mx", mx.toFixed(3));
+        card.style.setProperty("--my", my.toFixed(3));
+        card.style.setProperty("--rx", ((0.5 - my) * 10).toFixed(2) + "deg");
+        card.style.setProperty("--ry", ((mx - 0.5) * 12).toFixed(2) + "deg");
+        card.classList.add("is-tilting");
+      });
+      card.addEventListener("pointerleave", function () {
+        card.style.setProperty("--mx", "0.5");
+        card.style.setProperty("--my", "0.5");
+        card.style.setProperty("--rx", "0deg");
+        card.style.setProperty("--ry", "0deg");
+        card.classList.remove("is-tilting");
+      });
+    });
   }
 
   /* ------------------------- Live Shopify mode ------------------------- */
   function loadShopify() {
     var SDK_URL =
       "https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js";
-
     if (window.ShopifyBuy && window.ShopifyBuy.UI) {
       initShopify();
       return;
@@ -119,41 +173,75 @@
       domain: shopify.domain,
       storefrontAccessToken: shopify.storefrontAccessToken,
     });
-
     grid.innerHTML = "";
 
-    window.ShopifyBuy.UI.onReady(client).then(function (ui) {
-      var shared = {
-        options: {
-          product: {
-            iframe: false,
-            contents: { img: true, title: true, price: true, button: true },
-            text: { button: "Add to cart" },
-          },
-          cart: { text: { total: "Subtotal", button: "Checkout" } },
-        },
-        node: grid,
-        moneyFormat: "%24%7B%7Bamount%7D%7D",
-      };
+    // Theme tokens pulled from CSS so the live store matches the site.
+    var css = getComputedStyle(document.documentElement);
+    var accent = (css.getPropertyValue("--accent") || "#6E7BFF").trim();
+    var ink = (css.getPropertyValue("--bg") || "#0A0B12").trim();
 
+    var buttonStyle = {
+      "background-color": accent,
+      "color": ink,
+      "font-family": "Inter, sans-serif",
+      "font-weight": "600",
+      "border-radius": "10px",
+      ":hover": { "background-color": accent, "opacity": "0.9" },
+      ":focus": { "background-color": accent },
+    };
+
+    window.ShopifyBuy.UI.onReady(client).then(function (ui) {
       var cartToggle = document.getElementById("cart-toggle");
       if (cartToggle) {
-        ui.createComponent("cart", { node: undefined });
-        ui.createComponent("toggle", { node: cartToggle });
+        ui.createComponent("cart", {
+          options: {
+            cart: {
+              styles: { button: buttonStyle },
+              text: { total: "Subtotal", button: "Checkout" },
+            },
+          },
+        });
+        ui.createComponent("toggle", {
+          node: cartToggle,
+          options: { toggle: { styles: { toggle: { "background-color": accent, "color": ink } } } },
+        });
       }
 
       if (shopify.collectionId) {
         ui.createComponent("collection", {
           id: shopify.collectionId,
           node: grid,
-          options: shared.options,
-          moneyFormat: shared.moneyFormat,
+          options: {
+            product: {
+              iframe: false,
+              contents: { img: true, title: true, price: true, button: true },
+              text: { button: "Add to cart" },
+              styles: { button: buttonStyle },
+            },
+            cart: { styles: { button: buttonStyle } },
+            moneyFormat: "%24%7B%7Bamount%7D%7D",
+          },
         });
       } else {
-        // No collection set — show a helpful note instead of an empty store.
         grid.innerHTML =
           '<p class="loading">Connected to Shopify. Set <code>collectionId</code> in <code>js/config.js</code> to display products.</p>';
       }
     });
+  }
+
+  /* ------------------------- tiny DOM helpers ------------------------- */
+  function el(tag, cls, text) {
+    var node = document.createElement(tag);
+    if (cls) node.className = cls;
+    if (text != null) node.textContent = text;
+    return node;
+  }
+  function initials(title) {
+    return String(title || "CC")
+      .split(/\s+/)
+      .slice(0, 2)
+      .map(function (w) { return w.charAt(0); })
+      .join("")
+      .toUpperCase();
   }
 })();

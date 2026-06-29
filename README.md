@@ -77,15 +77,25 @@ vercel --prod     # promote to production
 ```
 CaliCards/
 ├── index.html        # the storefront page
-├── css/styles.css    # styling (California sunset theme)
+├── css/styles.css    # styling ("Holographic Collector" dark theme)
+├── css/fonts.css     # @font-face for the self-hosted fonts
+├── fonts/            # self-hosted woff2 (Space Grotesk + Inter)
 ├── js/config.js      # ← the only file you edit to go live
-├── js/store.js       # renders live Shopify collection or the demo grid
+├── js/store.js       # renders live Shopify collection or the demo card grid
 ├── vercel.json       # static deploy config
+├── .vercelignore     # keeps node_modules etc. out of deploys
 └── README.md
 ```
 
 ## Customizing
 
-- **Branding/colors:** the palette lives in the `:root` block of `css/styles.css`.
-- **Demo products:** edit the `demoProducts` array in `js/config.js`.
+- **Branding/colors:** the whole palette lives in the `:root` block of
+  `css/styles.css` (`--bg`, `--accent`, `--accent-2`, plus the per-rarity colors).
+- **Demo products:** edit the `demoProducts` array in `js/config.js`. Each card is
+  drawn from `rarity` (frame color + gem badge), `sigil` (the big monogram), `set`,
+  `stat`, and `price` — no product photos required.
 - **Copy:** hero, About, and FAQ text are plain HTML in `index.html`.
+
+The product cards are rendered as holographic collectible-card visuals in pure
+CSS/SVG, with a pointer-reactive 3D tilt. When you connect Shopify, your real
+product photos replace the demo visuals via the Buy Button.
