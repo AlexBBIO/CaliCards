@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CaliCards — Trading &amp; Collectible Cards</title>
+  <meta
+    name="description"
+    content="CaliCards — buy graded slabs, sealed packs, and rare singles. California's home for trading and collectible cards."
+  />
+  <link rel="preconnect" href="https://sdks.shopifycdn.com" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <link
+    rel="icon"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%83%8F%3C/text%3E%3C/svg%3E"
+  />
+</head>
+<body>
+  <!-- Demo-mode banner: hidden automatically once Shopify is connected -->
+  <div id="demo-banner" class="demo-banner" hidden>
+    <span>
+      🛠️ <strong>Demo mode.</strong> Browsing sample cards. Connect a Shopify
+      store in <code>js/config.js</code> to start selling for real.
+    </span>
+  </div>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="#top">
+        <span class="brand-mark" aria-hidden="true">🃏</span>
+        <span class="brand-name">CaliCards</span>
+      </a>
+      <nav class="nav">
+        <a href="#shop">Shop</a>
+        <a href="#about">About</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <!-- Shopify Buy Button mounts a cart toggle here when connected -->
+      <div id="cart-toggle" class="cart-toggle"></div>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-inner">
+        <p class="eyebrow">California's card shop</p>
+        <h1>Graded slabs, sealed packs &amp; rare singles.</h1>
+        <p class="hero-sub">
+          Hand-picked trading &amp; collectible cards, shipped sleeved, toploaded,
+          and tracked. Secure Shopify checkout.
+        </p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="#shop">Browse the collection</a>
+          <a class="btn btn-ghost" href="#about">How it works</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="shop" class="shop">
+      <div class="container">
+        <div class="section-head">
+          <h2>Featured cards</h2>
+          <p class="muted">Fresh pulls and vault finds, restocked weekly.</p>
+        </div>
+
+        <!-- Products render here: live Shopify collection, or demo grid -->
+        <div id="shop-grid" class="grid" aria-live="polite">
+          <p class="loading">Loading the collection…</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="about">
+      <div class="container about-grid">
+        <div>
+          <h2>Collect with confidence</h2>
+          <p>
+            Every card is inspected, photographed, and packed to survive the
+            trip. Slabs ship in fitted cases; raw singles ship penny-sleeved in a
+            toploader and team bag.
+          </p>
+        </div>
+        <ul class="feature-list">
+          <li><strong>🔒 Secure checkout</strong><span>Powered by Shopify. Cards on the table, none of yours stored here.</span></li>
+          <li><strong>📦 Protective shipping</strong><span>Sleeved, toploaded, and tracked on every order.</span></li>
+          <li><strong>✅ Accurate grades</strong><span>Real photos and honest conditions — what you see is what ships.</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="faq" class="faq">
+      <div class="container">
+        <h2>FAQ</h2>
+        <details>
+          <summary>How does checkout work?</summary>
+          <p>
+            Add cards to your cart and check out through Shopify's secure, hosted
+            checkout. Payment and order data are handled entirely by Shopify.
+          </p>
+        </details>
+        <details>
+          <summary>How are cards shipped?</summary>
+          <p>
+            Raw cards: penny sleeve + toploader + team bag in a bubble mailer.
+            Graded slabs: snug-fit case inside a rigid box. Tracking on every order.
+          </p>
+        </details>
+        <details>
+          <summary>Is this a real store yet?</summary>
+          <p>
+            The site is ready to go. When you connect a Shopify store (see
+            <code>js/config.js</code>), the demo cards are replaced by your real
+            inventory and live checkout turns on.
+          </p>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <span>🃏 CaliCards</span>
+      <span class="muted">© <span id="year"></span> CaliCards. Built to sell cards.</span>
+    </div>
+  </footer>
+
+  <script src="js/config.js"></script>
+  <script src="js/store.js"></script>
+</body>
+</html>
