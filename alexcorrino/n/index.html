@@ -365,6 +365,8 @@
       ];
       var layers = [];
       var traffic = [];
+      var spinners = [];
+      var nextSpinnerAt = 240;
 
       var ptr = { sx: 0, sy: 0, tx: 0, ty: 0 };
       function onMove(e) {
@@ -391,8 +393,8 @@
             }
           }
         }
-        /* a neon sign on some foreground buildings */
-        if (spec.signs && Math.random() < 0.72 && w > 70) {
+        /* a neon tube on some foreground buildings */
+        if (spec.signs && Math.random() < 0.5 && w > 70) {
           var vertical = Math.random() < 0.5;
           b.sign = {
             color: NEON[(Math.random() * NEON.length) | 0],
@@ -402,6 +404,46 @@
             h: vertical ? 26 + Math.random() * 60 : 7,
             ph: Math.random() * 6.28,
             buzz: Math.random() < 0.35,
+          };
+        }
+        /* a hanging glyph board, Kowloon style */
+        if (spec.signs && Math.random() < 0.55 && h > 130) {
+          var cells = 3 + ((Math.random() * 3) | 0);
+          var glyphs = [];
+          for (var gc = 0; gc < cells; gc++) {
+            var strokes = [];
+            var ns = 2 + ((Math.random() * 3) | 0);
+            for (var st = 0; st < ns; st++) {
+              strokes.push([Math.random(), Math.random(), Math.random(), Math.random()]);
+            }
+            glyphs.push(strokes);
+          }
+          b.board = {
+            color: NEON[(Math.random() * NEON.length) | 0],
+            ox: Math.random() < 0.5 ? 3 : w - 21,
+            oy: 16 + Math.random() * Math.max(10, h * 0.3),
+            w: 18,
+            cell: 15,
+            glyphs: glyphs,
+            ph: Math.random() * 6.28,
+            buzz: Math.random() < 0.3,
+          };
+        }
+        /* a rooftop billboard now and then */
+        if (spec.signs && Math.random() < 0.22 && w > 120) {
+          var bw = 44 + Math.random() * 50;
+          var strokes2 = [];
+          var ns2 = 5 + ((Math.random() * 5) | 0);
+          for (var st2 = 0; st2 < ns2; st2++) {
+            strokes2.push([Math.random(), Math.random(), Math.random(), Math.random()]);
+          }
+          b.billboard = {
+            color: NEON[(Math.random() * NEON.length) | 0],
+            ox: 8 + Math.random() * (w - bw - 16),
+            w: bw,
+            h: 17,
+            strokes: strokes2,
+            ph: Math.random() * 6.28,
           };
         }
         return b;
@@ -432,6 +474,94 @@
       }
 
       function streetY() { return H * 0.78 + ptr.sy * 14; }
+
+      function spawnSpinner() {
+        var ltr = Math.random() < 0.5;
+        var sc = 0.9 + Math.random() * 1.1; /* nearer cars are bigger, faster */
+        var sp = (1.4 + Math.random() * 1.4) * sc;
+        spinners.push({
+          x: ltr ? -60 * sc : W + 60 * sc,
+          y: H * (0.07 + Math.random() * 0.3),
+          vx: ltr ? sp : -sp,
+          sc: sc,
+          ph: Math.random() * 6.28,
+        });
+        nextSpinnerAt = t + 480 + Math.random() * 1100;
+      }
+
+      function drawSpinners(dt) {
+        if (!reduced && t >= nextSpinnerAt) spawnSpinner();
+        for (var i = spinners.length - 1; i >= 0; i--) {
+          var v = spinners[i];
+          if (!reduced) v.x += v.vx * dt;
+          var m = 90 * v.sc;
+          if (v.x < -m || v.x > W + m) { spinners.splice(i, 1); continue; }
+          var s = v.sc;
+          var vy = v.y + Math.sin(t * 0.013 + v.ph) * 4 * s;
+          var fwd = v.vx > 0 ? 1 : -1;
+          /* dark hull, rim-lit so the silhouette reads against the sky */
+          ctx.fillStyle = "#221a36";
+          ctx.beginPath();
+          ctx.ellipse(v.x, vy, 10 * s, 3.2 * s, 0, 0, 6.2832);
+          ctx.fill();
+          ctx.strokeStyle = "rgba(190, 150, 255, 0.4)";
+          ctx.lineWidth = Math.max(1, s);
+          ctx.beginPath();
+          ctx.ellipse(v.x, vy, 10 * s, 3.2 * s, 0, Math.PI, 6.2832);
+          ctx.stroke();
+          /* cabin canopy with a lit glint */
+          ctx.fillStyle = "#2c2144";
+          ctx.fillRect(v.x - 4 * s, vy - 4.5 * s, 8 * s, 3.5 * s);
+          ctx.fillStyle = "rgba(168, 220, 255, 0.75)";
+          ctx.fillRect(v.x + fwd * s - 1.5 * s, vy - 4 * s, 3 * s, 1.4 * s);
+          /* under-thrusters: two downward washes */
+          for (var u = -1; u <= 1; u += 2) {
+            var ux = v.x + u * 5 * s;
+            var tg = ctx.createLinearGradient(ux, vy + 2.5 * s, ux, vy + 14 * s);
+            tg.addColorStop(0, "rgba(255, 214, 150, 0.5)");
+            tg.addColorStop(1, "rgba(255, 214, 150, 0)");
+            ctx.fillStyle = tg;
+            ctx.fillRect(ux - 1.3 * s, vy + 2.5 * s, 2.6 * s, 11.5 * s);
+          }
+          /* headlight + beam */
+          ctx.fillStyle = "rgba(255, 244, 214, 0.95)";
+          ctx.beginPath();
+          ctx.arc(v.x + fwd * 9 * s, vy, 1.4 * s, 0, 6.2832);
+          ctx.fill();
+          var beam = ctx.createLinearGradient(v.x + fwd * 9 * s, vy, v.x + fwd * 44 * s, vy);
+          beam.addColorStop(0, "rgba(255, 244, 214, 0.3)");
+          beam.addColorStop(1, "rgba(255, 244, 214, 0)");
+          ctx.strokeStyle = beam;
+          ctx.lineWidth = 1.6 * s;
+          ctx.beginPath();
+          ctx.moveTo(v.x + fwd * 9 * s, vy);
+          ctx.lineTo(v.x + fwd * 44 * s, vy + s);
+          ctx.stroke();
+          /* blinking tail light */
+          var blink = Math.sin(t * 0.35 + v.ph) > 0 ? 1 : 0.15;
+          ctx.fillStyle = "rgba(255, 59, 48, " + (0.95 * blink).toFixed(2) + ")";
+          ctx.beginPath();
+          ctx.arc(v.x - fwd * 9 * s, vy - s, 1.2 * s, 0, 6.2832);
+          ctx.fill();
+          /* glow on the bloom layer */
+          bctx.fillStyle = "#fff4d6";
+          bctx.globalAlpha = 0.7;
+          bctx.beginPath();
+          bctx.arc((v.x + fwd * 9 * s) * BSCALE, vy * BSCALE, 1.6 * s, 0, 6.2832);
+          bctx.fill();
+          bctx.fillStyle = "#ffd696";
+          bctx.globalAlpha = 0.45;
+          bctx.beginPath();
+          bctx.ellipse(v.x * BSCALE, (vy + 5 * s) * BSCALE, 3.4 * s, 1.8 * s, 0, 0, 6.2832);
+          bctx.fill();
+          bctx.fillStyle = "#ff3b30";
+          bctx.globalAlpha = 0.55 * blink;
+          bctx.beginPath();
+          bctx.arc((v.x - fwd * 9 * s) * BSCALE, (vy - s) * BSCALE, 1.3 * s, 0, 6.2832);
+          bctx.fill();
+          bctx.globalAlpha = 1;
+        }
+      }
 
       function step(dt) {
         t += dt;
@@ -465,8 +595,10 @@
         bctx.fillStyle = haze;
         bctx.fillRect(0, hz - 26, BW, 26);
 
-        /* city layers, back to front */
+        /* city layers, back to front; spinners fly in front of the mid
+           layer but behind the foreground towers */
         for (var li = 0; li < layers.length; li++) {
+          if (li === 2) drawSpinners(dt);
           var spec = LAYER_SPECS[li];
           var arr = layers[li];
           var speed = spec.sp * lean * dt;
@@ -502,6 +634,83 @@
               if (wn.fl >= 0) a *= 0.55 + 0.45 * Math.sin(t * 0.11 + wn.fl) > 0.6 ? 1 : 0.15;
               ctx.fillStyle = "rgba(" + wn.tint + ", " + a.toFixed(3) + ")";
               ctx.fillRect(bd.x + wn.ox, top + wn.oy, 5, 8);
+            }
+
+            /* glyph board: dark panel, neon frame, glowing strokes */
+            if (bd.board) {
+              var brd = bd.board;
+              var bx2 = bd.x + brd.ox, by2 = top + brd.oy;
+              var bh2 = brd.glyphs.length * brd.cell + 6;
+              var bfl = 1;
+              if (brd.buzz) {
+                var bz = Math.sin(t * 0.7 + brd.ph) + Math.sin(t * 1.9 + brd.ph * 2);
+                bfl = bz < -1.5 ? 0.3 : 1;
+              }
+              ctx.fillStyle = "#0a0714";
+              ctx.fillRect(bx2, by2, brd.w, bh2);
+              ctx.strokeStyle = brd.color;
+              ctx.globalAlpha = 0.85 * bfl;
+              ctx.lineWidth = 1.4;
+              ctx.strokeRect(bx2 + 0.5, by2 + 0.5, brd.w - 1, bh2 - 1);
+              ctx.lineWidth = 1.5;
+              for (var g = 0; g < brd.glyphs.length; g++) {
+                var cellY = by2 + 4 + g * brd.cell;
+                var stks = brd.glyphs[g];
+                ctx.beginPath();
+                for (var s2 = 0; s2 < stks.length; s2++) {
+                  var sk = stks[s2];
+                  ctx.moveTo(bx2 + 4 + sk[0] * (brd.w - 8), cellY + sk[1] * (brd.cell - 4));
+                  ctx.lineTo(bx2 + 4 + sk[2] * (brd.w - 8), cellY + sk[3] * (brd.cell - 4));
+                }
+                ctx.stroke();
+              }
+              ctx.globalAlpha = 1;
+              bctx.fillStyle = brd.color;
+              bctx.globalAlpha = 0.5 * bfl;
+              bctx.fillRect(bx2 * BSCALE - 1, by2 * BSCALE - 1, brd.w * BSCALE + 2, bh2 * BSCALE + 2);
+              bctx.globalAlpha = 1;
+              /* reflection */
+              var brx = (bx2 + brd.w / 2) * BSCALE;
+              var brTop = sy * BSCALE;
+              var brLen = (14 + bh2 * 0.8) * BSCALE + 6;
+              var brg = bctx.createLinearGradient(0, brTop, 0, brTop + brLen);
+              brg.addColorStop(0, brd.color);
+              brg.addColorStop(1, "rgba(0,0,0,0)");
+              bctx.fillStyle = brg;
+              bctx.globalAlpha = 0.3 * bfl;
+              bctx.fillRect(brx - 1.5, brTop, 3, brLen);
+              bctx.globalAlpha = 1;
+            }
+
+            /* rooftop billboard on legs */
+            if (bd.billboard) {
+              var bb = bd.billboard;
+              var bbx = bd.x + bb.ox, bby = top - bb.h - 6;
+              ctx.strokeStyle = "#141021";
+              ctx.lineWidth = 2;
+              ctx.beginPath();
+              ctx.moveTo(bbx + 6, top); ctx.lineTo(bbx + 6, bby + bb.h);
+              ctx.moveTo(bbx + bb.w - 6, top); ctx.lineTo(bbx + bb.w - 6, bby + bb.h);
+              ctx.stroke();
+              ctx.fillStyle = "#0a0714";
+              ctx.fillRect(bbx, bby, bb.w, bb.h);
+              ctx.strokeStyle = bb.color;
+              ctx.globalAlpha = 0.9;
+              ctx.lineWidth = 1.3;
+              ctx.strokeRect(bbx + 0.5, bby + 0.5, bb.w - 1, bb.h - 1);
+              ctx.lineWidth = 1.4;
+              ctx.beginPath();
+              for (var s3 = 0; s3 < bb.strokes.length; s3++) {
+                var sk3 = bb.strokes[s3];
+                ctx.moveTo(bbx + 4 + sk3[0] * (bb.w - 8), bby + 3 + sk3[1] * (bb.h - 6));
+                ctx.lineTo(bbx + 4 + sk3[2] * (bb.w - 8), bby + 3 + sk3[3] * (bb.h - 6));
+              }
+              ctx.stroke();
+              ctx.globalAlpha = 1;
+              bctx.fillStyle = bb.color;
+              bctx.globalAlpha = 0.45;
+              bctx.fillRect(bbx * BSCALE - 1, bby * BSCALE - 1, bb.w * BSCALE + 2, bb.h * BSCALE + 2);
+              bctx.globalAlpha = 1;
             }
 
             /* neon sign: crisp core + bloom + reflection */
