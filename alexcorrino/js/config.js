@@ -5,6 +5,7 @@
  *
  * Projects render in the order listed. Fields:
  *   name    — display name
+ *   sym     — short ticker-style symbol (e.g. "FCTR")
  *   kicker  — small-caps label above the headline (e.g. "Daily Monitor")
  *   domain  — shown as small text next to the name (optional)
  *   url     — link target; LEAVE EMPTY while a project isn't live yet and
@@ -16,6 +17,7 @@ window.SITE_CONFIG = {
   projects: [
     {
       name: "Factor Watch",
+      sym: "FCTR",
       kicker: "Daily Monitor",
       domain: "factorwatch.ai",
       url: "https://factorwatch.ai",
@@ -25,6 +27,7 @@ window.SITE_CONFIG = {
     },
     {
       name: "Memory Analyst",
+      sym: "MEMA",
       kicker: "Standing Thesis",
       domain: "memoryanalyst.com",
       url: "https://memoryanalyst.com",
@@ -34,6 +37,7 @@ window.SITE_CONFIG = {
     },
     {
       name: "Mind The Tape",
+      sym: "TAPE",
       kicker: "Weekly Note",
       domain: "mindthetape.com",
       url: "https://www.mindthetape.com",
