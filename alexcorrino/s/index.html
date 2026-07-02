@@ -275,6 +275,9 @@
       var W = 0, H = 0, dpr = 1;
       var layers = [];
       var meteors = [];
+      var features = [];
+      var galaxies = [];
+      var planet = null;
       var t = 0;
       var running = false;
       var rafId = 0;
@@ -315,6 +318,29 @@
           }
           return { spec: spec, stars: stars };
         });
+
+        /* a few bright feature stars with halos and diffraction flares */
+        features = [];
+        var fcount = Math.max(5, Math.round(W / 240));
+        for (var f = 0; f < fcount; f++) {
+          features.push({
+            x: Math.random() * W,
+            y: Math.random() * H * 0.82,
+            r: 1.5 + Math.random() * 1.3,
+            warm: Math.random() < 0.4,
+            ph: Math.random() * Math.PI * 2,
+            tw: 0.3 + Math.random() * 0.9,
+          });
+        }
+
+        /* two distant galaxies */
+        galaxies = [
+          { x: W * 0.18, y: H * 0.2, r: 30, rot: -0.5 },
+          { x: W * 0.62, y: H * 0.66, r: 22, rot: 0.9 },
+        ];
+
+        /* the ringed planet, upper right, clear of the text */
+        planet = { x: W * 0.76, y: H * 0.24, r: Math.max(30, Math.min(48, W * 0.032)) };
       }
 
       function spawnMeteor() {
@@ -360,6 +386,90 @@
               ctx.fill();
             }
           }
+        }
+
+        /* galaxies: soft tilted smudges, drifting with the far layer */
+        for (var gi = 0; gi < galaxies.length; gi++) {
+          var gal = galaxies[gi];
+          ctx.save();
+          ctx.translate(gal.x - ptr.x * 5, gal.y - ptr.y * 3);
+          ctx.rotate(gal.rot);
+          ctx.scale(1, 0.38);
+          var gg = ctx.createRadialGradient(0, 0, 0, 0, 0, gal.r);
+          gg.addColorStop(0, "rgba(214, 220, 255, 0.10)");
+          gg.addColorStop(0.5, "rgba(190, 200, 250, 0.045)");
+          gg.addColorStop(1, "rgba(190, 200, 250, 0)");
+          ctx.fillStyle = gg;
+          ctx.beginPath();
+          ctx.arc(0, 0, gal.r, 0, 6.2832);
+          ctx.fill();
+          ctx.restore();
+        }
+
+        /* feature stars: halo + twinkle + thin diffraction flare */
+        for (var fi = 0; fi < features.length; fi++) {
+          var fs = features[fi];
+          var fx = fs.x - ptr.x * 13, fy = fs.y - ptr.y * 8;
+          var fa = reduced ? 0.9 : 0.62 + 0.38 * Math.sin(t * 0.017 * fs.tw + fs.ph);
+          var tint = fs.warm ? "255, 236, 200" : "214, 228, 255";
+          var halo = ctx.createRadialGradient(fx, fy, 0, fx, fy, fs.r * 9);
+          halo.addColorStop(0, "rgba(" + tint + ", " + (0.20 * fa).toFixed(3) + ")");
+          halo.addColorStop(1, "rgba(" + tint + ", 0)");
+          ctx.fillStyle = halo;
+          ctx.beginPath();
+          ctx.arc(fx, fy, fs.r * 9, 0, 6.2832);
+          ctx.fill();
+          ctx.strokeStyle = "rgba(" + tint + ", " + (0.28 * fa).toFixed(3) + ")";
+          ctx.lineWidth = 0.7;
+          var fl = fs.r * 7 * fa;
+          ctx.beginPath();
+          ctx.moveTo(fx - fl, fy); ctx.lineTo(fx + fl, fy);
+          ctx.moveTo(fx, fy - fl); ctx.lineTo(fx, fy + fl);
+          ctx.stroke();
+          ctx.fillStyle = "rgba(255, 255, 255, " + (0.95 * fa).toFixed(3) + ")";
+          ctx.beginPath();
+          ctx.arc(fx, fy, fs.r, 0, 6.2832);
+          ctx.fill();
+        }
+
+        /* the ringed planet, drifting gently with the mid layer */
+        if (planet) {
+          var px = planet.x - ptr.x * 15;
+          var py = planet.y - ptr.y * 9 + Math.sin(t * 0.004) * 4;
+          var pr = planet.r;
+          var glow = ctx.createRadialGradient(px, py, pr * 0.6, px, py, pr * 2.6);
+          glow.addColorStop(0, "rgba(196, 178, 212, 0.10)");
+          glow.addColorStop(1, "rgba(196, 178, 212, 0)");
+          ctx.fillStyle = glow;
+          ctx.beginPath();
+          ctx.arc(px, py, pr * 2.6, 0, 6.2832);
+          ctx.fill();
+          /* ring, far half behind the body */
+          ctx.strokeStyle = "rgba(216, 204, 188, 0.34)";
+          ctx.lineWidth = pr * 0.13;
+          ctx.beginPath();
+          ctx.ellipse(px, py, pr * 1.85, pr * 0.52, -0.42, Math.PI, Math.PI * 2);
+          ctx.stroke();
+          /* body, lit from the upper left */
+          var body = ctx.createRadialGradient(px - pr * 0.5, py - pr * 0.55, pr * 0.15, px, py, pr * 1.15);
+          body.addColorStop(0, "#cbb9ad");
+          body.addColorStop(0.55, "#71617e");
+          body.addColorStop(1, "#241f31");
+          ctx.fillStyle = body;
+          ctx.beginPath();
+          ctx.arc(px, py, pr, 0, 6.2832);
+          ctx.fill();
+          /* ring, near half in front */
+          ctx.strokeStyle = "rgba(224, 212, 196, 0.5)";
+          ctx.lineWidth = pr * 0.13;
+          ctx.beginPath();
+          ctx.ellipse(px, py, pr * 1.85, pr * 0.52, -0.42, 0, Math.PI);
+          ctx.stroke();
+          ctx.strokeStyle = "rgba(230, 220, 205, 0.22)";
+          ctx.lineWidth = pr * 0.045;
+          ctx.beginPath();
+          ctx.ellipse(px, py, pr * 2.12, pr * 0.6, -0.42, 0, Math.PI);
+          ctx.stroke();
         }
 
         if (!reduced) {

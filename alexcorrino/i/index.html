@@ -282,22 +282,22 @@
       var yearEl = document.getElementById("year");
       if (yearEl) yearEl.textContent = String(new Date().getFullYear());
 
-      /* ---------- the wisps: soft light moving under the ice ----------
-         Wisps accumulate on a low-resolution offscreen canvas that is
-         upscaled to the display canvas each frame — the cheap upscale blur
-         is what makes them read as diffused through a frozen surface. */
+      /* ---------- light below the ice ----------
+         A few large, near-white pools of light drift under the surface.
+         They accumulate on a low-resolution offscreen canvas that is
+         upscaled each frame — the cheap upscale blur is the ice. */
       var canvas = document.getElementById("field");
       var ctx = canvas.getContext("2d", { alpha: false });
       if (!ctx) return;
 
       var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       var BG = "#04101c";
-      var SCALE = 0.28;
+      var SCALE = 0.25;
       var off = document.createElement("canvas");
       var octx = off.getContext("2d", { alpha: false });
 
       var W = 0, H = 0, OW = 0, OH = 0, dpr = 1;
-      var wisps = [];
+      var lights = [];
       var t = Math.random() * 400;
       var running = false;
       var rafId = 0;
@@ -319,13 +319,13 @@
         return a + (b - a) * ux + (c - a) * uy + (a - b - c + d) * ux * uy;
       }
       function angleAt(x, y, tt) {
-        var s = 0.0014;
-        var n = 0.7 * vnoise(x * s + seedX + tt * 0.012, y * s + seedY - tt * 0.009)
-              + 0.3 * vnoise(x * s * 2.3 + seedY - tt * 0.014, y * s * 2.3 + seedX + tt * 0.011);
-        return n * Math.PI * 2.4;
+        var s = 0.0016;
+        var n = 0.7 * vnoise(x * s + seedX + tt * 0.008, y * s + seedY - tt * 0.006)
+              + 0.3 * vnoise(x * s * 2.1 + seedY - tt * 0.01, y * s * 2.1 + seedX + tt * 0.007);
+        return n * Math.PI * 2.6;
       }
 
-      /* the light is drawn to your hand on the ice */
+      /* the light gathers under your hand on the ice */
       var ptr = { x: -9999, y: -9999, k: 0, tk: 0, last: 0 };
       function onMove(e) {
         ptr.x = e.clientX * SCALE;
@@ -334,81 +334,75 @@
         ptr.last = performance.now();
       }
 
-      function spawn(w) {
-        w.x = Math.random() * OW;
-        w.y = Math.random() * OH;
-        w.a = Math.random() * Math.PI * 2;
-        w.sp = 0.3 + Math.random() * 0.35;
-        w.w = 4 + Math.random() * 9;
-        w.ph = Math.random() * Math.PI * 2;
-        w.life = 2200 + Math.random() * 1600;
+      function spawn(l, edge) {
+        l.x = Math.random() * OW;
+        l.y = Math.random() * OH;
+        if (edge) {
+          if (Math.random() < 0.5) l.x = Math.random() < 0.5 ? -30 : OW + 30;
+          else l.y = Math.random() < 0.5 ? -30 : OH + 30;
+        }
+        l.a = Math.random() * Math.PI * 2;
+        l.sp = 0.16 + Math.random() * 0.22;
+        l.r = 16 + Math.random() * 24;
+        l.ph = Math.random() * Math.PI * 2;
       }
 
-      function buildWisps() {
-        var count = Math.max(8, Math.min(18, Math.round((OW * OH) / 7200)));
-        wisps = [];
+      function buildLights() {
+        var count = Math.max(8, Math.min(15, Math.round((OW * OH) / 8200)));
+        lights = [];
         for (var i = 0; i < count; i++) {
-          var w = {};
-          spawn(w);
-          wisps.push(w);
+          var l = {};
+          spawn(l, false);
+          lights.push(l);
         }
       }
 
       function step(dt) {
         t += dt;
-        octx.fillStyle = "rgba(4, 16, 28, 0.0045)";
+        octx.globalCompositeOperation = "source-over";
+        octx.fillStyle = "rgba(4, 16, 28, 0.07)";
         octx.fillRect(0, 0, OW, OH);
 
         ptr.k += (ptr.tk - ptr.k) * 0.05;
         if (performance.now() - ptr.last > 2800) ptr.tk = 0;
         var hasPtr = ptr.k > 0.01;
-        var R = 130 * SCALE * 3.5, R2 = R * R;
+        var R = 200 * SCALE * 4, R2 = R * R;
 
-        octx.lineCap = "round";
-        for (var i = 0; i < wisps.length; i++) {
-          var w = wisps[i];
-          var target = angleAt(w.x, w.y, t);
+        octx.globalCompositeOperation = "lighter";
+        for (var i = 0; i < lights.length; i++) {
+          var l = lights[i];
+          var target = angleAt(l.x, l.y, t);
 
           if (hasPtr) {
-            var dx = ptr.x - w.x, dy = ptr.y - w.y;
+            var dx = ptr.x - l.x, dy = ptr.y - l.y;
             var d2 = dx * dx + dy * dy;
-            if (d2 < R2 && d2 > 4) {
+            if (d2 < R2 && d2 > 9) {
               var toward = Math.atan2(dy, dx);
-              var pull = (1 - Math.sqrt(d2) / R) * 0.65 * ptr.k;
+              var pull = (1 - Math.sqrt(d2) / R) * 0.8 * ptr.k;
               var diff = Math.atan2(Math.sin(toward - target), Math.cos(toward - target));
               target += diff * pull;
             }
           }
 
-          /* ease heading toward the field for smooth, fish-like turns */
-          var turn = Math.atan2(Math.sin(target - w.a), Math.cos(target - w.a));
-          w.a += turn * 0.028 * dt;
+          var turn = Math.atan2(Math.sin(target - l.a), Math.cos(target - l.a));
+          l.a += turn * 0.02 * dt;
+          l.x += Math.cos(l.a) * l.sp * dt;
+          l.y += Math.sin(l.a) * l.sp * dt;
 
-          var px = w.x, py = w.y;
-          w.x += Math.cos(w.a) * w.sp * dt;
-          w.y += Math.sin(w.a) * w.sp * dt;
-          w.life -= dt;
-
-          if (w.life <= 0 || w.x < -20 || w.x > OW + 20 || w.y < -20 || w.y > OH + 20) {
-            spawn(w);
+          if (l.x < -60 || l.x > OW + 60 || l.y < -60 || l.y > OH + 60) {
+            spawn(l, true);
             continue;
           }
 
-          var breathe = 0.88 + 0.12 * Math.sin(t * 0.01 + w.ph);
-          /* wide soft body */
-          octx.strokeStyle = "rgba(64, 170, 235, 0.032)";
-          octx.lineWidth = w.w * breathe;
+          var breathe = l.r * (0.86 + 0.14 * Math.sin(t * 0.008 + l.ph));
+          var g = octx.createRadialGradient(l.x, l.y, 0, l.x, l.y, breathe);
+          g.addColorStop(0, "rgba(245, 250, 255, 0.03)");
+          g.addColorStop(0.45, "rgba(214, 234, 250, 0.014)");
+          g.addColorStop(1, "rgba(180, 215, 245, 0)");
+          octx.fillStyle = g;
           octx.beginPath();
-          octx.moveTo(px, py);
-          octx.lineTo(w.x, w.y);
-          octx.stroke();
-          /* bright core */
-          octx.strokeStyle = "rgba(165, 226, 255, 0.028)";
-          octx.lineWidth = Math.max(1.2, w.w * 0.28 * breathe);
-          octx.beginPath();
-          octx.moveTo(px, py);
-          octx.lineTo(w.x, w.y);
-          octx.stroke();
+          octx.arc(l.x, l.y, breathe, 0, 6.2832);
+          octx.fill();
         }
 
         ctx.imageSmoothingEnabled = true;
@@ -430,11 +424,11 @@
         octx.fillRect(0, 0, OW, OH);
         ctx.fillStyle = BG;
         ctx.fillRect(0, 0, W, H);
-        buildWisps();
+        buildLights();
       }
 
       function renderStatic() {
-        for (var i = 0; i < 2400; i++) step(1);
+        for (var i = 0; i < 700; i++) step(1);
       }
 
       var lastTime = 0;
