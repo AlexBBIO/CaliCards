@@ -14,6 +14,14 @@
 window.SITE_CONFIG = {
   projects: [
     {
+      name: "Factor Watch",
+      domain: "factorwatch.ai",
+      url: "https://factorwatch.ai",
+      status: "live",
+      blurb:
+        "Daily factor internals over the FW 3000 — point-in-time quintile portfolios, z-scored moves, rotation flags, breadth and seasonality, updated through the session.",
+    },
+    {
       name: "Memory Analyst",
       domain: "memoryanalyst.com",
       url: "https://memoryanalyst.com",
@@ -22,11 +30,12 @@ window.SITE_CONFIG = {
         "The AI memory thesis, on annual rates — why yearly HBM demand is on track to outrun what the world can actually manufacture this decade, and what it takes to close the gap.",
     },
     {
-      name: "FactorWatch",
-      domain: "factorwatch.com",
-      url: "",
-      status: "building",
-      blurb: "Next on the bench. Details when it ships.",
+      name: "Mind The Tape",
+      domain: "mindthetape.com",
+      url: "https://www.mindthetape.com",
+      status: "live",
+      blurb:
+        "A running read on global markets — price, flows and positioning, roughly weekly. Fewer headlines, more signal.",
     },
     // Add future projects here, e.g.:
     // {

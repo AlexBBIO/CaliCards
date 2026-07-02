@@ -20,9 +20,12 @@ Almost everything lives in **`js/config.js`**:
   personal is ever published by accident. Only add handles that belong to the
   Alex Corrino pseudonym.
 
-Bio copy lives in `index.html` (the About section); the palette is the
-`:root` block in `css/styles.css` (light + dark, via `prefers-color-scheme`).
-Fonts (Space Grotesk + Inter) are self-hosted in `fonts/`.
+Bio copy lives in `index.html` (About section), along with the decorative
+ticker-band items and a `<noscript>` mirror of the project cards — update
+both when projects change. The neon palette is the `:root` block in
+`css/styles.css`; the skyline is an inline SVG in `index.html`. All
+animations are CSS-only and disabled under `prefers-reduced-motion`.
+Fonts (Space Grotesk + Inter variable) are self-hosted in `fonts/`.
 
 ## Run locally
 
