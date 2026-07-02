@@ -189,6 +189,16 @@ footer {
 }
 
 
+footer .fine {
+  max-width: 46rem;
+  margin-bottom: 0.9rem;
+  text-transform: none;
+  letter-spacing: 0.02em;
+  font-size: 0.66rem;
+  line-height: 1.7;
+  color: rgba(138, 151, 173, 0.75);
+}
+
 /* ============ elsewhere (config-driven; hidden until links exist) ============ */
 .elsewhere[hidden] { display: none; }
 .chips { display: flex; flex-wrap: wrap; gap: 0.6rem; }
