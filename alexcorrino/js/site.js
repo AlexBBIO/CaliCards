@@ -1,10 +1,10 @@
 /*
  * alexcorrino.com — site logic
- * Renders the project ledger and "Elsewhere" links from js/config.js, then
- * layers on the decorative extras: per-project sparklines, pointer-tracked
- * row spotlight, scroll reveals, and hero parallax. Everything degrades:
- * index.html carries a <noscript> mirror of the rows (keep it in sync when
- * the config changes) and all motion respects prefers-reduced-motion.
+ * Renders the article columns and "Elsewhere" links from js/config.js, fills
+ * the masthead dateline, and layers on the decorative extras: ink sparklines
+ * that draw in on scroll and gentle reveals. Everything degrades: index.html
+ * carries a <noscript> mirror of the articles (keep it in sync when the
+ * config changes) and all motion respects prefers-reduced-motion.
  */
 (function () {
   "use strict";
@@ -14,12 +14,19 @@
 
   var reduceMotion =
     window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  var finePointer =
-    window.matchMedia && window.matchMedia("(hover: hover) and (pointer: fine)").matches;
 
-  /* ---- footer year ---- */
+  /* ---- masthead dateline + footer year ---- */
+  var now = new Date();
+  var datelineEl = document.getElementById("dateline");
+  if (datelineEl) {
+    var DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    var MONTHS = ["January", "February", "March", "April", "May", "June", "July",
+      "August", "September", "October", "November", "December"];
+    datelineEl.textContent =
+      DAYS[now.getDay()] + " · " + MONTHS[now.getMonth()] + " " + now.getDate() + ", " + now.getFullYear();
+  }
   var yearEl = document.getElementById("year");
-  if (yearEl) yearEl.textContent = String(new Date().getFullYear());
+  if (yearEl) yearEl.textContent = String(now.getFullYear());
 
   /* ---- deterministic upward-drifting sparkline per project name ---- */
   function sparkPoints(name) {
@@ -30,10 +37,10 @@
       return h / 4294967296;
     }
     var pts = [];
-    var y = 30;
-    for (var x = 0; x <= 150; x += 7.5) {
-      y += (rnd() - 0.62) * 7;
-      y = Math.max(5, Math.min(36, y));
+    var y = 36;
+    for (var x = 0; x <= 260; x += 13) {
+      y += (rnd() - 0.62) * 8;
+      y = Math.max(6, Math.min(42, y));
       pts.push(x + "," + y.toFixed(1));
     }
     return pts;
@@ -42,7 +49,7 @@
   function sparkline(name) {
     var svg = document.createElementNS(SVG_NS, "svg");
     svg.setAttribute("class", "spark");
-    svg.setAttribute("viewBox", "0 0 150 40");
+    svg.setAttribute("viewBox", "0 0 260 48");
     svg.setAttribute("aria-hidden", "true");
     var pts = sparkPoints(name);
     var line = document.createElementNS(SVG_NS, "polyline");
@@ -52,16 +59,16 @@
     var dot = document.createElementNS(SVG_NS, "circle");
     dot.setAttribute("cx", last[0]);
     dot.setAttribute("cy", last[1]);
-    dot.setAttribute("r", "2.6");
+    dot.setAttribute("r", "3");
     svg.appendChild(line);
     svg.appendChild(dot);
     return svg;
   }
 
-  /* ---- projects ----
-     Each row is an <article>; the project name is the link (short accessible
-     name) and CSS stretches it over the whole row. A project only reads as
-     "Live" when it actually has a URL to visit. */
+  /* ---- articles ----
+     Each article is an <article>; the headline is the link (short accessible
+     name) and CSS stretches it over the whole column. A project only reads
+     as "Live" when it actually has a URL to visit. */
   var STATUS_LABELS = { live: "Live", building: "In progress" };
 
   var projectsWrap = document.getElementById("projects");
@@ -79,17 +86,10 @@
       card.className = "project " + (url ? "is-linked" : "is-soon");
       card.style.setProperty("--i", String(idx));
 
-      var index = document.createElement("span");
-      index.className = "project-index";
-      index.setAttribute("aria-hidden", "true");
-      index.textContent = (idx < 9 ? "0" : "") + (idx + 1);
-      card.appendChild(index);
-
-      var main = document.createElement("div");
-      main.className = "project-main";
-
-      var top = document.createElement("div");
-      top.className = "project-top";
+      var kicker = document.createElement("p");
+      kicker.className = "project-kicker label";
+      kicker.textContent = p.kicker || (url ? "In print" : "On the desk");
+      card.appendChild(kicker);
 
       var name = document.createElement("h3");
       name.className = "project-name";
@@ -101,25 +101,38 @@
       } else {
         name.textContent = p.name || "Untitled";
       }
-      top.appendChild(name);
+      card.appendChild(name);
 
-      if (p.domain) {
-        var domain = document.createElement("span");
-        domain.className = "project-domain";
-        domain.textContent = p.domain;
-        top.appendChild(domain);
-      }
-      main.appendChild(top);
+      card.appendChild(sparkline(p.name || "project" + idx));
 
       if (p.blurb) {
         var blurb = document.createElement("p");
         blurb.className = "project-blurb";
         blurb.textContent = p.blurb;
-        main.appendChild(blurb);
+        card.appendChild(blurb);
       }
-      card.appendChild(main);
 
-      card.appendChild(sparkline(p.name || "project" + idx));
+      var foot = document.createElement("div");
+      foot.className = "project-foot";
+
+      if (url) {
+        var more = document.createElement("a");
+        more.className = "project-more";
+        more.href = url;
+        more.innerHTML = "";
+        more.appendChild(document.createTextNode("Read at " + (p.domain || "the site") + " "));
+        var arr = document.createElement("span");
+        arr.className = "arr";
+        arr.setAttribute("aria-hidden", "true");
+        arr.textContent = "→";
+        more.appendChild(arr);
+        foot.appendChild(more);
+      } else if (p.domain) {
+        var dom = document.createElement("span");
+        dom.className = "project-domain";
+        dom.textContent = p.domain;
+        foot.appendChild(dom);
+      }
 
       var statusKey = p.status === "live" && url ? "live" : "building";
       var status = document.createElement("span");
@@ -130,14 +143,9 @@
       label.textContent = STATUS_LABELS[statusKey];
       status.appendChild(dot);
       status.appendChild(label);
-      card.appendChild(status);
+      foot.appendChild(status);
 
-      var arrow = document.createElement("span");
-      arrow.className = "project-arrow";
-      arrow.setAttribute("aria-hidden", "true");
-      arrow.textContent = "→";
-      card.appendChild(arrow);
-
+      card.appendChild(foot);
       projectsWrap.appendChild(card);
     });
   }
@@ -165,30 +173,10 @@
     if (any) elsewhere.hidden = false;
   }
 
-  /* ---- pointer-tracked spotlight on linked rows (hover devices only) ---- */
-  if (finePointer && !reduceMotion) {
-    document.querySelectorAll(".project.is-linked").forEach(function (row) {
-      row.addEventListener("pointermove", function (e) {
-        var r = row.getBoundingClientRect();
-        row.style.setProperty("--mx", (((e.clientX - r.left) / r.width) * 100).toFixed(1) + "%");
-        row.style.setProperty("--my", (((e.clientY - r.top) / r.height) * 100).toFixed(1) + "%");
-      });
-    });
-  }
-
-  /* ---- hero parallax (hover devices only) ---- */
-  var hero = document.querySelector(".hero");
-  if (hero && finePointer && !reduceMotion) {
-    hero.addEventListener("pointermove", function (e) {
-      hero.style.setProperty("--px", ((e.clientX / window.innerWidth) * 2 - 1).toFixed(3));
-      hero.style.setProperty("--py", ((e.clientY / window.innerHeight) * 2 - 1).toFixed(3));
-    });
-  }
-
   /* ---- scroll reveals + sparkline draw-in ----
      Classes are added here (never in the HTML) so no-JS visitors see
      everything without any observer. */
-  var revealTargets = document.querySelectorAll(".section-head, .project, .about-body, .chips");
+  var revealTargets = document.querySelectorAll(".section-head, .project, .chips");
   if ("IntersectionObserver" in window && !reduceMotion) {
     revealTargets.forEach(function (el) { el.classList.add("reveal"); });
     var io = new IntersectionObserver(
@@ -199,7 +187,7 @@
           io.unobserve(entry.target);
         });
       },
-      { rootMargin: "0px 0px 0px 0px", threshold: 0.03 }
+      { threshold: 0.03 }
     );
     revealTargets.forEach(function (el) { io.observe(el); });
 
@@ -212,7 +200,7 @@
             sparkIo.disconnect();
           });
         },
-        { threshold: 0.15 }
+        { threshold: 0.1 }
       );
       sparkIo.observe(projectsWrap);
     }

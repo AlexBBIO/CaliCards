@@ -5,6 +5,7 @@
  *
  * Projects render in the order listed. Fields:
  *   name    — display name
+ *   kicker  — small-caps label above the headline (e.g. "Daily Monitor")
  *   domain  — shown as small text next to the name (optional)
  *   url     — link target; LEAVE EMPTY while a project isn't live yet and
  *             the card renders as an unlinked "in progress" entry
@@ -15,6 +16,7 @@ window.SITE_CONFIG = {
   projects: [
     {
       name: "Factor Watch",
+      kicker: "Daily Monitor",
       domain: "factorwatch.ai",
       url: "https://factorwatch.ai",
       status: "live",
@@ -23,6 +25,7 @@ window.SITE_CONFIG = {
     },
     {
       name: "Memory Analyst",
+      kicker: "Standing Thesis",
       domain: "memoryanalyst.com",
       url: "https://memoryanalyst.com",
       status: "live",
@@ -31,6 +34,7 @@ window.SITE_CONFIG = {
     },
     {
       name: "Mind The Tape",
+      kicker: "Weekly Note",
       domain: "mindthetape.com",
       url: "https://www.mindthetape.com",
       status: "live",
