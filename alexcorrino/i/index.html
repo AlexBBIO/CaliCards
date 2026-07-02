@@ -289,12 +289,13 @@
       var yearEl = document.getElementById("year");
       if (yearEl) yearEl.textContent = String(new Date().getFullYear());
 
-      /* ---------- light below the ice ----------
-         Veils of light drift under the surface: each light stamps a soft
-         gradient elongated along its heading, so the accumulation reads as
-         aurora-like curtains rather than blobs. Everything accumulates on a
-         low-resolution offscreen canvas that is upscaled each frame — the
-         cheap upscale blur is the ice. Crisp little glints twinkle on top. */
+      /* ---------- glowing fish below the ice ----------
+         A small school of blue glowing fish cruise under the surface: each
+         is a chain of gradient stamps tapering from head to tail, with a
+         swimming wiggle, occasional darts, and a loose curiosity about the
+         pointer. They render on a low-resolution offscreen canvas that is
+         upscaled and GPU-blurred — the diffusion of the ice. Crisp glints
+         twinkle on a separate unblurred canvas. */
       var canvas = document.getElementById("field");
       var ctx = canvas.getContext("2d", { alpha: false });
       var glintCanvas = document.getElementById("glints");
@@ -308,20 +309,11 @@
       var octx = off.getContext("2d", { alpha: false });
 
       var W = 0, H = 0, OW = 0, OH = 0, dpr = 1;
-      var lights = [];
-      var deeps = [];
+      var fish = [];
       var glints = [];
       var t = Math.random() * 400;
       var running = false;
       var rafId = 0;
-
-      /* faint iridescence: ice white, pale cyan, pale mint, pale lavender */
-      var TINTS = [
-        "245, 250, 255",
-        "205, 236, 255",
-        "210, 248, 238",
-        "224, 226, 252",
-      ];
 
       var seedX = Math.random() * 1024;
       var seedY = Math.random() * 1024;
@@ -346,7 +338,7 @@
         return n * Math.PI * 2.6;
       }
 
-      /* the light gathers under your hand on the ice */
+      /* fish are curious about your hand on the ice */
       var ptr = { x: -9999, y: -9999, k: 0, tk: 0, last: 0 };
       function onMove(e) {
         ptr.x = e.clientX * SCALE;
@@ -355,94 +347,108 @@
         ptr.last = performance.now();
       }
 
-      function spawn(l, edge, deep) {
-        l.x = Math.random() * OW;
-        l.y = Math.random() * OH;
+      function spawn(f, edge) {
+        f.x = Math.random() * OW;
+        f.y = Math.random() * OH;
         if (edge) {
-          if (Math.random() < 0.5) l.x = Math.random() < 0.5 ? -40 : OW + 40;
-          else l.y = Math.random() < 0.5 ? -40 : OH + 40;
+          if (Math.random() < 0.5) f.x = Math.random() < 0.5 ? -30 : OW + 30;
+          else f.y = Math.random() < 0.5 ? -30 : OH + 30;
         }
-        l.a = Math.random() * Math.PI * 2;
-        l.sp = deep ? 0.07 + Math.random() * 0.08 : 0.18 + Math.random() * 0.22;
-        l.r = deep ? 26 + Math.random() * 18 : 11 + Math.random() * 12;
-        l.stretch = deep ? 2.0 : 2.6 + Math.random() * 1.2;
-        l.ph = Math.random() * Math.PI * 2;
-        l.tint = TINTS[(Math.random() * TINTS.length) | 0];
+        f.a = Math.random() * Math.PI * 2;
+        f.base = 0.22 + Math.random() * 0.2;   /* cruise speed */
+        f.burst = 0;                            /* dart impulse */
+        f.nextDart = t + 300 + Math.random() * 700;
+        f.r = 5.5 + Math.random() * 4.5;        /* head radius (offscreen px) */
+        f.deep = Math.random() < 0.28;          /* a few swim deeper: dimmer, larger */
+        if (f.deep) { f.r *= 1.7; f.base *= 0.6; }
+        f.ph = Math.random() * Math.PI * 2;
+        f.wig = 0.14 + Math.random() * 0.08;    /* tail-beat rate */
       }
 
-      function buildLights() {
-        var count = Math.max(8, Math.min(15, Math.round((OW * OH) / 8200)));
-        lights = [];
+      function buildFish() {
+        var count = Math.max(7, Math.min(12, Math.round((OW * OH) / 10500)));
+        fish = [];
         for (var i = 0; i < count; i++) {
-          var l = {};
-          spawn(l, false, false);
-          lights.push(l);
-        }
-        deeps = [];
-        for (var d = 0; d < 4; d++) {
-          var dl = {};
-          spawn(dl, false, true);
-          deeps.push(dl);
+          var f = {};
+          spawn(f, false);
+          fish.push(f);
         }
         glints = [];
       }
 
-      function stamp(l, alphaScale) {
-        var breathe = l.r * (0.85 + 0.15 * Math.sin(t * 0.009 + l.ph));
-        octx.save();
-        octx.translate(l.x, l.y);
-        octx.rotate(l.a);
-        octx.scale(l.stretch, 1);
-        var g = octx.createRadialGradient(0, 0, 0, 0, 0, breathe);
-        g.addColorStop(0, "rgba(" + l.tint + ", " + (0.03 * alphaScale).toFixed(4) + ")");
-        g.addColorStop(0.5, "rgba(" + l.tint + ", " + (0.013 * alphaScale).toFixed(4) + ")");
-        g.addColorStop(1, "rgba(" + l.tint + ", 0)");
+      /* one gradient stamp of the body chain */
+      function stamp(x, y, r, alpha) {
+        var g = octx.createRadialGradient(x, y, 0, x, y, r);
+        g.addColorStop(0, "rgba(150, 218, 255, " + alpha.toFixed(4) + ")");
+        g.addColorStop(0.45, "rgba(74, 168, 245, " + (alpha * 0.55).toFixed(4) + ")");
+        g.addColorStop(1, "rgba(50, 130, 220, 0)");
         octx.fillStyle = g;
         octx.beginPath();
-        octx.arc(0, 0, breathe, 0, 6.2832);
+        octx.arc(x, y, r, 0, 6.2832);
         octx.fill();
-        octx.restore();
       }
 
-      function moveLight(l, turnRate, dt, listen) {
-        var target = angleAt(l.x, l.y, t);
-        if (listen && ptr.k > 0.01) {
-          var dx = ptr.x - l.x, dy = ptr.y - l.y;
-          var d2 = dx * dx + dy * dy;
-          var R = 200, R2 = R * R;
-          if (d2 < R2 && d2 > 9) {
-            var toward = Math.atan2(dy, dx);
-            var pull = (1 - Math.sqrt(d2) / R) * 0.8 * ptr.k;
-            var diff = Math.atan2(Math.sin(toward - target), Math.cos(toward - target));
-            target += diff * pull;
-          }
-        }
-        var turn = Math.atan2(Math.sin(target - l.a), Math.cos(target - l.a));
-        l.a += turn * turnRate * dt;
-        l.x += Math.cos(l.a) * l.sp * dt;
-        l.y += Math.sin(l.a) * l.sp * dt;
-        return l.x < -70 || l.x > OW + 70 || l.y < -70 || l.y > OH + 70;
-      }
+      /* body proportions, head to tail */
+      var SEGR = [1, 0.74, 0.5, 0.3];
+      var SEGA = [0.115, 0.085, 0.06, 0.04];
 
       function step(dt) {
         t += dt;
         octx.globalCompositeOperation = "source-over";
-        octx.fillStyle = "rgba(4, 16, 28, 0.05)";
+        octx.fillStyle = "rgba(4, 16, 28, 0.13)";
         octx.fillRect(0, 0, OW, OH);
 
         ptr.k += (ptr.tk - ptr.k) * 0.05;
         if (performance.now() - ptr.last > 2800) ptr.tk = 0;
+        var hasPtr = ptr.k > 0.01;
+        var R = 240 * SCALE * 2.6, R2 = R * R;
 
         octx.globalCompositeOperation = "lighter";
-        for (var d = 0; d < deeps.length; d++) {
-          var dl = deeps[d];
-          if (moveLight(dl, 0.012, dt, false)) { spawn(dl, true, true); continue; }
-          stamp(dl, 0.5);
-        }
-        for (var i = 0; i < lights.length; i++) {
-          var l = lights[i];
-          if (moveLight(l, 0.02, dt, true)) { spawn(l, true, false); continue; }
-          stamp(l, 1);
+        for (var i = 0; i < fish.length; i++) {
+          var f = fish[i];
+
+          var target = angleAt(f.x, f.y, t);
+          if (hasPtr && !f.deep) {
+            var dx = ptr.x - f.x, dy = ptr.y - f.y;
+            var d2 = dx * dx + dy * dy;
+            if (d2 < R2 && d2 > 60) {
+              var toward = Math.atan2(dy, dx);
+              var pull = (1 - Math.sqrt(d2) / R) * 0.75 * ptr.k;
+              var diff = Math.atan2(Math.sin(toward - target), Math.cos(toward - target));
+              target += diff * pull;
+            }
+          }
+          var turn = Math.atan2(Math.sin(target - f.a), Math.cos(target - f.a));
+          f.a += turn * 0.03 * dt;
+
+          /* occasional dart, decaying back to cruise */
+          if (t >= f.nextDart) {
+            f.burst = f.base * (1.8 + Math.random() * 1.4);
+            f.nextDart = t + 380 + Math.random() * 800;
+          }
+          f.burst *= Math.pow(0.985, dt);
+          var sp = f.base + f.burst;
+
+          f.ph += (f.wig + sp * 0.16) * dt;
+          f.x += Math.cos(f.a) * sp * dt;
+          f.y += Math.sin(f.a) * sp * dt;
+
+          if (f.x < -50 || f.x > OW + 50 || f.y < -50 || f.y > OH + 50) {
+            spawn(f, true);
+            continue;
+          }
+
+          /* draw the body chain: head leads, tail sways behind */
+          var ca = Math.cos(f.a), sa = Math.sin(f.a);
+          var px = -sa, py = ca; /* perpendicular */
+          var dim = f.deep ? 0.4 : 1;
+          for (var k = 0; k < 4; k++) {
+            var back = f.r * 1.05 * k;
+            var sway = Math.sin(f.ph - k * 1.15) * f.r * 0.42 * (k / 3);
+            var bx = f.x - ca * back + px * sway;
+            var by = f.y - sa * back + py * sway;
+            stamp(bx, by, f.r * SEGR[k], SEGA[k] * dim);
+          }
         }
 
         ctx.imageSmoothingEnabled = true;
@@ -451,12 +457,12 @@
         /* ice glints: brief crisp sparkles on their own unblurred canvas */
         if (gctx) gctx.clearRect(0, 0, W, H);
         if (!reduced && gctx) {
-          if (glints.length < 26 && Math.random() < 0.35) {
-            var host = lights[(Math.random() * lights.length) | 0];
-            if (host) {
+          if (glints.length < 22 && Math.random() < 0.3) {
+            var host = fish[(Math.random() * fish.length) | 0];
+            if (host && !host.deep) {
               glints.push({
-                x: (host.x + (Math.random() - 0.5) * host.r * 2.4) / SCALE,
-                y: (host.y + (Math.random() - 0.5) * host.r * 1.6) / SCALE,
+                x: (host.x + (Math.random() - 0.5) * host.r * 3) / SCALE,
+                y: (host.y + (Math.random() - 0.5) * host.r * 2) / SCALE,
                 life: 0,
                 max: 55 + Math.random() * 85,
                 s: 0.8 + Math.random() * 1.3,
@@ -468,12 +474,12 @@
             gl.life += dt;
             if (gl.life >= gl.max) { glints.splice(gi, 1); continue; }
             var env = Math.sin((gl.life / gl.max) * Math.PI);
-            var ga = 0.75 * env * env;
-            gctx.fillStyle = "rgba(235, 248, 255, " + ga.toFixed(3) + ")";
+            var ga = 0.7 * env * env;
+            gctx.fillStyle = "rgba(210, 240, 255, " + ga.toFixed(3) + ")";
             gctx.beginPath();
             gctx.arc(gl.x, gl.y, gl.s, 0, 6.2832);
             gctx.fill();
-            gctx.strokeStyle = "rgba(235, 248, 255, " + (ga * 0.5).toFixed(3) + ")";
+            gctx.strokeStyle = "rgba(210, 240, 255, " + (ga * 0.5).toFixed(3) + ")";
             gctx.lineWidth = 0.6;
             var fl = gl.s * 4.5 * env;
             gctx.beginPath();
@@ -504,11 +510,11 @@
         octx.fillRect(0, 0, OW, OH);
         ctx.fillStyle = BG;
         ctx.fillRect(0, 0, W, H);
-        buildLights();
+        buildFish();
       }
 
       function renderStatic() {
-        for (var i = 0; i < 700; i++) step(1);
+        for (var i = 0; i < 400; i++) step(1);
       }
 
       var lastTime = 0;

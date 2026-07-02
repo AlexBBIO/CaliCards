@@ -88,8 +88,8 @@
 
   var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var BG = "#05070c";
-  var FADE = "rgba(5, 7, 12, 0.028)";
-  var ALPHAS = [0.07, 0.11, 0.17];
+  var FADE = "rgba(5, 7, 12, 0.05)";
+  var ALPHAS = [0.09, 0.14, 0.2];
   var STROKES = ALPHAS.map(function (a) {
     return "rgba(190, 225, 255, " + a + ")";
   });
@@ -140,7 +140,7 @@
     p.y = Math.random() * H;
     p.px = p.x;
     p.py = p.y;
-    p.sp = 0.8 + Math.random() * 1.0;
+    p.sp = 0.7 + Math.random() * 0.8;
     p.life = 600 + Math.random() * 900;
   }
 
@@ -178,7 +178,7 @@
     ptr.k += (ptr.tk - ptr.k) * 0.06;
     if (performance.now() - ptr.last > 2500) ptr.tk = 0;
     var hasPtr = ptr.k > 0.01;
-    var R = 150, R2 = R * R;
+    var R = 210, R2 = R * R;
 
     for (var b = 0; b < 3; b++) {
       var group = buckets[b];
@@ -191,13 +191,13 @@
         var vy = Math.sin(a) * p.sp * dt;
 
         if (hasPtr) {
-          var dx = p.x - ptr.x, dy = p.y - ptr.y;
+          var dx = ptr.x - p.x, dy = ptr.y - p.y;
           var d2 = dx * dx + dy * dy;
           if (d2 < R2 && d2 > 0.01) {
             var d = Math.sqrt(d2);
-            var f = (1 - d / R) * ptr.k * p.sp * dt;
-            vx += ((dx / d) * 0.35 - (dy / d) * 0.6) * f;
-            vy += ((dy / d) * 0.35 + (dx / d) * 0.6) * f;
+            var f = (1 - d / R) * ptr.k * p.sp * dt * 0.55;
+            vx += (dx / d) * f;
+            vy += (dy / d) * f;
           }
         }
 
