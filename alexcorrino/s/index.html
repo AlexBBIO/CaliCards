@@ -136,6 +136,20 @@
       color: rgba(130, 141, 170, 0.75);
     }
 
+    /* elsewhere (config-driven; hidden until links exist) */
+    .elsewhere[hidden] { display: none; }
+    .chips { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+    .chip {
+      font-family: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+      font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase;
+      color: rgba(195, 203, 228, 1);
+      border: 1px solid rgba(207, 216, 255, 0.22);
+      border-radius: 999px; padding: 0.45rem 1rem;
+      transition: color 0.25s ease, border-color 0.25s ease;
+      text-decoration: none;
+    }
+    a.chip:hover, a.chip:focus-visible { color: #cfd8ff; border-color: #cfd8ffB; }
+
     /* scene switcher */
     .scene-pill {
       position: fixed; right: 1rem; bottom: 1rem; z-index: 10;
@@ -211,6 +225,11 @@
           </p>
         </div>
       </section>
+
+      <section id="elsewhere" class="about elsewhere" aria-labelledby="elsewhere-h" hidden>
+        <h2 id="elsewhere-h">Elsewhere</h2>
+        <div id="chips" class="chips"></div>
+      </section>
     </main>
 
     <footer>
@@ -280,6 +299,29 @@
 
       var yearEl = document.getElementById("year");
       if (yearEl) yearEl.textContent = String(new Date().getFullYear());
+
+      /* elsewhere: hidden until a link is configured */
+      try {
+        var LINK_LABELS = { x: "X", github: "GitHub", substack: "Substack", email: "Email" };
+        var elsewhere = document.getElementById("elsewhere");
+        var chipsWrap = document.getElementById("chips");
+        if (elsewhere && chipsWrap) {
+          var links = (window.SITE_CONFIG || {}).links || {};
+          var anyLink = false;
+          Object.keys(LINK_LABELS).forEach(function (key) {
+            var val = (links[key] || "").trim();
+            if (!val) return;
+            anyLink = true;
+            var chip = document.createElement("a");
+            chip.className = "chip";
+            chip.textContent = LINK_LABELS[key];
+            chip.href = key === "email" ? "mailto:" + val : val;
+            chipsWrap.appendChild(chip);
+          });
+          if (anyLink) elsewhere.hidden = false;
+        }
+      } catch (e) { /* section stays hidden */ }
+
 
       /* ---------- the sky: parallax starfield + meteors ---------- */
       var canvas = document.getElementById("field");
