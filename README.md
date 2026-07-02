@@ -6,6 +6,11 @@ live on Whatnot, lists on eBay, and buys everything Pokémon.
 Live at **[calicoastcards.com](https://calicoastcards.com)**. Pure static site
 (HTML/CSS/vanilla JS), no build step, hosted on Vercel.
 
+> This repo also contains **[`alexcorrino/`](alexcorrino/)** — the standalone
+> bio/portfolio site for [alexcorrino.com](https://alexcorrino.com), deployed
+> as its own Vercel project (see its README). It's excluded from CaliCards
+> deploys via `.vercelignore`.
+
 ## Pages
 
 - **`index.html`** — landing page: where we sell (Whatnot/eBay), social
