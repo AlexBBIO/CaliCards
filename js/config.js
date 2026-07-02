@@ -1,5 +1,5 @@
 /*
- * CaliCards — site configuration
+ * Cali Coast Cards — site configuration
  * ================================
  * This is the ONLY file you need to edit to update the site.
  * Empty strings render as tasteful "coming soon" states, so nothing breaks

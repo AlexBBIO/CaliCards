@@ -1,6 +1,6 @@
-# 🃏 CaliCards
+# 🃏 Cali Coast Cards
 
-Landing site for **CaliCards** — a California Pokémon card business that sells
+Landing site for **Cali Coast Cards** — a California Pokémon card business that sells
 live on Whatnot, lists on eBay, and buys everything Pokémon.
 
 Live at **[calicoastcards.com](https://calicoastcards.com)**. Pure static site

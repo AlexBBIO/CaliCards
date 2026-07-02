@@ -1,5 +1,5 @@
 /* =========================================================================
-   CaliCards — "Trainer's Table"
+   Cali Coast Cards — "Trainer's Table"
    Warm, professional card-shop theme: cream paper, deep ink, pokeball-red
    actions, and vintage yellow-bordered TCG-style card visuals with
    energy-type color coding. Fraunces (display) + Inter (body).
@@ -101,6 +101,10 @@ h1, h2, h3 { font-family: var(--font-display); font-weight: 700; letter-spacing:
 .nav-cta:hover { background: var(--red); border-color: var(--red); color: #fff; }
 @media (max-width: 540px) {
   .nav a:not(.nav-cta) { display: none; }
+  .header-inner { gap: 12px; }
+  .brand { gap: 9px; }
+  .brand-name { font-size: 1.02rem; white-space: nowrap; }
+  .nav-cta { font-size: 0.85rem; padding: 8px 14px; white-space: nowrap; }
 }
 
 /* ---------- Hero ---------- */

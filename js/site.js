@@ -1,5 +1,5 @@
 /*
- * CaliCards — site logic
+ * Cali Coast Cards — site logic
  * Fills in links/socials/events from js/config.js and powers the
  * pointer-reactive holographic tilt on the card visuals.
  */
