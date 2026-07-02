@@ -1,166 +1,92 @@
 /*
  * alexcorrino.com — site logic
- * Renders the POSITIONS blotter and contact chips from js/config.js, runs
- * the terminal chrome (clock, typed command line, keyboard shortcuts), and
- * draws the sparklines in on scroll. Everything degrades: index.html
- * carries a <noscript> mirror of the blotter (keep it in sync when the
- * config changes) and all motion respects prefers-reduced-motion.
+ * Renders the project index and "Elsewhere" links from js/config.js.
+ * Everything degrades: index.html carries a <noscript> mirror of the index
+ * rows (keep it in sync when the config changes), and the marquee is pure
+ * CSS, disabled under prefers-reduced-motion.
  */
 (function () {
   "use strict";
 
   var cfg = window.SITE_CONFIG || {};
-  var SVG_NS = "http://www.w3.org/2000/svg";
 
-  var reduceMotion =
-    window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-  /* ---- clock + dateline + footer year ---- */
-  function pad(n) { return (n < 10 ? "0" : "") + n; }
-  var clockEl = document.getElementById("clock");
-  function tick() {
-    if (!clockEl) return;
-    var d = new Date();
-    clockEl.textContent = pad(d.getHours()) + ":" + pad(d.getMinutes()) + ":" + pad(d.getSeconds());
-  }
-  tick();
-  if (clockEl) setInterval(tick, 1000);
-
-  var now = new Date();
-  var datelineEl = document.getElementById("dateline");
-  if (datelineEl) {
-    var MONTHS = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
-    datelineEl.textContent = pad(now.getDate()) + " " + MONTHS[now.getMonth()] + " " + now.getFullYear();
-  }
+  /* ---- footer year ---- */
   var yearEl = document.getElementById("year");
-  if (yearEl) yearEl.textContent = String(now.getFullYear());
+  if (yearEl) yearEl.textContent = String(new Date().getFullYear());
 
-  /* ---- typed command line (static text is already in the HTML) ---- */
-  var cmdEl = document.getElementById("cmd");
-  if (cmdEl && !reduceMotion) {
-    var full = cmdEl.textContent;
-    cmdEl.textContent = "";
-    var i = 0;
-    var typer = setInterval(function () {
-      i += 1;
-      cmdEl.textContent = full.slice(0, i);
-      if (i >= full.length) clearInterval(typer);
-    }, 34);
-  }
-
-  /* ---- deterministic upward-drifting sparkline per project name ---- */
-  function sparkPoints(name) {
-    var h = 0;
-    for (var i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) >>> 0;
-    function rnd() {
-      h = (h * 1664525 + 1013904223) >>> 0;
-      return h / 4294967296;
-    }
-    var pts = [];
-    var y = 30;
-    for (var x = 0; x <= 190; x += 9.5) {
-      y += (rnd() - 0.62) * 7;
-      y = Math.max(5, Math.min(35, y));
-      pts.push(x + "," + y.toFixed(1));
-    }
-    return pts;
-  }
-
-  function sparkline(name) {
-    var svg = document.createElementNS(SVG_NS, "svg");
-    svg.setAttribute("class", "spark");
-    svg.setAttribute("viewBox", "0 0 190 40");
-    svg.setAttribute("aria-hidden", "true");
-    var pts = sparkPoints(name);
-    var line = document.createElementNS(SVG_NS, "polyline");
-    line.setAttribute("points", pts.join(" "));
-    line.setAttribute("pathLength", "1");
-    var last = pts[pts.length - 1].split(",");
-    var dot = document.createElementNS(SVG_NS, "circle");
-    dot.setAttribute("cx", last[0]);
-    dot.setAttribute("cy", last[1]);
-    dot.setAttribute("r", "2.6");
-    svg.appendChild(line);
-    svg.appendChild(dot);
-    return svg;
-  }
-
-  /* ---- positions blotter ----
-     Each row is an <article>; the name is the link (short accessible name)
-     and CSS stretches it over the whole row. A project only reads as "Live"
-     when it actually has a URL to visit. */
-  var STATUS_LABELS = { live: "▲ Live", building: "● In progress" };
-
+  /* ---- project index ----
+     Each row is an <li>; the name is the link (short accessible name) and
+     CSS stretches it over the whole row. The arrow is bound to the last
+     word of the name so it never wraps alone. */
   var projectsWrap = document.getElementById("projects");
   if (projectsWrap) {
     var projects = cfg.projects || [];
     if (!projects.length) {
-      var empty = document.createElement("p");
+      var empty = document.createElement("li");
       empty.className = "projects-note";
-      empty.textContent = "No open positions. First publication lands here soon.";
+      empty.textContent = "Nothing public yet. First project lands here soon.";
       projectsWrap.appendChild(empty);
     }
-    projects.forEach(function (p, idx) {
+    projects.forEach(function (p, i) {
       var url = (p.url || "").trim();
-      var row = document.createElement("article");
-      row.className = "project " + (url ? "is-linked" : "is-soon");
+      var li = document.createElement("li");
+      li.className = "project " + (url ? "is-linked" : "is-soon");
 
-      var sym = document.createElement("span");
-      sym.className = "project-sym";
-      sym.textContent = p.sym || "P" + (idx + 1);
-      row.appendChild(sym);
+      var num = document.createElement("span");
+      num.className = "row-num";
+      num.setAttribute("aria-hidden", "true");
+      num.textContent = (i + 1 < 10 ? "0" : "") + (i + 1);
+      li.appendChild(num);
 
-      var main = document.createElement("div");
-      main.className = "project-main";
       var name = document.createElement("h3");
       name.className = "project-name";
+
+      // Bind the last word and the arrow together so the arrow never wraps
+      // onto a line of its own.
+      var words = String(p.name || "Untitled").split(" ");
+      var last = words.pop() || "";
+      var head = words.length ? words.join(" ") + " " : "";
+      var arrow = document.createElement("span");
+      arrow.className = "row-arrow";
+      arrow.setAttribute("aria-hidden", "true");
+      arrow.textContent = url ? "↗" : "···";
+      var tail = document.createElement("span");
+      tail.className = "row-tail";
+      tail.appendChild(document.createTextNode(last + " "));
+      tail.appendChild(arrow);
+
       if (url) {
         var link = document.createElement("a");
         link.href = url;
-        link.textContent = p.name || "Untitled";
+        if (head) link.appendChild(document.createTextNode(head));
+        link.appendChild(tail);
+        link.setAttribute("aria-label", p.name || "Untitled");
         name.appendChild(link);
       } else {
-        name.textContent = p.name || "Untitled";
+        if (head) name.appendChild(document.createTextNode(head));
+        name.appendChild(tail);
       }
-      main.appendChild(name);
+      li.appendChild(name);
+
+      var meta = document.createElement("span");
+      meta.className = "row-meta";
+      var kicker = document.createElement("span");
+      kicker.className = "row-kicker";
+      var bits = [];
+      if (p.kicker) bits.push(p.kicker);
+      if (p.domain) bits.push(p.domain);
+      bits.push(p.status === "live" && url ? "Live" : "In progress");
+      kicker.textContent = bits.join(" · ").toUpperCase();
+      meta.appendChild(kicker);
       if (p.blurb) {
-        var blurb = document.createElement("p");
-        blurb.className = "project-blurb";
+        var blurb = document.createElement("span");
+        blurb.className = "row-blurb";
         blurb.textContent = p.blurb;
-        main.appendChild(blurb);
+        meta.appendChild(blurb);
       }
-      row.appendChild(main);
+      li.appendChild(meta);
 
-      var kicker = document.createElement("p");
-      kicker.className = "project-kicker";
-      kicker.textContent = p.kicker || (url ? "Live" : "On the desk");
-      row.appendChild(kicker);
-
-      row.appendChild(sparkline(p.name || "project" + idx));
-
-      var statusKey = p.status === "live" && url ? "live" : "building";
-      var status = document.createElement("span");
-      status.className = "project-status is-" + statusKey;
-      var dot = document.createElement("span");
-      dot.className = "dot";
-      var label = document.createElement("span");
-      label.textContent = STATUS_LABELS[statusKey];
-      status.appendChild(dot);
-      status.appendChild(label);
-      row.appendChild(status);
-
-      if (url) {
-        var more = document.createElement("a");
-        more.className = "project-more";
-        more.href = url;
-        more.textContent = "OPEN →";
-        more.setAttribute("aria-label", "Open " + (p.name || "project"));
-        row.appendChild(more);
-      } else {
-        row.appendChild(document.createElement("span"));
-      }
-
-      projectsWrap.appendChild(row);
+      projectsWrap.appendChild(li);
     });
   }
 
@@ -186,35 +112,4 @@
     });
     if (any) elsewhere.hidden = false;
   }
-
-  /* ---- sparkline draw-in when the blotter scrolls into view ---- */
-  if (projectsWrap) {
-    if ("IntersectionObserver" in window && !reduceMotion) {
-      var io = new IntersectionObserver(
-        function (entries) {
-          entries.forEach(function (entry) {
-            if (!entry.isIntersecting) return;
-            projectsWrap.classList.add("in");
-            io.disconnect();
-          });
-        },
-        { threshold: 0.1 }
-      );
-      io.observe(projectsWrap);
-    } else {
-      projectsWrap.classList.add("in");
-    }
-  }
-
-  /* ---- keyboard shortcuts: 1 = profile, 2 = positions, 0 = top ---- */
-  var KEYS = { "1": "#about", "2": "#projects-section", "0": "#top" };
-  document.addEventListener("keydown", function (e) {
-    if (e.metaKey || e.ctrlKey || e.altKey) return;
-    var t = e.target;
-    if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable)) return;
-    var sel = KEYS[e.key];
-    if (!sel) return;
-    var el = document.querySelector(sel);
-    if (el) el.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth" });
-  });
 })();

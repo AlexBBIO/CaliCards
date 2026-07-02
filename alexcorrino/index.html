@@ -8,7 +8,7 @@
     name="description"
     content="Alex Corrino is a hedge fund CIO and former professional poker player. He builds tools and research around markets: Factor Watch, Memory Analyst, and Mind The Tape."
   />
-  <meta name="theme-color" content="#000000" />
+  <meta name="theme-color" content="#ffffff" />
   <link rel="canonical" href="https://alexcorrino.com" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://alexcorrino.com" />
@@ -18,7 +18,7 @@
   <link rel="stylesheet" href="css/styles.css" />
   <link
     rel="icon"
-    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23000'/%3E%3Ctext x='50' y='68' font-family='monospace' font-weight='bold' font-size='46' fill='%23ffb000' text-anchor='middle'%3EAC%3C/text%3E%3C/svg%3E"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23ffffff'/%3E%3Ctext x='50' y='72' font-family='sans-serif' font-weight='700' font-size='56' fill='%23111111' text-anchor='middle'%3EAC%3C/text%3E%3Crect x='82' y='10' width='10' height='10' fill='%23e8342a'/%3E%3C/svg%3E"
   />
   <script type="application/ld+json">
   {
@@ -35,121 +35,96 @@
   }
   </script>
 </head>
-<body>
-  <a class="skip-link" href="#projects-section">Skip to positions</a>
+<body id="top">
+  <a class="skip-link" href="#index">Skip to the index</a>
 
-  <header class="topbar" id="top">
-    <div class="container topbar-inner">
-      <span>AC · Corrino Terminal</span>
-      <span class="edition">Personal Edition</span>
-      <span><span id="dateline">Live</span> <span id="clock"></span></span>
+  <header>
+    <div class="topstrip label">
+      <span>ALEXCORRINO.COM</span>
+      <nav aria-label="Primary">
+        <a href="#index">Index</a>
+        <a href="#about">About</a>
+      </nav>
+      <span class="tagline">MARKETS · RESEARCH · TOOLS</span>
+    </div>
+    <div class="hero">
+      <h1 class="nameplate">Alex Corrino<span class="mark" aria-hidden="true">*</span></h1>
+      <p class="hero-tag">HEDGE FUND CIO · FORMER PROFESSIONAL POKER PLAYER</p>
     </div>
   </header>
 
-  <div class="cmdline">
-    <div class="container">
-      <span class="prompt">&gt;</span> <span id="cmd">corrino --load profile positions</span><span class="cursor" aria-hidden="true"></span>
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span class="marquee-chunk">INCOMPLETE INFORMATION, PRICED CORRECTLY — FACTOR WATCH — MEMORY ANALYST — MIND THE TAPE —&nbsp;INCOMPLETE INFORMATION, PRICED CORRECTLY — FACTOR WATCH — MEMORY ANALYST — MIND THE TAPE —&nbsp;</span>
+      <span class="marquee-chunk">INCOMPLETE INFORMATION, PRICED CORRECTLY — FACTOR WATCH — MEMORY ANALYST — MIND THE TAPE —&nbsp;INCOMPLETE INFORMATION, PRICED CORRECTLY — FACTOR WATCH — MEMORY ANALYST — MIND THE TAPE —&nbsp;</span>
     </div>
   </div>
 
   <main>
-    <div class="container">
-      <section id="about" class="panel">
-        <h2 class="panel-title"><span>01 · Profile</span><span class="hint">USR / CORRINO</span></h2>
-        <div class="panel-body">
-          <h1 class="nameplate">Alex Corrino</h1>
-          <p class="roles">Hedge Fund CIO · Former Professional Poker Player</p>
-          <div class="bio">
-            <p>
-              Alex Corrino is the name I publish under. I am the CIO of a hedge
-              fund and a former professional poker player. Both jobs come down
-              to the same thing: incomplete information, priced correctly.
-            </p>
-            <p>
-              Everything below is public and free to read. No paywall, no
-              newsletter gate.
-            </p>
-          </div>
-        </div>
-      </section>
+    <section id="index" class="index-section" aria-labelledby="index-h">
+      <h2 id="index-h"><span class="mark" aria-hidden="true">*</span>Index</h2>
+      <ol id="projects" class="projects"></ol>
+        <noscript>
+          <!-- Static mirror of js/config.js for visitors without JavaScript.
+               Keep in sync when projects change. -->
+          <ul class="projects">
+            <li class="project is-linked">
+              <span class="row-num" aria-hidden="true">01</span>
+              <h3 class="project-name"><a href="https://factorwatch.ai" aria-label="Factor Watch">Factor <span class="row-tail">Watch <span class="row-arrow" aria-hidden="true">↗</span></span></a></h3>
+              <span class="row-meta">
+                <span class="row-kicker">DAILY MONITOR · FACTORWATCH.AI · LIVE</span>
+                <span class="row-blurb">Daily factor internals over the FW 3000: point-in-time quintile portfolios, z-scored moves, rotation flags, breadth and seasonality. Updated through the session.</span>
+              </span>
+            </li>
+            <li class="project is-linked">
+              <span class="row-num" aria-hidden="true">02</span>
+              <h3 class="project-name"><a href="https://memoryanalyst.com" aria-label="Memory Analyst">Memory <span class="row-tail">Analyst <span class="row-arrow" aria-hidden="true">↗</span></span></a></h3>
+              <span class="row-meta">
+                <span class="row-kicker">STANDING THESIS · MEMORYANALYST.COM · LIVE</span>
+                <span class="row-blurb">The AI memory thesis on annual rates. Yearly HBM demand is set to outrun global manufacturing capacity this decade. This site tracks the gap.</span>
+              </span>
+            </li>
+            <li class="project is-linked">
+              <span class="row-num" aria-hidden="true">03</span>
+              <h3 class="project-name"><a href="https://www.mindthetape.com" aria-label="Mind The Tape">Mind The <span class="row-tail">Tape <span class="row-arrow" aria-hidden="true">↗</span></span></a></h3>
+              <span class="row-meta">
+                <span class="row-kicker">WEEKLY NOTE · MINDTHETAPE.COM · LIVE</span>
+                <span class="row-blurb">A weekly read on global markets: price, flows and positioning. Fewer headlines, more signal.</span>
+              </span>
+            </li>
+          </ul>
+        </noscript>
+    </section>
 
-      <section id="projects-section" class="panel">
-        <h2 class="panel-title"><span>02 · Positions</span><span class="hint">LIVE PUBLICATIONS</span></h2>
-        <div class="blotter-head" aria-hidden="true">
-          <span>Sym</span>
-          <span>Name</span>
-          <span class="col-cadence">Cadence</span>
-          <span class="col-spark">90D</span>
-          <span>Status</span>
-          <span></span>
-        </div>
-        <div id="projects" class="projects">
-          <noscript>
-            <!-- Static mirror of js/config.js for visitors without JavaScript.
-                 Keep in sync when projects change. -->
-            <style>.spark polyline{stroke-dasharray:none;stroke-dashoffset:0}.spark circle{opacity:1}</style>
-            <article class="project is-linked">
-              <span class="project-sym">FCTR</span>
-              <div class="project-main">
-                <h3 class="project-name"><a href="https://factorwatch.ai">Factor Watch</a></h3>
-                <p class="project-blurb">Daily factor internals over the FW 3000: point-in-time quintile portfolios, z-scored moves, rotation flags, breadth and seasonality. Updated through the session.</p>
-              </div>
-              <p class="project-kicker">Daily Monitor</p>
-              <svg class="spark" viewBox="0 0 190 40" aria-hidden="true"><polyline points="0,26.2 9.5,24.6 19,24.7 28.5,25.1 38,27.1 47.5,23.5 57,21.6 66.5,21.2 76,20.2 85.5,17.9 95,13.7 104.5,13.5 114,13.7 123.5,11.9 133,13.6 142.5,14.7 152,13.2 161.5,11.5 171,10.7 180.5,12.2 190,9.2" pathLength="1"/><circle cx="190" cy="9.2" r="2.6"/></svg>
-              <span class="project-status is-live"><span class="dot"></span><span>▲ Live</span></span>
-              <a class="project-more" href="https://factorwatch.ai" aria-label="Open Factor Watch">OPEN →</a>
-            </article>
-            <article class="project is-linked">
-              <span class="project-sym">MEMA</span>
-              <div class="project-main">
-                <h3 class="project-name"><a href="https://memoryanalyst.com">Memory Analyst</a></h3>
-                <p class="project-blurb">The AI memory thesis on annual rates. Yearly HBM demand is set to outrun global manufacturing capacity this decade. This site tracks the gap.</p>
-              </div>
-              <p class="project-kicker">Standing Thesis</p>
-              <svg class="spark" viewBox="0 0 190 40" aria-hidden="true"><polyline points="0,32.1 9.5,33.1 19,32.3 28.5,28.1 38,25.1 47.5,21.2 57,17.2 66.5,13.2 76,9.6 85.5,6.0 95,5.0 104.5,5.0 114,5.0 123.5,5.0 133,5.0 142.5,5.0 152,6.6 161.5,6.0 171,7.8 180.5,7.7 190,5.0" pathLength="1"/><circle cx="190" cy="5.0" r="2.6"/></svg>
-              <span class="project-status is-live"><span class="dot"></span><span>▲ Live</span></span>
-              <a class="project-more" href="https://memoryanalyst.com" aria-label="Open Memory Analyst">OPEN →</a>
-            </article>
-            <article class="project is-linked">
-              <span class="project-sym">TAPE</span>
-              <div class="project-main">
-                <h3 class="project-name"><a href="https://www.mindthetape.com">Mind The Tape</a></h3>
-                <p class="project-blurb">A weekly read on global markets: price, flows and positioning. Fewer headlines, more signal.</p>
-              </div>
-              <p class="project-kicker">Weekly Note</p>
-              <svg class="spark" viewBox="0 0 190 40" aria-hidden="true"><polyline points="0,31.6 9.5,28.2 19,29.4 28.5,25.3 38,23.4 47.5,20.4 57,19.7 66.5,17.5 76,20.0 85.5,22.5 95,24.9 104.5,26.8 114,25.8 123.5,22.0 133,20.2 142.5,17.0 152,15.9 161.5,14.8 171,12.3 180.5,8.2 190,6.0" pathLength="1"/><circle cx="190" cy="6.0" r="2.6"/></svg>
-              <span class="project-status is-live"><span class="dot"></span><span>▲ Live</span></span>
-              <a class="project-more" href="https://www.mindthetape.com" aria-label="Open Mind The Tape">OPEN →</a>
-            </article>
-          </noscript>
-        </div>
-      </section>
+    <section id="about" aria-labelledby="about-h">
+      <h2 id="about-h"><span class="mark" aria-hidden="true">*</span>About</h2>
+      <div class="about-copy">
+        <p>
+          Alex Corrino is the name I publish under. I am the CIO of a hedge
+          fund and a former professional poker player. Both jobs come down
+          to the same thing: incomplete information, priced correctly.
+        </p>
+        <p>
+          The work above is public. A daily monitor of factor internals, a
+          standing thesis on AI memory supply, and a weekly note on price,
+          flows and positioning. No paywall, no newsletter gate.
+        </p>
+      </div>
+    </section>
 
-      <section id="elsewhere" class="panel elsewhere" hidden>
-        <h2 class="panel-title"><span>03 · Contact</span><span class="hint">PUBLIC CHANNELS</span></h2>
-        <div class="panel-body">
-          <div id="chips" class="chips"></div>
-        </div>
-      </section>
-
-      <nav class="fnbar" aria-label="Primary">
-        <a class="fnkey" href="#about"><span class="k">F1</span> Profile</a>
-        <a class="fnkey" href="#projects-section"><span class="k">F2</span> Positions</a>
-        <a class="fnkey" href="#top"><span class="k">F9</span> Top</a>
-      </nav>
-    </div>
+    <section id="elsewhere" class="elsewhere" aria-labelledby="elsewhere-h" hidden>
+      <h2 id="elsewhere-h"><span class="mark" aria-hidden="true">*</span>Elsewhere</h2>
+      <div id="chips" class="chips"></div>
+    </section>
   </main>
 
-  <footer class="site-footer">
-    <div class="container footer-inner">
+  <footer>
+    <div class="footer-glyph" aria-hidden="true">AC<span class="mark">*</span></div>
+    <div class="footer-line label">
       <span>© <span id="year">2026</span> Alex Corrino</span>
-      <a class="top-link" href="#top">Back to top ↑</a>
+      <a href="#top">Back to top ↑</a>
     </div>
   </footer>
-
-  <nav class="switch" aria-label="Design variants">
-    Style: <span>Terminal</span> · <a href="/b">Poster</a> · <a href="/p">Card Room</a>
-  </nav>
 
   <script src="js/config.js"></script>
   <script src="js/site.js"></script>
