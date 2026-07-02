@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alex Corrino | Hedge Fund CIO</title>
+  <meta
+    name="description"
+    content="Alex Corrino is a hedge fund CIO and former professional poker player. He builds tools and research around markets: Factor Watch, Memory Analyst, and Mind The Tape."
+  />
+  <meta name="theme-color" content="#05070c" />
+  <link rel="stylesheet" href="../css/fonts.css" />
+  <link
+    rel="icon"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%2305070c'/%3E%3Ctext x='50' y='72' font-family='sans-serif' font-weight='700' font-size='56' fill='%23a8dcff' text-anchor='middle'%3EAC%3C/text%3E%3C/svg%3E"
+  />
+  <style>
+    /* ============ base ============ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { overflow-x: clip; }
+    html, body {
+      background: #05070c;
+      color: #d7dfec;
+    }
+    body {
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+      font-weight: 400;
+      line-height: 1.6;
+      overflow-x: clip;
+      -webkit-font-smoothing: antialiased;
+      overflow-wrap: break-word;
+    }
+    a { color: inherit; text-decoration: none; }
+    :focus-visible {
+      outline: 2px solid #a8dcff;
+      outline-offset: 3px;
+      border-radius: 2px;
+    }
+    ::selection { background: rgba(168, 220, 255, 0.25); }
+
+    .mono {
+      font-family: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+    }
+    .vh {
+      position: absolute; width: 1px; height: 1px;
+      margin: -1px; padding: 0; border: 0;
+      clip: rect(0 0 0 0); clip-path: inset(50%);
+      overflow: hidden; white-space: nowrap;
+    }
+
+    /* ============ layers ============ */
+    #field {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      background: #05070c;
+    }
+    .vignette {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background: radial-gradient(120% 95% at 50% 38%, rgba(2, 3, 6, 0) 52%, rgba(2, 3, 6, 0.55) 100%);
+    }
+    .content {
+      position: relative;
+      z-index: 2;
+      pointer-events: auto;
+    }
+
+    /* ============ hero ============ */
+    .hero {
+      min-height: 100vh;
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      padding: clamp(1.4rem, 3.5vw, 2.6rem) clamp(1.25rem, 6vw, 6rem);
+    }
+    .site-head {
+      display: flex;
+      flex-wrap: wrap;
+      column-gap: 0.6ch;
+      align-items: baseline;
+    }
+    .site-head h1,
+    .site-head .role {
+      font-family: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+      font-size: 0.72rem;
+      font-weight: 400;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      line-height: 1.8;
+      color: #8a97ad;
+    }
+    .site-head h1 { color: #e8eef7; }
+    .site-head .role::before { content: "\2014\00a0"; color: #8a97ad; }
+
+    /* ============ project index ============ */
+    .index {
+      margin-top: auto;
+      padding-bottom: clamp(2.5rem, 9vh, 7rem);
+      max-width: 56rem;
+    }
+    .proj { list-style: none; }
+    .proj + .proj { margin-top: clamp(1.6rem, 3.6vh, 2.6rem); }
+    .proj-name {
+      font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+      font-weight: 500;
+      font-size: clamp(1.6rem, 3.4vw, 2.6rem);
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+    }
+    .proj-name a,
+    .proj-name .unlinked {
+      color: #dbe5f2;
+      background-image: linear-gradient(#a8dcff, #a8dcff);
+      background-repeat: no-repeat;
+      background-position: 0 100%;
+      background-size: 0% 1px;
+      padding-bottom: 3px;
+      transition: color 0.35s ease, background-size 0.45s ease, text-shadow 0.35s ease;
+    }
+    .proj-meta {
+      font-family: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #8a97ad;
+      margin-top: 0.45rem;
+    }
+    .proj-blurb {
+      font-size: 0.86rem;
+      line-height: 1.65;
+      max-width: 42rem;
+      margin-top: 0.4rem;
+      color: rgba(138, 151, 173, 0.62);
+      transition: color 0.35s ease;
+    }
+    .proj:hover .proj-name a,
+    .proj:focus-within .proj-name a {
+      color: #ffffff;
+      background-size: 100% 1px;
+      text-shadow: 0 0 22px rgba(168, 220, 255, 0.45);
+    }
+    .proj:hover .proj-blurb,
+    .proj:focus-within .proj-blurb {
+      color: #aab6c9;
+    }
+    @media (hover: none) {
+      .proj-blurb { color: #9aa7bc; }
+    }
+
+    /* ============ about ============ */
+    .about {
+      padding: clamp(3rem, 10vh, 7rem) clamp(1.25rem, 6vw, 6rem) clamp(2rem, 6vh, 4rem);
+      max-width: 60rem;
+    }
+    .about h2 {
+      font-family: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+      font-size: 0.72rem;
+      font-weight: 400;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #8a97ad;
+      margin-bottom: 1.1rem;
+    }
+    .about-panel {
+      max-width: 40rem;
+      padding: clamp(1.4rem, 3vw, 2.2rem);
+      background: rgba(7, 10, 17, 0.9);
+      border: 1px solid rgba(190, 225, 255, 0.09);
+      border-radius: 4px;
+    }
+    @supports (backdrop-filter: blur(12px)) or (-webkit-backdrop-filter: blur(12px)) {
+      .about-panel {
+        background: rgba(7, 10, 17, 0.62);
+        -webkit-backdrop-filter: blur(12px);
+        backdrop-filter: blur(12px);
+      }
+    }
+    .about-panel p {
+      font-size: 0.95rem;
+      color: #b9c3d4;
+    }
+    .about-panel p + p { margin-top: 1em; }
+
+    /* ============ footer ============ */
+    footer {
+      padding: 1.5rem clamp(1.25rem, 6vw, 6rem) 5.5rem;
+      font-family: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #8a97ad;
+    }
+
+    /* ============ style switcher ============ */
+    .style-pill {
+      position: fixed;
+      right: 1rem;
+      bottom: 1rem;
+      z-index: 10;
+      display: flex;
+      align-items: baseline;
+      gap: 0.7ch;
+      padding: 0.45rem 0.85rem;
+      background: rgba(5, 7, 12, 0.82);
+      border: 1px solid rgba(190, 225, 255, 0.22);
+      border-radius: 999px;
+      font-family: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #8a97ad;
+    }
+    .style-pill a {
+      color: #c4cfe0;
+      transition: color 0.25s ease;
+    }
+    .style-pill a:hover,
+    .style-pill a:focus-visible { color: #a8dcff; }
+    .style-pill [aria-current="page"] { color: #ffffff; }
+
+    /* ============ reduced motion ============ */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="field" aria-hidden="true"></canvas>
+  <div class="vignette" aria-hidden="true"></div>
+
+  <div class="content">
+    <main>
+      <section class="hero" aria-labelledby="site-title">
+        <header class="site-head">
+          <h1 id="site-title">Alex Corrino</h1>
+          <p class="role">Hedge Fund CIO &middot; Former Professional Poker Player</p>
+        </header>
+
+        <div class="index">
+          <h2 class="vh">Projects</h2>
+          <!-- Static mirror of ../js/config.js — re-rendered from config when JS runs. -->
+          <ul id="projects">
+            <li class="proj">
+              <h3 class="proj-name"><a href="https://factorwatch.ai" aria-label="Factor Watch">Factor Watch</a></h3>
+              <p class="proj-meta">Daily Monitor &middot; factorwatch.ai &middot; Live</p>
+              <p class="proj-blurb">Daily factor internals over the FW 3000: point-in-time quintile portfolios, z-scored moves, rotation flags, breadth and seasonality. Updated through the session.</p>
+            </li>
+            <li class="proj">
+              <h3 class="proj-name"><a href="https://memoryanalyst.com" aria-label="Memory Analyst">Memory Analyst</a></h3>
+              <p class="proj-meta">Standing Thesis &middot; memoryanalyst.com &middot; Live</p>
+              <p class="proj-blurb">The AI memory thesis on annual rates. Yearly HBM demand is set to outrun global manufacturing capacity this decade. This site tracks the gap.</p>
+            </li>
+            <li class="proj">
+              <h3 class="proj-name"><a href="https://www.mindthetape.com" aria-label="Mind The Tape">Mind The Tape</a></h3>
+              <p class="proj-meta">Weekly Note &middot; mindthetape.com &middot; Live</p>
+              <p class="proj-blurb">A weekly read on global markets: price, flows and positioning. Fewer headlines, more signal.</p>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="about" aria-labelledby="about-h">
+        <h2 id="about-h">About</h2>
+        <div class="about-panel">
+          <p>
+            Alex Corrino is the name I publish under. I am the CIO of a hedge
+            fund and a former professional poker player. Both jobs come down
+            to the same thing: incomplete information, priced correctly.
+          </p>
+          <p>
+            The work above is public. A daily monitor of factor internals, a
+            standing thesis on AI memory supply, and a weekly note on price,
+            flows and positioning. No paywall, no newsletter gate.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; 2026 Alex Corrino</p>
+    </footer>
+  </div>
+
+  <nav class="style-pill" aria-label="Design variants">
+    <span>Style:</span>
+    <a href="/">OS</a>
+    <span aria-hidden="true">&middot;</span>
+    <span aria-current="page">Canvas</span>
+    <span aria-hidden="true">&middot;</span>
+    <a href="/g">Bento</a>
+  </nav>
+
+  <script src="../js/config.js"></script>
+  <script>
+    (function () {
+      "use strict";
+
+      /* ---------- project index: re-render from config ---------- */
+      try {
+        var cfg = window.SITE_CONFIG;
+        if (cfg && cfg.projects && cfg.projects.length) {
+          var list = document.getElementById("projects");
+          list.textContent = "";
+          cfg.projects.forEach(function (p) {
+            var li = document.createElement("li");
+            li.className = "proj";
+
+            var h3 = document.createElement("h3");
+            h3.className = "proj-name";
+            if (p.url) {
+              var a = document.createElement("a");
+              a.href = p.url;
+              a.setAttribute("aria-label", p.name);
+              a.textContent = p.name;
+              h3.appendChild(a);
+            } else {
+              var s = document.createElement("span");
+              s.className = "unlinked";
+              s.textContent = p.name;
+              h3.appendChild(s);
+            }
+            li.appendChild(h3);
+
+            var meta = document.createElement("p");
+            meta.className = "proj-meta";
+            meta.textContent = [p.kicker, p.domain, p.status]
+              .filter(Boolean)
+              .join(" · ");
+            li.appendChild(meta);
+
+            if (p.blurb) {
+              var blurb = document.createElement("p");
+              blurb.className = "proj-blurb";
+              blurb.textContent = p.blurb;
+              li.appendChild(blurb);
+            }
+            list.appendChild(li);
+          });
+        }
+      } catch (e) { /* static HTML stays in place */ }
+
+      /* ---------- the field: value-noise particle flow ---------- */
+      var canvas = document.getElementById("field");
+      var ctx = canvas.getContext("2d", { alpha: false });
+      if (!ctx) return;
+
+      var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      var BG = "#05070c";
+      var FADE = "rgba(5, 7, 12, 0.035)";
+      var ALPHAS = [0.09, 0.14, 0.22];
+      var STROKES = ALPHAS.map(function (a) {
+        return "rgba(190, 225, 255, " + a + ")";
+      });
+
+      var W = 0, H = 0, dpr = 1;
+      var particles = [];
+      var buckets = [[], [], []];
+      var t = Math.random() * 400;
+      var running = false;
+      var rafId = 0;
+
+      /* deterministic-ish hashed value noise, seeded per load */
+      var seedX = Math.random() * 1024;
+      var seedY = Math.random() * 1024;
+      function hash(ix, iy) {
+        var n = (ix * 374761393 + iy * 668265263) | 0;
+        n = ((n ^ (n >>> 13)) * 1274126177) | 0;
+        return ((n ^ (n >>> 16)) >>> 0) / 4294967295;
+      }
+      function vnoise(x, y) {
+        var ix = Math.floor(x), iy = Math.floor(y);
+        var fx = x - ix, fy = y - iy;
+        var ux = fx * fx * (3 - 2 * fx);
+        var uy = fy * fy * (3 - 2 * fy);
+        var a = hash(ix, iy), b = hash(ix + 1, iy);
+        var c = hash(ix, iy + 1), d = hash(ix + 1, iy + 1);
+        return a + (b - a) * ux + (c - a) * uy + (a - b - c + d) * ux * uy;
+      }
+      function angleAt(x, y, tt) {
+        var s = 0.0010;
+        var n = 0.68 * vnoise(x * s + seedX + tt * 0.016, y * s + seedY - tt * 0.011)
+              + 0.24 * vnoise(x * s * 2.1 + seedY + 40 - tt * 0.021, y * s * 2.1 + seedX + tt * 0.014)
+              + 0.08 * (Math.sin(x * s * 0.55 + tt * 0.05) * Math.cos(y * s * 0.62 - tt * 0.04) * 0.5 + 0.5);
+        return n * Math.PI * 3.4;
+      }
+
+      /* pointer — gently bends the field */
+      var ptr = { x: -9999, y: -9999, k: 0, tk: 0, last: 0 };
+      function onMove(e) {
+        ptr.x = e.clientX;
+        ptr.y = e.clientY;
+        ptr.tk = 1;
+        ptr.last = performance.now();
+      }
+
+      function spawn(p) {
+        p.x = Math.random() * W;
+        p.y = Math.random() * H;
+        p.px = p.x;
+        p.py = p.y;
+        p.sp = 0.65 + Math.random() * 1.15;
+        p.life = 260 + Math.random() * 480;
+      }
+
+      function buildParticles() {
+        var count = Math.min(2000, Math.max(400, Math.round((W * H) / 720)));
+        particles = [];
+        buckets = [[], [], []];
+        for (var i = 0; i < count; i++) {
+          var p = {};
+          spawn(p);
+          particles.push(p);
+          buckets[i % 3].push(p);
+        }
+      }
+
+      function resize() {
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        W = window.innerWidth;
+        H = window.innerHeight;
+        canvas.width = Math.round(W * dpr);
+        canvas.height = Math.round(H * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.lineWidth = 1;
+        ctx.lineCap = "round";
+        ctx.fillStyle = BG;
+        ctx.fillRect(0, 0, W, H);
+        buildParticles();
+      }
+
+      function step(dt) {
+        t += 0.9 * dt;
+        ctx.fillStyle = FADE;
+        ctx.fillRect(0, 0, W, H);
+
+        ptr.k += (ptr.tk - ptr.k) * 0.06;
+        if (performance.now() - ptr.last > 2500) ptr.tk = 0;
+        var hasPtr = ptr.k > 0.01;
+        var R = 150, R2 = R * R;
+
+        for (var b = 0; b < 3; b++) {
+          var group = buckets[b];
+          ctx.strokeStyle = STROKES[b];
+          ctx.beginPath();
+          for (var i = 0; i < group.length; i++) {
+            var p = group[i];
+            var a = angleAt(p.x, p.y, t);
+            var vx = Math.cos(a) * p.sp * dt;
+            var vy = Math.sin(a) * p.sp * dt;
+
+            if (hasPtr) {
+              var dx = p.x - ptr.x, dy = p.y - ptr.y;
+              var d2 = dx * dx + dy * dy;
+              if (d2 < R2 && d2 > 0.01) {
+                var d = Math.sqrt(d2);
+                var f = (1 - d / R) * ptr.k * p.sp * dt;
+                vx += ((dx / d) * 0.35 - (dy / d) * 0.6) * f;
+                vy += ((dy / d) * 0.35 + (dx / d) * 0.6) * f;
+              }
+            }
+
+            p.px = p.x;
+            p.py = p.y;
+            p.x += vx;
+            p.y += vy;
+            p.life -= dt;
+
+            if (p.life <= 0 || p.x < -8 || p.x > W + 8 || p.y < -8 || p.y > H + 8) {
+              spawn(p);
+              continue;
+            }
+            ctx.moveTo(p.px, p.py);
+            ctx.lineTo(p.x, p.y);
+          }
+          ctx.stroke();
+        }
+      }
+
+      var lastTime = 0;
+      function frame(now) {
+        if (!running) return;
+        var dt = lastTime ? Math.min((now - lastTime) / 16.7, 2.2) : 1;
+        lastTime = now;
+        step(dt);
+        rafId = requestAnimationFrame(frame);
+      }
+      function start() {
+        if (running || reduced) return;
+        running = true;
+        lastTime = 0;
+        rafId = requestAnimationFrame(frame);
+      }
+      function stop() {
+        running = false;
+        cancelAnimationFrame(rafId);
+      }
+
+      function renderStatic() {
+        for (var i = 0; i < 300; i++) step(1);
+      }
+
+      resize();
+      if (reduced) {
+        renderStatic(); /* one beautiful frame, then nothing moves */
+      } else {
+        window.addEventListener("pointermove", onMove, { passive: true });
+        document.addEventListener("visibilitychange", function () {
+          if (document.hidden) stop();
+          else start();
+        });
+        start();
+      }
+
+      var resizeTimer = 0;
+      window.addEventListener("resize", function () {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function () {
+          resize();
+          if (reduced) renderStatic();
+        }, 150);
+      });
+    })();
+  </script>
+</body>
+</html>

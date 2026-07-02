@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alex Corrino | Hedge Fund CIO</title>
+  <meta
+    name="description"
+    content="Alex Corrino is a hedge fund CIO and former professional poker player. He builds tools and research around markets: Factor Watch, Memory Analyst, and Mind The Tape."
+  />
+  <meta name="theme-color" content="#2138e8" />
+  <link rel="stylesheet" href="../css/fonts.css" />
+  <link
+    rel="icon"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%232138e8'/%3E%3Ctext x='50' y='70' font-family='sans-serif' font-weight='700' font-size='52' fill='%23f5efe3' text-anchor='middle'%3EAC%3C/text%3E%3Ccircle cx='84' cy='18' r='9' fill='%23ffd84d'/%3E%3C/svg%3E"
+  />
+  <script>document.documentElement.classList.add("js");</script>
+  <style>
+    :root {
+      --cobalt: #2138e8;
+      --cream: #f5efe3;
+      --butter: #ffd84d;
+      --ink: #12121a;
+      --radius: 24px;
+      --mono: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+      --grot: "Space Grotesk", "Inter", system-ui, sans-serif;
+      --inter: "Inter", system-ui, sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cobalt);
+      color: var(--cream);
+      font-family: var(--inter);
+      font-size: 16px;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+      padding: clamp(16px, 3vw, 40px) clamp(14px, 3vw, 32px) 96px;
+    }
+
+    .wrap { max-width: 1100px; margin: 0 auto; }
+
+    /* ---------- Bento grid ---------- */
+    .grid {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-areas:
+        "hero hero stat"
+        "hero hero fill"
+        "p1   p2   p3"
+        "about about about";
+    }
+
+    /* noscript children become grid items when JS is off; when JS runs it
+       tags <html> with .js so this never applies and noscript stays hidden */
+    html:not(.js) noscript { display: contents; }
+
+    .tile {
+      position: relative;
+      background: var(--cream);
+      color: var(--ink);
+      border-radius: var(--radius);
+      padding: clamp(22px, 3vw, 34px);
+      box-shadow: 0 1px 2px rgba(8, 12, 70, 0.25);
+      transition: transform 150ms ease, box-shadow 150ms ease;
+      animation: rise 0.55s ease backwards;
+      animation-delay: var(--d, 0s);
+      overflow-wrap: break-word;
+    }
+    .tile:hover {
+      transform: translateY(-3px) scale(1.01);
+      box-shadow: 0 16px 38px rgba(6, 10, 60, 0.45);
+    }
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    .tile--ink { background: var(--ink); color: var(--cream); }
+    .tile--butter { background: var(--butter); color: var(--ink); }
+
+    /* ---------- Hero ---------- */
+    .hero {
+      grid-area: hero;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      min-height: 380px;
+    }
+    .hero h1 {
+      font-family: var(--grot);
+      font-weight: 700;
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      line-height: 1.02;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+    }
+    .hero h1 .star { color: var(--cobalt); }
+    .kicker {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      opacity: 0.85;
+    }
+    .hero .kicker { margin-top: 16px; color: var(--cobalt); opacity: 1; }
+    .hero .lede {
+      margin-top: 14px;
+      font-size: 1.05rem;
+      max-width: 34ch;
+      color: rgba(18, 18, 26, 0.82);
+    }
+
+    /* ---------- Stat ---------- */
+    .stat {
+      grid-area: stat;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 180px;
+    }
+    .stat .big {
+      font-family: var(--grot);
+      font-weight: 700;
+      font-size: clamp(4rem, 8vw, 6rem);
+      line-height: 0.9;
+    }
+
+    /* ---------- Filler / monogram ---------- */
+    .fill {
+      grid-area: fill;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 180px;
+    }
+    .fill .mono-mark {
+      font-family: var(--grot);
+      font-weight: 700;
+      font-size: clamp(2.6rem, 5vw, 3.6rem);
+      line-height: 0.9;
+      color: var(--cobalt);
+    }
+    .fill .kicker { margin-top: 18px; }
+
+    /* ---------- Project tiles ---------- */
+    .proj {
+      display: flex;
+      flex-direction: column;
+      min-height: 280px;
+      padding-top: 26px;
+    }
+    .p1 { grid-area: p1; }
+    .p2 { grid-area: p2; }
+    .p3 { grid-area: p3; }
+
+    .proj .arrow {
+      position: absolute;
+      top: 20px;
+      right: 24px;
+      font-family: var(--grot);
+      font-weight: 700;
+      font-size: 1.7rem;
+      line-height: 1;
+      color: var(--cobalt);
+      transition: transform 150ms ease;
+    }
+    .tile--ink .arrow { color: var(--butter); }
+    .proj:hover .arrow { transform: translate(4px, -4px); }
+
+    .proj .kicker { margin-bottom: 14px; padding-right: 44px; }
+    .proj h2 {
+      font-family: var(--grot);
+      font-weight: 700;
+      font-size: clamp(1.6rem, 2.4vw, 1.9rem);
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+    }
+    .proj h2 a { color: inherit; text-decoration: none; }
+    /* stretched link: whole tile is clickable */
+    .proj h2 a::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: var(--radius);
+    }
+    .proj .blurb {
+      margin-top: 12px;
+      font-size: 0.88rem;
+      color: rgba(18, 18, 26, 0.78);
+      flex-grow: 1;
+    }
+    .tile--ink .blurb { color: rgba(245, 239, 227, 0.78); }
+    .proj .foot {
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 10px;
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .proj .foot .domain { color: rgba(18, 18, 26, 0.72); }
+    .tile--ink .foot .domain { color: rgba(245, 239, 227, 0.72); }
+    .proj .foot .live { color: var(--cobalt); font-weight: 600; white-space: nowrap; }
+    .tile--ink .foot .live { color: var(--butter); }
+
+    /* ---------- About ---------- */
+    .about { grid-area: about; }
+    .about h2 {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--cobalt);
+      margin-bottom: 16px;
+    }
+    .about .copy {
+      columns: 2;
+      column-gap: 34px;
+      max-width: 62rem;
+    }
+    .about p { break-inside: avoid; font-size: 0.98rem; color: rgba(18, 18, 26, 0.85); }
+    .about p + p { margin-top: 14px; }
+
+    /* ---------- Footer ---------- */
+    .footer {
+      max-width: 1100px;
+      margin: 28px auto 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 16px;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--cream);
+    }
+    .footer a { color: var(--cream); text-decoration: underline; text-underline-offset: 3px; }
+
+    /* ---------- Style switcher pill ---------- */
+    .style-pill {
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      z-index: 10;
+      background: var(--cream);
+      color: var(--ink);
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 10px 16px;
+      border-radius: 999px;
+      box-shadow: 0 6px 20px rgba(6, 10, 60, 0.45);
+    }
+    .style-pill a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+    .style-pill .now { font-weight: 700; }
+
+    /* ---------- Focus ---------- */
+    a:focus-visible {
+      outline: 3px solid var(--cream);
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+    .style-pill a:focus-visible { outline-color: var(--ink); }
+    .proj h2 a:focus-visible { outline: none; }
+    .proj h2 a:focus-visible::after {
+      outline: 3px solid var(--cream);
+      outline-offset: 4px;
+    }
+
+    /* per-tile stagger */
+    .hero  { --d: 0s; }
+    .stat  { --d: 0.06s; }
+    .fill  { --d: 0.12s; }
+    .p1    { --d: 0.18s; }
+    .p2    { --d: 0.24s; }
+    .p3    { --d: 0.30s; }
+    .about { --d: 0.36s; }
+
+    /* ---------- Responsive ---------- */
+    @media (max-width: 820px) {
+      .grid {
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas:
+          "hero hero"
+          "stat fill"
+          "p1   p1"
+          "p2   p2"
+          "p3   p3"
+          "about about";
+      }
+      .hero { min-height: 300px; }
+      .proj { min-height: 0; }
+      .about .copy { columns: 1; }
+    }
+    @media (max-width: 480px) {
+      .grid {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "hero" "stat" "fill" "p1" "p2" "p3" "about";
+      }
+      .stat, .fill { min-height: 150px; }
+      body { padding-bottom: 110px; }
+      .footer { flex-direction: column; gap: 8px; }
+    }
+
+    /* ---------- Reduced motion ---------- */
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .tile { animation: none; transition: none; }
+      .tile:hover { transform: none; box-shadow: 0 1px 2px rgba(8, 12, 70, 0.25); }
+      .proj .arrow { transition: none; }
+      .proj:hover .arrow { transform: none; }
+    }
+  </style>
+</head>
+<body id="top">
+  <main class="wrap">
+    <div class="grid" id="grid">
+      <!-- HERO -->
+      <section class="tile hero" aria-label="Introduction">
+        <h1>Alex Corrino<span class="star" aria-hidden="true">*</span></h1>
+        <p class="kicker">Hedge Fund CIO &middot; Former Professional Poker Player</p>
+        <p class="lede">Both jobs come down to the same thing: incomplete information, priced correctly.</p>
+      </section>
+
+      <!-- STAT -->
+      <div class="tile tile--butter stat">
+        <p class="big" id="stat-num">3</p>
+        <p class="kicker">Sites live</p>
+      </div>
+
+      <!-- FILLER / MONOGRAM -->
+      <div class="tile fill" aria-hidden="true">
+        <p class="mono-mark">AC<span>*</span></p>
+        <p class="kicker">Est. 2026 &middot; alexcorrino.com</p>
+      </div>
+
+      <!-- PROJECT TILES: rendered from ../js/config.js; static mirror below for no-JS -->
+      <noscript>
+        <article class="tile tile--ink proj p1">
+          <span class="arrow" aria-hidden="true">&#8599;</span>
+          <p class="kicker">Daily Monitor</p>
+          <h2><a href="https://factorwatch.ai" aria-label="Factor Watch">Factor Watch</a></h2>
+          <p class="blurb">Daily factor internals over the FW 3000: point-in-time quintile portfolios, z-scored moves, rotation flags, breadth and seasonality. Updated through the session.</p>
+          <p class="foot"><span class="domain">factorwatch.ai</span><span class="live">Live &#9679;</span></p>
+        </article>
+        <article class="tile proj p2">
+          <span class="arrow" aria-hidden="true">&#8599;</span>
+          <p class="kicker">Standing Thesis</p>
+          <h2><a href="https://memoryanalyst.com" aria-label="Memory Analyst">Memory Analyst</a></h2>
+          <p class="blurb">The AI memory thesis on annual rates. Yearly HBM demand is set to outrun global manufacturing capacity this decade. This site tracks the gap.</p>
+          <p class="foot"><span class="domain">memoryanalyst.com</span><span class="live">Live &#9679;</span></p>
+        </article>
+        <article class="tile proj p3">
+          <span class="arrow" aria-hidden="true">&#8599;</span>
+          <p class="kicker">Weekly Note</p>
+          <h2><a href="https://www.mindthetape.com" aria-label="Mind The Tape">Mind The Tape</a></h2>
+          <p class="blurb">A weekly read on global markets: price, flows and positioning. Fewer headlines, more signal.</p>
+          <p class="foot"><span class="domain">mindthetape.com</span><span class="live">Live &#9679;</span></p>
+        </article>
+      </noscript>
+
+      <!-- ABOUT -->
+      <section class="tile about" aria-labelledby="about-h">
+        <h2 id="about-h">About</h2>
+        <div class="copy">
+          <p>
+            Alex Corrino is the name I publish under. I am the CIO of a hedge
+            fund and a former professional poker player. Both jobs come down
+            to the same thing: incomplete information, priced correctly.
+          </p>
+          <p>
+            The work above is public. A daily monitor of factor internals, a
+            standing thesis on AI memory supply, and a weekly note on price,
+            flows and positioning. No paywall, no newsletter gate.
+          </p>
+        </div>
+      </section>
+    </div>
+
+    <footer class="footer">
+      <span>&copy; 2026 Alex Corrino</span>
+      <a href="#top">Back to top &#8593;</a>
+    </footer>
+  </main>
+
+  <nav class="style-pill" aria-label="Design style switcher">
+    STYLE: <a href="/">OS</a> &middot; <a href="/c">CANVAS</a> &middot; <span class="now" aria-current="page">BENTO</span>
+  </nav>
+
+  <script src="../js/config.js"></script>
+  <script>
+    (function () {
+      var cfg = window.SITE_CONFIG;
+      if (!cfg || !Array.isArray(cfg.projects)) return;
+
+      var grid = document.getElementById("grid");
+      var aboutTile = grid.querySelector(".about");
+      var delays = [0.18, 0.24, 0.3];
+
+      function el(tag, className, text) {
+        var node = document.createElement(tag);
+        if (className) node.className = className;
+        if (text != null) node.textContent = text;
+        return node;
+      }
+
+      cfg.projects.slice(0, 3).forEach(function (p, i) {
+        var tile = el("article", "tile proj p" + (i + 1) + (i === 0 ? " tile--ink" : ""));
+        tile.style.setProperty("--d", delays[i] + "s");
+
+        var arrow = el("span", "arrow", "↗");
+        arrow.setAttribute("aria-hidden", "true");
+        tile.appendChild(arrow);
+
+        tile.appendChild(el("p", "kicker", p.kicker));
+
+        var h = el("h2");
+        if (p.url) {
+          var a = el("a", null, p.name);
+          a.href = p.url;
+          a.setAttribute("aria-label", p.name);
+          h.appendChild(a);
+        } else {
+          h.textContent = p.name;
+        }
+        tile.appendChild(h);
+
+        tile.appendChild(el("p", "blurb", p.blurb));
+
+        var foot = el("p", "foot");
+        foot.appendChild(el("span", "domain", p.domain || ""));
+        foot.appendChild(
+          el("span", "live", p.status === "live" ? "Live ●" : "Building")
+        );
+        tile.appendChild(foot);
+
+        grid.insertBefore(tile, aboutTile);
+      });
+
+      var liveCount = cfg.projects.filter(function (p) {
+        return p.status === "live";
+      }).length;
+      document.getElementById("stat-num").textContent = String(liveCount);
+    })();
+  </script>
+</body>
+</html>
