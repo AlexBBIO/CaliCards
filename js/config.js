@@ -6,10 +6,10 @@
  * while accounts are still being set up.
  */
 window.CALICARDS_CONFIG = {
-  // Where we sell — fill these in when the accounts exist
+  // Where we sell
   links: {
-    ebay: "",    // e.g. "https://www.ebay.com/usr/calicoastcards"
-    whatnot: "", // e.g. "https://www.whatnot.com/user/calicoastcards"
+    ebay: "https://www.ebay.com/usr/RealCaliCoastCards",
+    whatnot: "https://www.whatnot.com/user/RealCaliCoastCards",
   },
 
   // Social accounts (empty = shown as coming soon)
