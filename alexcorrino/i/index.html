@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alex Corrino | Hedge Fund CIO</title>
+  <meta
+    name="description"
+    content="Alex Corrino is a hedge fund CIO and former professional poker player. He builds tools and research around markets: Factor Watch, Memory Analyst, and Mind The Tape."
+  />
+  <meta name="theme-color" content="#04101c" />
+  <link rel="stylesheet" href="../css/fonts.css" />
+  <link
+    rel="icon"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%2304101c'/%3E%3Ctext x='50' y='72' font-family='sans-serif' font-weight='700' font-size='56' fill='%238fd6ff' text-anchor='middle'%3EAC%3C/text%3E%3C/svg%3E"
+  />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { overflow-x: clip; }
+    html, body { background: #04101c; color: #dceefb; }
+    body {
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+      line-height: 1.6;
+      overflow-x: clip;
+      -webkit-font-smoothing: antialiased;
+      overflow-wrap: break-word;
+    }
+    a { color: inherit; text-decoration: none; }
+    :focus-visible { outline: 2px solid #8fd6ff; outline-offset: 3px; border-radius: 2px; }
+    ::selection { background: rgba(143, 214, 255, 0.25); }
+    .vh {
+      position: absolute; width: 1px; height: 1px;
+      margin: -1px; padding: 0; border: 0;
+      clip: rect(0 0 0 0); clip-path: inset(50%);
+      overflow: hidden; white-space: nowrap;
+    }
+
+    /* layers: wisps below, frozen surface above */
+    #field { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; background: #04101c; }
+    .ice {
+      position: fixed; inset: 0; z-index: 1; pointer-events: none;
+      /* frost grain */
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23f)'/%3E%3C/svg%3E");
+    }
+    .sheen {
+      position: fixed; inset: 0; z-index: 1; pointer-events: none;
+      background:
+        linear-gradient(164deg, rgba(220, 240, 255, 0.05) 0%, transparent 24%, transparent 70%, rgba(220, 240, 255, 0.03) 100%),
+        radial-gradient(130% 100% at 50% 0%, rgba(226, 244, 255, 0.045), transparent 55%);
+    }
+    .cracks { position: fixed; inset: 0; z-index: 1; pointer-events: none; width: 100%; height: 100%; }
+    .cracks path { fill: none; stroke: rgba(230, 245, 255, 0.07); stroke-width: 1; }
+    .cracks .fine { stroke: rgba(230, 245, 255, 0.04); stroke-width: 0.6; }
+    .vignette {
+      position: fixed; inset: 0; z-index: 1; pointer-events: none;
+      background: radial-gradient(120% 95% at 50% 38%, rgba(2, 8, 14, 0) 55%, rgba(2, 8, 14, 0.55) 100%);
+    }
+    .content { position: relative; z-index: 2; }
+
+    /* hero */
+    .hero {
+      min-height: 100vh; min-height: 100svh;
+      display: flex; flex-direction: column;
+      padding: clamp(1.4rem, 3.5vw, 2.6rem) clamp(1.25rem, 6vw, 6rem);
+    }
+    .site-head { display: flex; flex-wrap: wrap; column-gap: 0.6ch; align-items: baseline; }
+    .site-head h1, .site-head .role {
+      font-family: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+      font-size: 0.72rem; font-weight: 400;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      line-height: 1.8; color: #7e95aa;
+    }
+    .site-head h1 { color: #f0f8fe; }
+    .site-head .role::before { content: "\2014\00a0"; color: #7e95aa; }
+
+    /* project index */
+    .index { margin-top: auto; padding-bottom: clamp(2.5rem, 9vh, 7rem); max-width: 56rem; }
+    .proj { list-style: none; }
+    .proj + .proj { margin-top: clamp(1.6rem, 3.6vh, 2.6rem); }
+    .proj-name {
+      font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+      font-weight: 500;
+      font-size: clamp(1.6rem, 3.4vw, 2.6rem);
+      line-height: 1.15; letter-spacing: -0.01em;
+    }
+    .proj-name a, .proj-name .unlinked {
+      color: #e2f1fb;
+      background-image: linear-gradient(#8fd6ff, #8fd6ff);
+      background-repeat: no-repeat; background-position: 0 100%; background-size: 0% 1px;
+      padding-bottom: 3px;
+      transition: color 0.35s ease, background-size 0.45s ease, text-shadow 0.35s ease;
+    }
+    .proj-meta {
+      font-family: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+      font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase;
+      color: #7e95aa; margin-top: 0.45rem;
+    }
+    .proj-blurb {
+      font-size: 0.86rem; line-height: 1.65; max-width: 42rem; margin-top: 0.4rem;
+      color: rgba(126, 149, 170, 0.62);
+      transition: color 0.35s ease;
+    }
+    .proj:hover .proj-name a, .proj:focus-within .proj-name a {
+      color: #ffffff; background-size: 100% 1px;
+      text-shadow: 0 0 24px rgba(143, 214, 255, 0.55);
+    }
+    .proj:hover .proj-blurb, .proj:focus-within .proj-blurb { color: #a2b8ca; }
+    @media (hover: none) { .proj-blurb { color: #93aabf; } }
+
+    /* about */
+    .about { padding: clamp(3rem, 10vh, 7rem) clamp(1.25rem, 6vw, 6rem) clamp(2rem, 6vh, 4rem); max-width: 60rem; }
+    .about h2 {
+      font-family: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+      font-size: 0.72rem; font-weight: 400; letter-spacing: 0.16em; text-transform: uppercase;
+      color: #7e95aa; margin-bottom: 1.1rem;
+    }
+    .about-panel {
+      max-width: 40rem; padding: clamp(1.4rem, 3vw, 2.2rem);
+      background: rgba(6, 18, 30, 0.9);
+      border: 1px solid rgba(200, 235, 255, 0.1);
+      border-radius: 4px;
+    }
+    @supports (backdrop-filter: blur(12px)) or (-webkit-backdrop-filter: blur(12px)) {
+      .about-panel { background: rgba(6, 18, 30, 0.6); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
+    }
+    .about-panel p { font-size: 0.95rem; color: #b4c8d9; }
+    .about-panel p + p { margin-top: 1em; }
+
+    /* footer */
+    footer {
+      padding: 1.5rem clamp(1.25rem, 6vw, 6rem) 5.5rem;
+      font-family: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+      font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase; color: #7e95aa;
+    }
+
+    /* scene switcher */
+    .scene-pill {
+      position: fixed; right: 1rem; bottom: 1rem; z-index: 10;
+      display: flex; align-items: baseline; gap: 0.7ch;
+      padding: 0.45rem 0.85rem;
+      background: rgba(4, 16, 28, 0.82);
+      border: 1px solid rgba(200, 235, 255, 0.22);
+      border-radius: 999px;
+      font-family: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+      font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: #7e95aa;
+    }
+    .scene-pill a { color: #c0d8e8; transition: color 0.25s ease; }
+    .scene-pill a:hover, .scene-pill a:focus-visible { color: #8fd6ff; }
+    .scene-pill [aria-current="page"] { color: #ffffff; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="field" aria-hidden="true"></canvas>
+  <div class="ice" aria-hidden="true"></div>
+  <div class="sheen" aria-hidden="true"></div>
+  <svg class="cracks" aria-hidden="true" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
+    <path d="M -20 210 L 190 240 L 340 205 L 520 265 L 705 230" />
+    <path class="fine" d="M 340 205 L 385 120 L 470 60" />
+    <path class="fine" d="M 520 265 L 560 350 L 660 420" />
+    <path d="M 1460 480 L 1290 520 L 1120 490 L 980 560 L 800 545" />
+    <path class="fine" d="M 1120 490 L 1085 400 L 1010 330" />
+    <path class="fine" d="M 980 560 L 940 660 L 850 730" />
+    <path class="fine" d="M -20 700 L 130 730 L 260 705 L 350 760" />
+  </svg>
+  <div class="vignette" aria-hidden="true"></div>
+
+  <div class="content">
+    <main>
+      <section class="hero" aria-labelledby="site-title">
+        <header class="site-head">
+          <h1 id="site-title">Alex Corrino</h1>
+          <p class="role">Hedge Fund CIO &middot; Former Professional Poker Player</p>
+        </header>
+
+        <div class="index">
+          <h2 class="vh">Projects</h2>
+          <!-- Static mirror of ../js/config.js — re-rendered from config when JS runs. -->
+          <ul id="projects">
+            <li class="proj">
+              <h3 class="proj-name"><a href="https://factorwatch.ai" aria-label="Factor Watch">Factor Watch</a></h3>
+              <p class="proj-meta">Daily Monitor &middot; factorwatch.ai &middot; Live</p>
+              <p class="proj-blurb">Daily factor internals over the FW 3000: point-in-time quintile portfolios, z-scored moves, rotation flags, breadth and seasonality. Updated through the session.</p>
+            </li>
+            <li class="proj">
+              <h3 class="proj-name"><a href="https://memoryanalyst.com" aria-label="Memory Analyst">Memory Analyst</a></h3>
+              <p class="proj-meta">Standing Thesis &middot; memoryanalyst.com &middot; Live</p>
+              <p class="proj-blurb">The AI memory thesis on annual rates. Yearly HBM demand is set to outrun global manufacturing capacity this decade. This site tracks the gap.</p>
+            </li>
+            <li class="proj">
+              <h3 class="proj-name"><a href="https://www.mindthetape.com" aria-label="Mind The Tape">Mind The Tape</a></h3>
+              <p class="proj-meta">Weekly Note &middot; mindthetape.com &middot; Live</p>
+              <p class="proj-blurb">A weekly read on global markets: price, flows and positioning. Fewer headlines, more signal.</p>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="about" aria-labelledby="about-h">
+        <h2 id="about-h">About</h2>
+        <div class="about-panel">
+          <p>
+            Alex Corrino is the name I publish under. I am the CIO of a hedge
+            fund and a former professional poker player. Both jobs come down
+            to the same thing: incomplete information, priced correctly.
+          </p>
+          <p>
+            The work above is public. A daily monitor of factor internals, a
+            standing thesis on AI memory supply, and a weekly note on price,
+            flows and positioning. No paywall, no newsletter gate.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; <span id="year">2026</span> Alex Corrino</p>
+    </footer>
+  </div>
+
+  <nav class="scene-pill" aria-label="Scene variants">
+    <span>Scene:</span>
+    <a href="/">Wind</a>
+    <span aria-hidden="true">&middot;</span>
+    <a href="/s">Space</a>
+    <span aria-hidden="true">&middot;</span>
+    <span aria-current="page">Ice</span>
+  </nav>
+
+  <script src="../js/config.js"></script>
+  <script>
+    (function () {
+      "use strict";
+
+      /* ---------- project index: re-render from config ---------- */
+      try {
+        var cfg = window.SITE_CONFIG;
+        if (cfg && cfg.projects && cfg.projects.length) {
+          var list = document.getElementById("projects");
+          list.textContent = "";
+          cfg.projects.forEach(function (p) {
+            var li = document.createElement("li");
+            li.className = "proj";
+            var h3 = document.createElement("h3");
+            h3.className = "proj-name";
+            if (p.url) {
+              var a = document.createElement("a");
+              a.href = p.url;
+              a.setAttribute("aria-label", p.name);
+              a.textContent = p.name;
+              h3.appendChild(a);
+            } else {
+              var s = document.createElement("span");
+              s.className = "unlinked";
+              s.textContent = p.name;
+              h3.appendChild(s);
+            }
+            li.appendChild(h3);
+            var meta = document.createElement("p");
+            meta.className = "proj-meta";
+            var statusLabel = p.status === "live" && p.url ? "Live" : "In progress";
+            meta.textContent = [p.kicker, p.domain, statusLabel].filter(Boolean).join(" · ");
+            li.appendChild(meta);
+            if (p.blurb) {
+              var blurb = document.createElement("p");
+              blurb.className = "proj-blurb";
+              blurb.textContent = p.blurb;
+              li.appendChild(blurb);
+            }
+            list.appendChild(li);
+          });
+        }
+      } catch (e) { /* static HTML stays in place */ }
+
+      var yearEl = document.getElementById("year");
+      if (yearEl) yearEl.textContent = String(new Date().getFullYear());
+
+      /* ---------- the wisps: soft light moving under the ice ----------
+         Wisps accumulate on a low-resolution offscreen canvas that is
+         upscaled to the display canvas each frame — the cheap upscale blur
+         is what makes them read as diffused through a frozen surface. */
+      var canvas = document.getElementById("field");
+      var ctx = canvas.getContext("2d", { alpha: false });
+      if (!ctx) return;
+
+      var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      var BG = "#04101c";
+      var SCALE = 0.28;
+      var off = document.createElement("canvas");
+      var octx = off.getContext("2d", { alpha: false });
+
+      var W = 0, H = 0, OW = 0, OH = 0, dpr = 1;
+      var wisps = [];
+      var t = Math.random() * 400;
+      var running = false;
+      var rafId = 0;
+
+      var seedX = Math.random() * 1024;
+      var seedY = Math.random() * 1024;
+      function hash(ix, iy) {
+        var n = (ix * 374761393 + iy * 668265263) | 0;
+        n = ((n ^ (n >>> 13)) * 1274126177) | 0;
+        return ((n ^ (n >>> 16)) >>> 0) / 4294967295;
+      }
+      function vnoise(x, y) {
+        var ix = Math.floor(x), iy = Math.floor(y);
+        var fx = x - ix, fy = y - iy;
+        var ux = fx * fx * (3 - 2 * fx);
+        var uy = fy * fy * (3 - 2 * fy);
+        var a = hash(ix, iy), b = hash(ix + 1, iy);
+        var c = hash(ix, iy + 1), d = hash(ix + 1, iy + 1);
+        return a + (b - a) * ux + (c - a) * uy + (a - b - c + d) * ux * uy;
+      }
+      function angleAt(x, y, tt) {
+        var s = 0.0014;
+        var n = 0.7 * vnoise(x * s + seedX + tt * 0.012, y * s + seedY - tt * 0.009)
+              + 0.3 * vnoise(x * s * 2.3 + seedY - tt * 0.014, y * s * 2.3 + seedX + tt * 0.011);
+        return n * Math.PI * 2.4;
+      }
+
+      /* the light is drawn to your hand on the ice */
+      var ptr = { x: -9999, y: -9999, k: 0, tk: 0, last: 0 };
+      function onMove(e) {
+        ptr.x = e.clientX * SCALE;
+        ptr.y = e.clientY * SCALE;
+        ptr.tk = 1;
+        ptr.last = performance.now();
+      }
+
+      function spawn(w) {
+        w.x = Math.random() * OW;
+        w.y = Math.random() * OH;
+        w.a = Math.random() * Math.PI * 2;
+        w.sp = 0.3 + Math.random() * 0.35;
+        w.w = 4 + Math.random() * 9;
+        w.ph = Math.random() * Math.PI * 2;
+        w.life = 2200 + Math.random() * 1600;
+      }
+
+      function buildWisps() {
+        var count = Math.max(8, Math.min(18, Math.round((OW * OH) / 7200)));
+        wisps = [];
+        for (var i = 0; i < count; i++) {
+          var w = {};
+          spawn(w);
+          wisps.push(w);
+        }
+      }
+
+      function step(dt) {
+        t += dt;
+        octx.fillStyle = "rgba(4, 16, 28, 0.0045)";
+        octx.fillRect(0, 0, OW, OH);
+
+        ptr.k += (ptr.tk - ptr.k) * 0.05;
+        if (performance.now() - ptr.last > 2800) ptr.tk = 0;
+        var hasPtr = ptr.k > 0.01;
+        var R = 130 * SCALE * 3.5, R2 = R * R;
+
+        octx.lineCap = "round";
+        for (var i = 0; i < wisps.length; i++) {
+          var w = wisps[i];
+          var target = angleAt(w.x, w.y, t);
+
+          if (hasPtr) {
+            var dx = ptr.x - w.x, dy = ptr.y - w.y;
+            var d2 = dx * dx + dy * dy;
+            if (d2 < R2 && d2 > 4) {
+              var toward = Math.atan2(dy, dx);
+              var pull = (1 - Math.sqrt(d2) / R) * 0.65 * ptr.k;
+              var diff = Math.atan2(Math.sin(toward - target), Math.cos(toward - target));
+              target += diff * pull;
+            }
+          }
+
+          /* ease heading toward the field for smooth, fish-like turns */
+          var turn = Math.atan2(Math.sin(target - w.a), Math.cos(target - w.a));
+          w.a += turn * 0.028 * dt;
+
+          var px = w.x, py = w.y;
+          w.x += Math.cos(w.a) * w.sp * dt;
+          w.y += Math.sin(w.a) * w.sp * dt;
+          w.life -= dt;
+
+          if (w.life <= 0 || w.x < -20 || w.x > OW + 20 || w.y < -20 || w.y > OH + 20) {
+            spawn(w);
+            continue;
+          }
+
+          var breathe = 0.88 + 0.12 * Math.sin(t * 0.01 + w.ph);
+          /* wide soft body */
+          octx.strokeStyle = "rgba(64, 170, 235, 0.032)";
+          octx.lineWidth = w.w * breathe;
+          octx.beginPath();
+          octx.moveTo(px, py);
+          octx.lineTo(w.x, w.y);
+          octx.stroke();
+          /* bright core */
+          octx.strokeStyle = "rgba(165, 226, 255, 0.028)";
+          octx.lineWidth = Math.max(1.2, w.w * 0.28 * breathe);
+          octx.beginPath();
+          octx.moveTo(px, py);
+          octx.lineTo(w.x, w.y);
+          octx.stroke();
+        }
+
+        ctx.imageSmoothingEnabled = true;
+        ctx.drawImage(off, 0, 0, OW, OH, 0, 0, W, H);
+      }
+
+      function resize() {
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        W = window.innerWidth;
+        H = window.innerHeight;
+        canvas.width = Math.round(W * dpr);
+        canvas.height = Math.round(H * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        OW = Math.max(120, Math.round(W * SCALE));
+        OH = Math.max(90, Math.round(H * SCALE));
+        off.width = OW;
+        off.height = OH;
+        octx.fillStyle = BG;
+        octx.fillRect(0, 0, OW, OH);
+        ctx.fillStyle = BG;
+        ctx.fillRect(0, 0, W, H);
+        buildWisps();
+      }
+
+      function renderStatic() {
+        for (var i = 0; i < 2400; i++) step(1);
+      }
+
+      var lastTime = 0;
+      function frame(now) {
+        if (!running) return;
+        var dt = lastTime ? Math.min((now - lastTime) / 16.7, 2.2) : 1;
+        lastTime = now;
+        step(dt);
+        rafId = requestAnimationFrame(frame);
+      }
+      function start() {
+        if (running || reduced) return;
+        running = true;
+        lastTime = 0;
+        rafId = requestAnimationFrame(frame);
+      }
+      function stop() {
+        running = false;
+        cancelAnimationFrame(rafId);
+      }
+
+      resize();
+      if (reduced) {
+        renderStatic();
+      } else {
+        window.addEventListener("pointermove", onMove, { passive: true });
+        document.addEventListener("visibilitychange", function () {
+          if (document.hidden) stop();
+          else start();
+        });
+        start();
+      }
+
+      var resizeTimer = 0;
+      window.addEventListener("resize", function () {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function () {
+          resize();
+          if (reduced) renderStatic();
+        }, 150);
+      });
+    })();
+  </script>
+</body>
+</html>

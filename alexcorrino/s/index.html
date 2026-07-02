@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alex Corrino | Hedge Fund CIO</title>
+  <meta
+    name="description"
+    content="Alex Corrino is a hedge fund CIO and former professional poker player. He builds tools and research around markets: Factor Watch, Memory Analyst, and Mind The Tape."
+  />
+  <meta name="theme-color" content="#04060e" />
+  <link rel="stylesheet" href="../css/fonts.css" />
+  <link
+    rel="icon"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%2304060e'/%3E%3Ctext x='50' y='72' font-family='sans-serif' font-weight='700' font-size='56' fill='%23cfd8ff' text-anchor='middle'%3EAC%3C/text%3E%3C/svg%3E"
+  />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { overflow-x: clip; }
+    html, body { background: #04060e; color: #d5dcef; }
+    body {
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+      line-height: 1.6;
+      overflow-x: clip;
+      -webkit-font-smoothing: antialiased;
+      overflow-wrap: break-word;
+    }
+    a { color: inherit; text-decoration: none; }
+    :focus-visible { outline: 2px solid #cfd8ff; outline-offset: 3px; border-radius: 2px; }
+    ::selection { background: rgba(207, 216, 255, 0.25); }
+    .vh {
+      position: absolute; width: 1px; height: 1px;
+      margin: -1px; padding: 0; border: 0;
+      clip: rect(0 0 0 0); clip-path: inset(50%);
+      overflow: hidden; white-space: nowrap;
+    }
+
+    /* layers */
+    #field { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; background: #04060e; }
+    .nebula {
+      position: fixed; inset: 0; z-index: 1; pointer-events: none;
+      background:
+        radial-gradient(52% 42% at 74% 22%, rgba(96, 78, 190, 0.13), transparent 70%),
+        radial-gradient(46% 40% at 18% 68%, rgba(46, 96, 170, 0.11), transparent 70%),
+        radial-gradient(30% 26% at 55% 46%, rgba(150, 92, 180, 0.06), transparent 70%);
+    }
+    .vignette {
+      position: fixed; inset: 0; z-index: 1; pointer-events: none;
+      background: radial-gradient(120% 95% at 50% 38%, rgba(1, 2, 5, 0) 55%, rgba(1, 2, 5, 0.6) 100%);
+    }
+    .content { position: relative; z-index: 2; }
+
+    /* hero */
+    .hero {
+      min-height: 100vh; min-height: 100svh;
+      display: flex; flex-direction: column;
+      padding: clamp(1.4rem, 3.5vw, 2.6rem) clamp(1.25rem, 6vw, 6rem);
+    }
+    .site-head { display: flex; flex-wrap: wrap; column-gap: 0.6ch; align-items: baseline; }
+    .site-head h1, .site-head .role {
+      font-family: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+      font-size: 0.72rem; font-weight: 400;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      line-height: 1.8; color: #828daa;
+    }
+    .site-head h1 { color: #eef1fb; }
+    .site-head .role::before { content: "\2014\00a0"; color: #828daa; }
+
+    /* project index */
+    .index { margin-top: auto; padding-bottom: clamp(2.5rem, 9vh, 7rem); max-width: 56rem; }
+    .proj { list-style: none; }
+    .proj + .proj { margin-top: clamp(1.6rem, 3.6vh, 2.6rem); }
+    .proj-name {
+      font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+      font-weight: 500;
+      font-size: clamp(1.6rem, 3.4vw, 2.6rem);
+      line-height: 1.15; letter-spacing: -0.01em;
+    }
+    .proj-name a, .proj-name .unlinked {
+      color: #dde3f5;
+      background-image: linear-gradient(#cfd8ff, #cfd8ff);
+      background-repeat: no-repeat; background-position: 0 100%; background-size: 0% 1px;
+      padding-bottom: 3px;
+      transition: color 0.35s ease, background-size 0.45s ease, text-shadow 0.35s ease;
+    }
+    .proj-meta {
+      font-family: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+      font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase;
+      color: #828daa; margin-top: 0.45rem;
+    }
+    .proj-blurb {
+      font-size: 0.86rem; line-height: 1.65; max-width: 42rem; margin-top: 0.4rem;
+      color: rgba(130, 141, 170, 0.62);
+      transition: color 0.35s ease;
+    }
+    .proj:hover .proj-name a, .proj:focus-within .proj-name a {
+      color: #ffffff; background-size: 100% 1px;
+      text-shadow: 0 0 24px rgba(207, 216, 255, 0.5);
+    }
+    .proj:hover .proj-blurb, .proj:focus-within .proj-blurb { color: #a6b0c8; }
+    @media (hover: none) { .proj-blurb { color: #96a1bd; } }
+
+    /* about */
+    .about { padding: clamp(3rem, 10vh, 7rem) clamp(1.25rem, 6vw, 6rem) clamp(2rem, 6vh, 4rem); max-width: 60rem; }
+    .about h2 {
+      font-family: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+      font-size: 0.72rem; font-weight: 400; letter-spacing: 0.16em; text-transform: uppercase;
+      color: #828daa; margin-bottom: 1.1rem;
+    }
+    .about-panel {
+      max-width: 40rem; padding: clamp(1.4rem, 3vw, 2.2rem);
+      background: rgba(6, 8, 18, 0.9);
+      border: 1px solid rgba(207, 216, 255, 0.1);
+      border-radius: 4px;
+    }
+    @supports (backdrop-filter: blur(12px)) or (-webkit-backdrop-filter: blur(12px)) {
+      .about-panel { background: rgba(6, 8, 18, 0.6); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
+    }
+    .about-panel p { font-size: 0.95rem; color: #b6bfd6; }
+    .about-panel p + p { margin-top: 1em; }
+
+    /* footer */
+    footer {
+      padding: 1.5rem clamp(1.25rem, 6vw, 6rem) 5.5rem;
+      font-family: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+      font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase; color: #828daa;
+    }
+
+    /* scene switcher */
+    .scene-pill {
+      position: fixed; right: 1rem; bottom: 1rem; z-index: 10;
+      display: flex; align-items: baseline; gap: 0.7ch;
+      padding: 0.45rem 0.85rem;
+      background: rgba(4, 6, 14, 0.82);
+      border: 1px solid rgba(207, 216, 255, 0.22);
+      border-radius: 999px;
+      font-family: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+      font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: #828daa;
+    }
+    .scene-pill a { color: #c3cbe4; transition: color 0.25s ease; }
+    .scene-pill a:hover, .scene-pill a:focus-visible { color: #cfd8ff; }
+    .scene-pill [aria-current="page"] { color: #ffffff; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="field" aria-hidden="true"></canvas>
+  <div class="nebula" aria-hidden="true"></div>
+  <div class="vignette" aria-hidden="true"></div>
+
+  <div class="content">
+    <main>
+      <section class="hero" aria-labelledby="site-title">
+        <header class="site-head">
+          <h1 id="site-title">Alex Corrino</h1>
+          <p class="role">Hedge Fund CIO &middot; Former Professional Poker Player</p>
+        </header>
+
+        <div class="index">
+          <h2 class="vh">Projects</h2>
+          <!-- Static mirror of ../js/config.js — re-rendered from config when JS runs. -->
+          <ul id="projects">
+            <li class="proj">
+              <h3 class="proj-name"><a href="https://factorwatch.ai" aria-label="Factor Watch">Factor Watch</a></h3>
+              <p class="proj-meta">Daily Monitor &middot; factorwatch.ai &middot; Live</p>
+              <p class="proj-blurb">Daily factor internals over the FW 3000: point-in-time quintile portfolios, z-scored moves, rotation flags, breadth and seasonality. Updated through the session.</p>
+            </li>
+            <li class="proj">
+              <h3 class="proj-name"><a href="https://memoryanalyst.com" aria-label="Memory Analyst">Memory Analyst</a></h3>
+              <p class="proj-meta">Standing Thesis &middot; memoryanalyst.com &middot; Live</p>
+              <p class="proj-blurb">The AI memory thesis on annual rates. Yearly HBM demand is set to outrun global manufacturing capacity this decade. This site tracks the gap.</p>
+            </li>
+            <li class="proj">
+              <h3 class="proj-name"><a href="https://www.mindthetape.com" aria-label="Mind The Tape">Mind The Tape</a></h3>
+              <p class="proj-meta">Weekly Note &middot; mindthetape.com &middot; Live</p>
+              <p class="proj-blurb">A weekly read on global markets: price, flows and positioning. Fewer headlines, more signal.</p>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="about" aria-labelledby="about-h">
+        <h2 id="about-h">About</h2>
+        <div class="about-panel">
+          <p>
+            Alex Corrino is the name I publish under. I am the CIO of a hedge
+            fund and a former professional poker player. Both jobs come down
+            to the same thing: incomplete information, priced correctly.
+          </p>
+          <p>
+            The work above is public. A daily monitor of factor internals, a
+            standing thesis on AI memory supply, and a weekly note on price,
+            flows and positioning. No paywall, no newsletter gate.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; <span id="year">2026</span> Alex Corrino</p>
+    </footer>
+  </div>
+
+  <nav class="scene-pill" aria-label="Scene variants">
+    <span>Scene:</span>
+    <a href="/">Wind</a>
+    <span aria-hidden="true">&middot;</span>
+    <span aria-current="page">Space</span>
+    <span aria-hidden="true">&middot;</span>
+    <a href="/i">Ice</a>
+  </nav>
+
+  <script src="../js/config.js"></script>
+  <script>
+    (function () {
+      "use strict";
+
+      /* ---------- project index: re-render from config ---------- */
+      try {
+        var cfg = window.SITE_CONFIG;
+        if (cfg && cfg.projects && cfg.projects.length) {
+          var list = document.getElementById("projects");
+          list.textContent = "";
+          cfg.projects.forEach(function (p) {
+            var li = document.createElement("li");
+            li.className = "proj";
+            var h3 = document.createElement("h3");
+            h3.className = "proj-name";
+            if (p.url) {
+              var a = document.createElement("a");
+              a.href = p.url;
+              a.setAttribute("aria-label", p.name);
+              a.textContent = p.name;
+              h3.appendChild(a);
+            } else {
+              var s = document.createElement("span");
+              s.className = "unlinked";
+              s.textContent = p.name;
+              h3.appendChild(s);
+            }
+            li.appendChild(h3);
+            var meta = document.createElement("p");
+            meta.className = "proj-meta";
+            var statusLabel = p.status === "live" && p.url ? "Live" : "In progress";
+            meta.textContent = [p.kicker, p.domain, statusLabel].filter(Boolean).join(" · ");
+            li.appendChild(meta);
+            if (p.blurb) {
+              var blurb = document.createElement("p");
+              blurb.className = "proj-blurb";
+              blurb.textContent = p.blurb;
+              li.appendChild(blurb);
+            }
+            list.appendChild(li);
+          });
+        }
+      } catch (e) { /* static HTML stays in place */ }
+
+      var yearEl = document.getElementById("year");
+      if (yearEl) yearEl.textContent = String(new Date().getFullYear());
+
+      /* ---------- the sky: parallax starfield + meteors ---------- */
+      var canvas = document.getElementById("field");
+      var ctx = canvas.getContext("2d", { alpha: false });
+      if (!ctx) return;
+
+      var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      var BG = "#04060e";
+      var W = 0, H = 0, dpr = 1;
+      var layers = [];
+      var meteors = [];
+      var t = 0;
+      var running = false;
+      var rafId = 0;
+      var nextMeteorAt = 0;
+
+      /* layer spec: density divisor, radius, base alpha, drift speed, parallax reach */
+      var SPEC = [
+        { div: 4200, r: 0.6, a: 0.5, drift: 0.010, par: 5, tint: "255, 255, 255" },
+        { div: 9500, r: 0.9, a: 0.75, drift: 0.022, par: 11, tint: "220, 228, 255" },
+        { div: 24000, r: 1.4, a: 1.0, drift: 0.045, par: 19, tint: "255, 244, 214" },
+      ];
+
+      var ptr = { x: 0.0, y: 0.0, tx: 0.0, ty: 0.0 };
+      function onMove(e) {
+        ptr.tx = (e.clientX / W) * 2 - 1;
+        ptr.ty = (e.clientY / H) * 2 - 1;
+      }
+
+      function buildStars() {
+        layers = SPEC.map(function (spec) {
+          var n = Math.max(30, Math.round((W * H) / spec.div));
+          var stars = [];
+          for (var i = 0; i < n; i++) {
+            /* a loose diagonal band gets extra density: the milky way */
+            var band = Math.random() < 0.3;
+            var x = Math.random() * W;
+            var y = band
+              ? (H * 0.85 - x * 0.42 + (Math.random() - 0.5) * H * 0.34 + H * 0.18)
+              : Math.random() * H;
+            stars.push({
+              x: x,
+              y: ((y % H) + H) % H,
+              r: spec.r * (0.7 + Math.random() * 0.7),
+              a: spec.a * (0.35 + Math.random() * 0.65),
+              ph: Math.random() * Math.PI * 2,
+              tw: 0.4 + Math.random() * 1.4,
+            });
+          }
+          return { spec: spec, stars: stars };
+        });
+      }
+
+      function spawnMeteor() {
+        var fromTop = Math.random() < 0.6;
+        var x = fromTop ? Math.random() * W * 0.9 + W * 0.1 : W + 30;
+        var y = fromTop ? -30 : Math.random() * H * 0.4;
+        var sp = 9 + Math.random() * 7;
+        var ang = Math.PI * (0.72 + Math.random() * 0.1); /* down-left */
+        meteors.push({
+          x: x, y: y,
+          vx: Math.cos(ang) * sp,
+          vy: -Math.sin(ang) * sp,
+          life: 1,
+        });
+        nextMeteorAt = t + 420 + Math.random() * 620; /* ~7–17s at 60fps */
+      }
+
+      function draw(dt) {
+        t += dt;
+        ctx.fillStyle = BG;
+        ctx.fillRect(0, 0, W, H);
+
+        ptr.x += (ptr.tx - ptr.x) * 0.03;
+        ptr.y += (ptr.ty - ptr.y) * 0.03;
+
+        for (var l = 0; l < layers.length; l++) {
+          var layer = layers[l];
+          var spec = layer.spec;
+          var ox = -ptr.x * spec.par;
+          var oy = -ptr.y * spec.par * 0.6;
+          for (var i = 0; i < layer.stars.length; i++) {
+            var s = layer.stars[i];
+            s.x -= spec.drift * dt;
+            if (s.x < -2) s.x = W + 2;
+            var alpha = reduced ? s.a : s.a * (0.62 + 0.38 * Math.sin(t * 0.02 * s.tw + s.ph));
+            ctx.fillStyle = "rgba(" + spec.tint + ", " + alpha.toFixed(3) + ")";
+            var x = s.x + ox, y = s.y + oy;
+            if (s.r < 0.8) {
+              ctx.fillRect(x, y, 1, 1);
+            } else {
+              ctx.beginPath();
+              ctx.arc(x, y, s.r, 0, 6.2832);
+              ctx.fill();
+            }
+          }
+        }
+
+        if (!reduced) {
+          if (t >= nextMeteorAt) spawnMeteor();
+          for (var m = meteors.length - 1; m >= 0; m--) {
+            var mt = meteors[m];
+            mt.x += mt.vx * dt;
+            mt.y += mt.vy * dt;
+            mt.life -= 0.016 * dt;
+            if (mt.life <= 0 || mt.x < -160 || mt.y > H + 160) { meteors.splice(m, 1); continue; }
+            var tail = 14;
+            var g = ctx.createLinearGradient(mt.x, mt.y, mt.x - mt.vx * tail, mt.y - mt.vy * tail);
+            g.addColorStop(0, "rgba(235, 240, 255, " + (0.75 * mt.life).toFixed(3) + ")");
+            g.addColorStop(1, "rgba(235, 240, 255, 0)");
+            ctx.strokeStyle = g;
+            ctx.lineWidth = 1.4;
+            ctx.beginPath();
+            ctx.moveTo(mt.x, mt.y);
+            ctx.lineTo(mt.x - mt.vx * tail, mt.y - mt.vy * tail);
+            ctx.stroke();
+          }
+        }
+      }
+
+      function resize() {
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        W = window.innerWidth;
+        H = window.innerHeight;
+        canvas.width = Math.round(W * dpr);
+        canvas.height = Math.round(H * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        buildStars();
+        draw(0);
+      }
+
+      var lastTime = 0;
+      function frame(now) {
+        if (!running) return;
+        var dt = lastTime ? Math.min((now - lastTime) / 16.7, 2.2) : 1;
+        lastTime = now;
+        draw(dt);
+        rafId = requestAnimationFrame(frame);
+      }
+      function start() {
+        if (running || reduced) return;
+        running = true;
+        lastTime = 0;
+        rafId = requestAnimationFrame(frame);
+      }
+      function stop() {
+        running = false;
+        cancelAnimationFrame(rafId);
+      }
+
+      resize();
+      nextMeteorAt = 150;
+      if (!reduced) {
+        window.addEventListener("pointermove", onMove, { passive: true });
+        document.addEventListener("visibilitychange", function () {
+          if (document.hidden) stop();
+          else start();
+        });
+        start();
+      }
+
+      var resizeTimer = 0;
+      window.addEventListener("resize", function () {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(resize, 150);
+      });
+    })();
+  </script>
+</body>
+</html>

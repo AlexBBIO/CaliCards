@@ -205,6 +205,22 @@ footer {
 }
 a.chip:hover, a.chip:focus-visible { color: #a8dcff; border-color: rgba(168, 220, 255, 0.6); }
 
+/* ============ scene switcher ============ */
+.scene-pill {
+  position: fixed; right: 1rem; bottom: 1rem; z-index: 10;
+  display: flex; align-items: baseline; gap: 0.7ch;
+  padding: 0.45rem 0.85rem;
+  background: rgba(5, 7, 12, 0.82);
+  border: 1px solid rgba(190, 225, 255, 0.22);
+  border-radius: 999px;
+  font-family: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+  font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: #8a97ad;
+}
+.scene-pill a { color: #c4cfe0; transition: color 0.25s ease; }
+.scene-pill a:hover, .scene-pill a:focus-visible { color: #a8dcff; }
+.scene-pill [aria-current="page"] { color: #ffffff; }
+
 /* ============ reduced motion ============ */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
