@@ -74,11 +74,12 @@ h1, h2, h3 { font-family: var(--font-display); font-weight: 700; letter-spacing:
 .brand-mark {
   display: grid;
   place-items: center;
-  width: 30px; height: 38px;
+  width: 32px; height: 40px;
   border-radius: 6px;
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 0.8rem;
+  font-size: 0.58rem;
+  letter-spacing: 0.01em;
   color: var(--red);
   background: var(--surface);
   border: 3px solid var(--gold);

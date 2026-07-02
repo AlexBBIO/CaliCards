@@ -1,9 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
   <rect width="100" height="100" rx="23" fill="#232838"/>
-  <g transform="rotate(-10 50 50)">
-    <rect x="26" y="12" width="48" height="76" rx="8" fill="#E2B437"/>
-    <rect x="31.5" y="17.5" width="37" height="65" rx="4.5" fill="#FFFDF7" stroke="#C99E2E" stroke-width="1"/>
-    <circle cx="50" cy="50" r="10.5" fill="#D8433F"/>
-    <circle cx="46.5" cy="46.5" r="3" fill="#FFFDF7" opacity="0.55"/>
-  </g>
+  <!-- C · C · C — Cali Coast Cards -->
+  <path d="M 36.64 38.51 A 15 15 0 1 0 36.64 61.49" fill="none" stroke="#E2B437" stroke-width="9" stroke-linecap="round"/>
+  <path d="M 59.64 38.51 A 15 15 0 1 0 59.64 61.49" fill="none" stroke="#FFFDF7" stroke-width="9" stroke-linecap="round"/>
+  <path d="M 82.64 38.51 A 15 15 0 1 0 82.64 61.49" fill="none" stroke="#D8433F" stroke-width="9" stroke-linecap="round"/>
 </svg>
