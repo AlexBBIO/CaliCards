@@ -59,26 +59,26 @@
     var yearEl = document.getElementById("year");
     if (yearEl) yearEl.textContent = String(new Date().getFullYear());
 
-    /* ---------- elsewhere (public links) ----------
-       The whole section stays hidden until at least one link is configured,
-       so no placeholder contact info is ever published. */
+    /* social links under the top bar: hidden until configured */
     var LINK_LABELS = { x: "X", github: "GitHub", substack: "Substack", email: "Email" };
-    var elsewhere = document.getElementById("elsewhere");
-    var chipsWrap = document.getElementById("chips");
-    if (elsewhere && chipsWrap) {
+    var socialNav = document.getElementById("social");
+    if (socialNav) {
       var links = (window.SITE_CONFIG || {}).links || {};
       var anyLink = false;
       Object.keys(LINK_LABELS).forEach(function (key) {
         var val = (links[key] || "").trim();
         if (!val) return;
         anyLink = true;
-        var chip = document.createElement("a");
-        chip.className = "chip";
-        chip.textContent = LINK_LABELS[key];
-        chip.href = key === "email" ? "mailto:" + val : val;
-        chipsWrap.appendChild(chip);
+        var a = document.createElement("a");
+        a.appendChild(document.createTextNode(LINK_LABELS[key] + " "));
+        var arr = document.createElement("span");
+        arr.setAttribute("aria-hidden", "true");
+        arr.textContent = "\u2197";
+        a.appendChild(arr);
+        a.href = key === "email" ? "mailto:" + val : val;
+        socialNav.appendChild(a);
       });
-      if (anyLink) elsewhere.hidden = false;
+      if (anyLink) socialNav.hidden = false;
     }
 
     /* ---------- the field: value-noise particle flow ---------- */

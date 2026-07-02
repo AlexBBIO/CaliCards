@@ -136,19 +136,19 @@
       color: rgba(130, 141, 170, 0.75);
     }
 
-    /* elsewhere (config-driven; hidden until links exist) */
-    .elsewhere[hidden] { display: none; }
-    .chips { display: flex; flex-wrap: wrap; gap: 0.6rem; }
-    .chip {
+    .social { margin-top: 0.55rem; display: flex; flex-wrap: wrap; gap: 1.3rem; }
+    .social[hidden] { display: none; }
+    .social a {
       font-family: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
-      font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase;
-      color: rgba(195, 203, 228, 1);
-      border: 1px solid rgba(207, 216, 255, 0.22);
-      border-radius: 999px; padding: 0.45rem 1rem;
-      transition: color 0.25s ease, border-color 0.25s ease;
+      font-size: 0.68rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
       text-decoration: none;
+      color: #828daa;
+      border-bottom: 1px solid transparent;
+      transition: color 0.25s ease, border-color 0.25s ease;
     }
-    a.chip:hover, a.chip:focus-visible { color: #cfd8ff; border-color: #cfd8ffB; }
+    .social a:hover, .social a:focus-visible { color: #cfd8ff; border-bottom-color: #cfd8ff; }
 
     /* scene switcher */
     .scene-pill {
@@ -186,6 +186,7 @@
           <h1 id="site-title">Alex Corrino</h1>
           <p class="role">Hedge Fund CIO &middot; Former Professional Poker Player</p>
         </header>
+        <nav id="social" class="social" aria-label="Elsewhere" hidden></nav>
 
         <div class="index">
           <h2 class="vh">Projects</h2>
@@ -224,11 +225,6 @@
             flows and positioning. No paywall, no newsletter gate.
           </p>
         </div>
-      </section>
-
-      <section id="elsewhere" class="about elsewhere" aria-labelledby="elsewhere-h" hidden>
-        <h2 id="elsewhere-h">Elsewhere</h2>
-        <div id="chips" class="chips"></div>
       </section>
     </main>
 
@@ -300,27 +296,29 @@
       var yearEl = document.getElementById("year");
       if (yearEl) yearEl.textContent = String(new Date().getFullYear());
 
-      /* elsewhere: hidden until a link is configured */
       try {
-        var LINK_LABELS = { x: "X", github: "GitHub", substack: "Substack", email: "Email" };
-        var elsewhere = document.getElementById("elsewhere");
-        var chipsWrap = document.getElementById("chips");
-        if (elsewhere && chipsWrap) {
-          var links = (window.SITE_CONFIG || {}).links || {};
-          var anyLink = false;
-          Object.keys(LINK_LABELS).forEach(function (key) {
-            var val = (links[key] || "").trim();
-            if (!val) return;
-            anyLink = true;
-            var chip = document.createElement("a");
-            chip.className = "chip";
-            chip.textContent = LINK_LABELS[key];
-            chip.href = key === "email" ? "mailto:" + val : val;
-            chipsWrap.appendChild(chip);
-          });
-          if (anyLink) elsewhere.hidden = false;
-        }
-      } catch (e) { /* section stays hidden */ }
+      /* social links under the top bar: hidden until configured */
+      var LINK_LABELS = { x: "X", github: "GitHub", substack: "Substack", email: "Email" };
+      var socialNav = document.getElementById("social");
+      if (socialNav) {
+        var links = (window.SITE_CONFIG || {}).links || {};
+        var anyLink = false;
+        Object.keys(LINK_LABELS).forEach(function (key) {
+          var val = (links[key] || "").trim();
+          if (!val) return;
+          anyLink = true;
+          var a = document.createElement("a");
+          a.appendChild(document.createTextNode(LINK_LABELS[key] + " "));
+          var arr = document.createElement("span");
+          arr.setAttribute("aria-hidden", "true");
+          arr.textContent = "\u2197";
+          a.appendChild(arr);
+          a.href = key === "email" ? "mailto:" + val : val;
+          socialNav.appendChild(a);
+        });
+        if (anyLink) socialNav.hidden = false;
+      }
+      } catch (e) { /* nav stays hidden */ }
 
 
       /* ---------- the sky: parallax starfield + meteors ---------- */
