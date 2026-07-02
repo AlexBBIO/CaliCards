@@ -199,19 +199,21 @@ footer .fine {
   color: rgba(138, 151, 173, 0.75);
 }
 
-.social { margin-top: 0.55rem; display: flex; flex-wrap: wrap; gap: 1.3rem; }
+.social { margin-top: 0.7rem; display: flex; flex-wrap: wrap; gap: 1.3rem; }
 .social[hidden] { display: none; }
 .social a {
   font-family: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
-  font-size: 0.68rem;
+  font-size: 0.82rem;
+  font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   text-decoration: none;
-  color: #8a97ad;
-  border-bottom: 1px solid transparent;
-  transition: color 0.25s ease, border-color 0.25s ease;
+  color: #a8dcff;
+  padding: 0.15rem 0;
+  border-bottom: 1px solid rgba(168, 220, 255, 0.45);
+  transition: color 0.25s ease, border-color 0.25s ease, text-shadow 0.25s ease;
 }
-.social a:hover, .social a:focus-visible { color: #a8dcff; border-bottom-color: #a8dcff; }
+.social a:hover, .social a:focus-visible { color: #ffffff; border-bottom-color: #ffffff; text-shadow: 0 0 14px rgba(168, 220, 255, 0.6); }
 
 /* ============ scene switcher ============ */
 .scene-pill {
