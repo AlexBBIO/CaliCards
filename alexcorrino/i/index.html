@@ -424,6 +424,8 @@
           if (Math.random() < 0.5) f.x = Math.random() < 0.5 ? -30 : OW + 30;
           else f.y = Math.random() < 0.5 ? -30 : OH + 30;
         }
+        f.maverickUntil = 0;
+        f.nextMaverick = t + 600 + Math.random() * 1200;
         f.a = Math.random() * Math.PI * 2;
         f.base = 0.22 + Math.random() * 0.2;   /* cruise speed */
         f.burst = 0;                            /* dart impulse */
@@ -438,9 +440,16 @@
       function buildFish() {
         var count = Math.max(7, Math.min(12, Math.round((OW * OH) / 10500)));
         fish = [];
+        /* start the school loosely together */
+        var scx = OW * (0.3 + Math.random() * 0.4);
+        var scy = OH * (0.3 + Math.random() * 0.4);
         for (var i = 0; i < count; i++) {
           var f = {};
           spawn(f, false);
+          if (!f.deep) {
+            f.x = scx + (Math.random() - 0.5) * 60;
+            f.y = scy + (Math.random() - 0.5) * 60;
+          }
           fish.push(f);
         }
         glints = [];
@@ -477,19 +486,75 @@
         for (var i = 0; i < fish.length; i++) {
           var f = fish[i];
 
-          var target = angleAt(f.x, f.y, t);
-          if (hasPtr && !f.deep) {
-            var dx = ptr.x - f.x, dy = ptr.y - f.y;
-            var d2 = dx * dx + dy * dy;
-            if (d2 < R2 && d2 > 60) {
-              var toward = Math.atan2(dy, dx);
-              var pull = (1 - Math.sqrt(d2) / R) * 0.75 * ptr.k;
-              var diff = Math.atan2(Math.sin(toward - target), Math.cos(toward - target));
-              target += diff * pull;
+          /* steering: the school mostly moves together (alignment +
+             cohesion), never crowds (separation), drifts on the noise
+             field, and is gently curious about the pointer. Every so
+             often a fish goes maverick and ignores the school. */
+          var wa = angleAt(f.x, f.y, t);
+          var target;
+          if (f.deep) {
+            target = wa;
+          } else {
+            if (t >= f.nextMaverick) {
+              f.maverickUntil = t + 200 + Math.random() * 260;
+              f.nextMaverick = t + 1100 + Math.random() * 1600;
             }
+            var maverick = t < f.maverickUntil;
+
+            var vx = Math.cos(wa) * (maverick ? 1.5 : 0.55);
+            var vy = Math.sin(wa) * (maverick ? 1.5 : 0.55);
+
+            var ax = 0, ay = 0, cx = 0, cy = 0, sx = 0, sy = 0, n = 0;
+            for (var j = 0; j < fish.length; j++) {
+              if (j === i) continue;
+              var o = fish[j];
+              if (o.deep) continue;
+              var odx = o.x - f.x, ody = o.y - f.y;
+              var od2 = odx * odx + ody * ody;
+              if (od2 < 2600) {
+                n++;
+                ax += Math.cos(o.a); ay += Math.sin(o.a);
+                cx += odx; cy += ody;
+                if (od2 < 170) {
+                  var od = Math.sqrt(od2) || 1;
+                  var push = 1 - od / 13.1;
+                  sx -= (odx / od) * push;
+                  sy -= (ody / od) * push;
+                }
+              }
+            }
+            if (n && !maverick) {
+              var al = Math.hypot(ax, ay) || 1;
+              vx += (ax / al) * 0.9;
+              vy += (ay / al) * 0.9;
+              var cl = Math.hypot(cx, cy) || 1;
+              vx += (cx / cl) * 0.45;
+              vy += (cy / cl) * 0.45;
+            }
+            vx += sx * 1.7;
+            vy += sy * 1.7;
+
+            /* soft walls: steer back toward open water near the edges */
+            var m = 34;
+            if (f.x < m) vx += ((m - f.x) / m) * 1.3;
+            if (f.x > OW - m) vx -= ((f.x - (OW - m)) / m) * 1.3;
+            if (f.y < m) vy += ((m - f.y) / m) * 1.3;
+            if (f.y > OH - m) vy -= ((f.y - (OH - m)) / m) * 1.3;
+
+            if (hasPtr) {
+              var dx = ptr.x - f.x, dy = ptr.y - f.y;
+              var d2 = dx * dx + dy * dy;
+              if (d2 < R2 && d2 > 60) {
+                var d = Math.sqrt(d2);
+                var prox = (1 - d / R) * 0.3 * ptr.k;
+                vx += (dx / d) * prox;
+                vy += (dy / d) * prox;
+              }
+            }
+            target = Math.atan2(vy, vx);
           }
           var turn = Math.atan2(Math.sin(target - f.a), Math.cos(target - f.a));
-          f.a += turn * 0.03 * dt;
+          f.a += turn * 0.035 * dt;
 
           /* occasional dart, decaying back to cruise */
           if (t >= f.nextDart) {
