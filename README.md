@@ -1,101 +1,55 @@
 # 🃏 CaliCards
 
-A simple, self-contained storefront for selling **trading & collectible cards**.
-It's a plain static site (HTML/CSS/JS — no build step) that embeds **Shopify's
-Buy Button SDK** for a secure, hosted checkout.
+Landing site for **CaliCards** — a California Pokémon card business that sells
+live on Whatnot, lists on eBay, and buys everything Pokémon.
 
-It works two ways:
+Live at **[calicoastcards.com](https://calicoastcards.com)**. Pure static site
+(HTML/CSS/vanilla JS), no build step, hosted on Vercel.
 
-- **Demo mode (default):** shows sample cards so you can see the site immediately,
-  with no Shopify account required.
-- **Live mode:** fill in one config file and it sells real inventory through
-  Shopify checkout.
+## Pages
 
----
+- **`index.html`** — landing page: where we sell (Whatnot/eBay), social
+  accounts, and the shows/cons schedule.
+- **`buying.html`** — "we buy everything Pokémon": categories, how it works,
+  and the contact CTA.
 
-## Run it locally
+## Editing the site
 
-It's static — just open `index.html`, or serve the folder:
+Almost everything lives in **`js/config.js`**:
+
+- **Seller links** — set `links.whatnot` / `links.ebay` to your store URLs.
+  Empty strings render as "Coming soon" tiles automatically.
+- **Socials** — set `socials.instagram` / `tiktok` / `youtube` / `x`.
+  Empty ones show as muted "soon" chips.
+- **Buying contact** — `buyingEmail` stays **empty by default** so no personal
+  email is ever published. Contact buttons fall back to the first live
+  social/DM link, or a "DMs opening soon" state. Only set it if you have a
+  dedicated business address you're happy to make public.
+- **Shows & cons** — add entries to `events`:
+
+  ```js
+  events: [
+    { name: "Collect-A-Con", city: "Long Beach, CA", date: "2026-08-15", dateEnd: "2026-08-16", url: "https://collectacon.com" },
+  ],
+  ```
+
+  They render date-sorted on the home page; an empty list shows a friendly
+  "no shows booked" state.
+
+Copy lives in the two HTML files; the color palette is the `:root` block in
+`css/styles.css`. Fonts (Space Grotesk + Inter) are self-hosted in `fonts/`.
+
+## Run locally
 
 ```bash
-# any of these works
-python3 -m http.server 8000      # then visit http://localhost:8000
-npx serve .
+python3 -m http.server 8000   # or: npx serve .
 ```
-
----
-
-## Go live with Shopify (when you choose to)
-
-You only edit **`js/config.js`**.
-
-1. **Create a Shopify store.** The cheapest plan that supports the Buy Button /
-   Storefront API works (the "Starter" plan is enough to sell with Buy Buttons).
-2. **Add your cards** as products, then group them into a **Collection**.
-3. **Create a Storefront API token:** Shopify admin → *Settings → Apps and sales
-   channels → Develop apps → Create an app → Configure Storefront API scopes →
-   Install app → reveal the **Storefront API access token***.
-   (This token is read-only and safe to ship in client-side code.)
-4. **Find your collection ID:** open the collection in admin; the number in the
-   URL `.../collections/<NUMBER>` is the ID.
-5. Fill in `js/config.js`:
-
-   ```js
-   shopify: {
-     domain: "your-store.myshopify.com",
-     storefrontAccessToken: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-     collectionId: "123456789",
-   }
-   ```
-
-Reload — the demo banner disappears and live products + cart/checkout turn on.
-
----
 
 ## Deploy
 
-Any static host works (GitHub Pages, Netlify, Cloudflare Pages, Vercel).
-
-### Vercel
-
-This repo includes a `vercel.json`. To deploy:
-
 ```bash
-npm i -g vercel
-vercel            # first run links/creates the project
-vercel --prod     # promote to production
+vercel deploy --prod --scope alexbbios-projects
 ```
 
-> **Security note:** never commit API tokens. A Vercel access token belongs in
-> the `VERCEL_TOKEN` environment variable (`vercel --token "$VERCEL_TOKEN"`),
-> not in the repo. `.env*` and `.vercel` are already gitignored.
-
----
-
-## Project structure
-
-```
-CaliCards/
-├── index.html        # the storefront page
-├── css/styles.css    # styling ("Holographic Collector" dark theme)
-├── css/fonts.css     # @font-face for the self-hosted fonts
-├── fonts/            # self-hosted woff2 (Space Grotesk + Inter)
-├── js/config.js      # ← the only file you edit to go live
-├── js/store.js       # renders live Shopify collection or the demo card grid
-├── vercel.json       # static deploy config
-├── .vercelignore     # keeps node_modules etc. out of deploys
-└── README.md
-```
-
-## Customizing
-
-- **Branding/colors:** the whole palette lives in the `:root` block of
-  `css/styles.css` (`--bg`, `--accent`, `--accent-2`, plus the per-rarity colors).
-- **Demo products:** edit the `demoProducts` array in `js/config.js`. Each card is
-  drawn from `rarity` (frame color + gem badge), `sigil` (the big monogram), `set`,
-  `stat`, and `price` — no product photos required.
-- **Copy:** hero, About, and FAQ text are plain HTML in `index.html`.
-
-The product cards are rendered as holographic collectible-card visuals in pure
-CSS/SVG, with a pointer-reactive 3D tilt. When you connect Shopify, your real
-product photos replace the demo visuals via the Buy Button.
+The Vercel project is `calicards`; `calicoastcards.com` (+ `www`) is attached.
+Never commit tokens — use `vercel --token "$VERCEL_TOKEN"`.

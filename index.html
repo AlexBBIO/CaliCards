@@ -3,12 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CaliCards — Trading &amp; Collectible Cards</title>
+  <title>CaliCards — Pokémon Cards Bought &amp; Sold</title>
   <meta
     name="description"
-    content="CaliCards — a California card vault for graded slabs, sealed packs, and rare singles. Sleeved, toploaded, tracked. Secure Shopify checkout."
+    content="CaliCards — California Pokémon card buyers and sellers. Catch us live on Whatnot, shop our eBay listings, find our booth at card shows, or sell us your collection."
   />
   <meta name="theme-color" content="#0A0B12" />
+  <meta property="og:title" content="CaliCards — Pokémon Cards Bought &amp; Sold" />
+  <meta property="og:description" content="California Pokémon card buyers &amp; sellers. Live on Whatnot, listed on eBay, and buying everything Pokémon." />
   <link rel="stylesheet" href="css/fonts.css" />
   <link rel="stylesheet" href="css/styles.css" />
   <link
@@ -17,14 +19,6 @@
   />
 </head>
 <body>
-  <!-- Demo-mode banner: hidden automatically once Shopify is connected -->
-  <div id="demo-banner" class="demo-banner" hidden>
-    <span>
-      Demo mode — browsing sample cards. Connect a Shopify store in
-      <code>js/config.js</code> to start selling for real.
-    </span>
-  </div>
-
   <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="#top" aria-label="CaliCards home">
@@ -32,12 +26,10 @@
         <span class="brand-name">CaliCards</span>
       </a>
       <nav class="nav" aria-label="Primary">
-        <a href="#shop">Shop</a>
-        <a href="#about">About</a>
-        <a href="#faq">FAQ</a>
+        <a href="#find-us">Find us</a>
+        <a href="#shows">Shows</a>
+        <a class="nav-cta" href="buying.html">Sell your cards</a>
       </nav>
-      <!-- Shopify Buy Button mounts a cart toggle here when connected -->
-      <div id="cart-toggle" class="cart-toggle"></div>
     </div>
   </header>
 
@@ -48,20 +40,21 @@
       <div class="hero-grid-lines" aria-hidden="true"></div>
       <div class="container hero-inner">
         <div class="hero-copy">
-          <p class="eyebrow">California · Graded · Sealed · Singles</p>
-          <h1>Cards worth <span class="ital">keeping.</span></h1>
+          <p class="eyebrow">California · Pokémon · Bought &amp; Sold</p>
+          <h1>Pokémon cards, bought &amp; <span class="ital">sold.</span></h1>
           <p class="hero-sub">
-            A small California vault of graded slabs, sealed product, and rare
-            singles — inspected, photographed, and shipped like they matter.
+            CaliCards is a California card shop on the road — selling live on
+            Whatnot and eBay, and buying everything Pokémon, from single grails
+            to entire collections.
           </p>
           <div class="hero-cta">
-            <a class="btn btn-primary" href="#shop">Browse the vault</a>
-            <a class="btn btn-ghost" href="#about">How it works</a>
+            <a class="btn btn-primary" href="buying.html">Sell us your cards</a>
+            <a class="btn btn-ghost" href="#find-us">Where we sell</a>
           </div>
-          <ul class="hero-trust" aria-label="Why shop here">
-            <li><span class="dot"></span> Secure Shopify checkout</li>
-            <li><span class="dot"></span> Sleeved · toploaded · tracked</li>
-            <li><span class="dot"></span> Honest grades, real photos</li>
+          <ul class="hero-trust" aria-label="What we do">
+            <li><span class="dot"></span> We buy everything Pokémon — raw, graded, sealed, bulk</li>
+            <li><span class="dot"></span> Live rips &amp; auctions on Whatnot</li>
+            <li><span class="dot"></span> Catch our booth at California card shows</li>
           </ul>
         </div>
 
@@ -72,8 +65,8 @@
               <div class="card-foil"></div>
               <div class="card-art">
                 <div class="card-guilloche"></div>
-                <span class="card-set">Pacific Legends</span>
-                <span class="card-sigil">PL</span>
+                <span class="card-set">Cali Coast</span>
+                <span class="card-sigil">CC</span>
                 <span class="card-wordmark">CALICARDS</span>
               </div>
               <div class="card-glare"></div>
@@ -84,83 +77,61 @@
       </div>
     </section>
 
-    <section id="shop" class="shop">
+    <section id="find-us" class="section">
       <div class="container">
         <div class="section-head">
-          <p class="kicker">The vault</p>
-          <h2>Featured cards</h2>
-          <p class="muted">Fresh pulls and vault finds, restocked weekly.</p>
+          <p class="kicker">Where we sell</p>
+          <h2>Find us online</h2>
+          <p class="muted">Live streams, auctions, and fresh listings.</p>
         </div>
 
-        <!-- Products render here: live Shopify collection, or demo grid -->
-        <div id="shop-grid" class="grid" aria-live="polite">
-          <p class="loading">Loading the vault…</p>
+        <div class="link-tiles">
+          <a class="tile tile-whatnot" data-link="whatnot">
+            <span class="tile-mark" aria-hidden="true">W</span>
+            <span class="tile-body">
+              <span class="tile-title">Whatnot</span>
+              <span class="tile-sub">Live rips, breaks &amp; auctions</span>
+            </span>
+            <span class="tile-arrow" aria-hidden="true">→</span>
+            <span class="soon-badge">Coming soon</span>
+          </a>
+          <a class="tile tile-ebay" data-link="ebay">
+            <span class="tile-mark" aria-hidden="true">e</span>
+            <span class="tile-body">
+              <span class="tile-title">eBay</span>
+              <span class="tile-sub">Singles, slabs &amp; sealed — always on</span>
+            </span>
+            <span class="tile-arrow" aria-hidden="true">→</span>
+            <span class="soon-badge">Coming soon</span>
+          </a>
         </div>
+
+        <div id="socials" class="socials" aria-label="Social accounts"></div>
       </div>
     </section>
 
-    <section id="about" class="about">
+    <section id="shows" class="section">
       <div class="container">
         <div class="section-head">
-          <p class="kicker">Why CaliCards</p>
-          <h2>Collect with confidence</h2>
+          <p class="kicker">On the road</p>
+          <h2>Shows &amp; cons we're attending</h2>
+          <p class="muted">Come say hi, dig through the boxes, and sell us your cards in person.</p>
         </div>
-        <div class="about-grid">
-          <p class="about-lede">
-            Every card is inspected, photographed, and packed to survive the
-            trip. Slabs ship in fitted cases; raw singles ship penny-sleeved in a
-            toploader and team bag. What you see is what shows up.
-          </p>
-          <ul class="feature-list">
-            <li>
-              <span class="feature-ic">◈</span>
-              <strong>Secure checkout</strong>
-              <span>Powered by Shopify. Your payment details never touch this site.</span>
-            </li>
-            <li>
-              <span class="feature-ic">❖</span>
-              <strong>Protective shipping</strong>
-              <span>Sleeved, toploaded, and tracked on every single order.</span>
-            </li>
-            <li>
-              <span class="feature-ic">✦</span>
-              <strong>Accurate grades</strong>
-              <span>Real photos and honest conditions — no surprises on arrival.</span>
-            </li>
-          </ul>
-        </div>
+        <div id="events" class="events"></div>
       </div>
     </section>
 
-    <section id="faq" class="faq">
+    <section class="section">
       <div class="container">
-        <div class="section-head">
-          <p class="kicker">Good to know</p>
-          <h2>FAQ</h2>
-        </div>
-        <div class="faq-list">
-          <details>
-            <summary>How does checkout work?</summary>
+        <div class="cta-band">
+          <div>
+            <h2>Sitting on a collection?</h2>
             <p>
-              Add cards to your cart and check out through Shopify's secure, hosted
-              checkout. Payment and order data are handled entirely by Shopify.
+              We buy everything Pokémon — binders of bulk, gem-mint grails, sealed
+              boxes, Japanese exclusives, whole estates. Photos in, offer out, paid fast.
             </p>
-          </details>
-          <details>
-            <summary>How are cards shipped?</summary>
-            <p>
-              Raw cards: penny sleeve + toploader + team bag in a bubble mailer.
-              Graded slabs: snug-fit case inside a rigid box. Tracking on every order.
-            </p>
-          </details>
-          <details>
-            <summary>Is this a real store yet?</summary>
-            <p>
-              The site is ready to go. When you connect a Shopify store (see
-              <code>js/config.js</code>), the demo cards are replaced by your real
-              inventory and live checkout turns on.
-            </p>
-          </details>
+          </div>
+          <a class="btn btn-primary" href="buying.html">See what we buy</a>
         </div>
       </div>
     </section>
@@ -172,11 +143,16 @@
         <span class="brand-mark" aria-hidden="true">CC</span>
         <span class="brand-name">CaliCards</span>
       </a>
-      <span class="muted">© <span id="year"></span> CaliCards · Built to sell cards.</span>
+      <nav class="footer-nav" aria-label="Footer">
+        <a href="#find-us">Find us</a>
+        <a href="#shows">Shows</a>
+        <a href="buying.html">Sell your cards</a>
+      </nav>
+      <span class="muted">© <span id="year"></span> CaliCards · Buying &amp; selling Pokémon cards in California.</span>
     </div>
   </footer>
 
   <script src="js/config.js"></script>
-  <script src="js/store.js"></script>
+  <script src="js/site.js"></script>
 </body>
 </html>
