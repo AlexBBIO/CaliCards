@@ -88,8 +88,8 @@
 
   var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var BG = "#05070c";
-  var FADE = "rgba(5, 7, 12, 0.035)";
-  var ALPHAS = [0.09, 0.14, 0.22];
+  var FADE = "rgba(5, 7, 12, 0.028)";
+  var ALPHAS = [0.07, 0.11, 0.17];
   var STROKES = ALPHAS.map(function (a) {
     return "rgba(190, 225, 255, " + a + ")";
   });
@@ -119,11 +119,11 @@
     return a + (b - a) * ux + (c - a) * uy + (a - b - c + d) * ux * uy;
   }
   function angleAt(x, y, tt) {
-    var s = 0.0010;
+    var s = 0.0005;
     var n = 0.68 * vnoise(x * s + seedX + tt * 0.016, y * s + seedY - tt * 0.011)
           + 0.24 * vnoise(x * s * 2.1 + seedY + 40 - tt * 0.021, y * s * 2.1 + seedX + tt * 0.014)
           + 0.08 * (Math.sin(x * s * 0.55 + tt * 0.05) * Math.cos(y * s * 0.62 - tt * 0.04) * 0.5 + 0.5);
-    return n * Math.PI * 3.4;
+    return -0.55 + (n - 0.5) * Math.PI * 1.35;
   }
 
   /* pointer — gently bends the field */
@@ -140,12 +140,12 @@
     p.y = Math.random() * H;
     p.px = p.x;
     p.py = p.y;
-    p.sp = 0.65 + Math.random() * 1.15;
-    p.life = 260 + Math.random() * 480;
+    p.sp = 0.8 + Math.random() * 1.0;
+    p.life = 600 + Math.random() * 900;
   }
 
   function buildParticles() {
-    var count = Math.min(2000, Math.max(400, Math.round((W * H) / 720)));
+    var count = Math.min(2800, Math.max(400, Math.round((W * H) / 480)));
     particles = [];
     buckets = [[], [], []];
     for (var i = 0; i < count; i++) {
@@ -164,7 +164,7 @@
     canvas.height = Math.round(H * dpr);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.lineWidth = 1;
-    ctx.lineCap = "round";
+    ctx.lineCap = "butt";
     ctx.fillStyle = BG;
     ctx.fillRect(0, 0, W, H);
     buildParticles();
