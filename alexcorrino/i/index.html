@@ -149,7 +149,14 @@
       color: rgba(126, 149, 170, 0.75);
     }
 
-    .social { margin-top: 0.7rem; display: flex; flex-wrap: wrap; gap: 1.3rem; }
+    .social { margin-top: 0.7rem; display: flex; flex-wrap: wrap; align-items: baseline; gap: 1.1rem; }
+    .social-label {
+      font-family: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #7e95aa;
+    }
     .social[hidden] { display: none; }
     .social a {
       font-family: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
@@ -212,7 +219,9 @@
           <h1 id="site-title">Alex Corrino</h1>
           <p class="role">Hedge Fund CIO &middot; Former Professional Poker Player</p>
         </header>
-        <nav id="social" class="social" aria-label="Elsewhere" hidden></nav>
+        <nav id="social" class="social" aria-label="Elsewhere" hidden>
+          <span class="social-label">Find me on:</span>
+        </nav>
 
         <div class="index">
           <h2 class="vh">Projects</h2>
