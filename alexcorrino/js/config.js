@@ -60,7 +60,7 @@ window.SITE_CONFIG = {
   // accident. Only add addresses/handles that belong to the Alex Corrino
   // pseudonym.
   links: {
-    x: "",        // e.g. "https://x.com/alexcorrino"
+    x: "https://x.com/alexcorrino",
     github: "",   // e.g. "https://github.com/alexcorrino"
     substack: "", // e.g. "https://alexcorrino.substack.com"
     email: "",    // e.g. "hello@alexcorrino.com" — never a personal address
