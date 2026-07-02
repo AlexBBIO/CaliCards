@@ -9,10 +9,10 @@ own project with this directory as the project root.
 Almost everything lives in **`js/config.js`**:
 
 - **Projects** — add entries to `projects`. Leave `url` empty while something
-  isn't live yet and it renders as a dashed "in progress" card automatically:
+  isn't live yet and it renders unlinked as "In progress" automatically:
 
   ```js
-  { name: "FactorWatch", domain: "factorwatch.com", url: "", status: "building", blurb: "…" },
+  { name: "Example", kicker: "Daily Monitor", sym: "EXMP", domain: "example.com", url: "", status: "building", blurb: "…" },
   ```
 
 - **Elsewhere links** — `links.x` / `github` / `substack` / `email`. All empty
@@ -20,12 +20,14 @@ Almost everything lives in **`js/config.js`**:
   personal is ever published by accident. Only add handles that belong to the
   Alex Corrino pseudonym.
 
-Bio copy lives in `index.html` (About section), along with the decorative
-ticker-band items and a `<noscript>` mirror of the project cards — update
-both when projects change. The neon palette is the `:root` block in
-`css/styles.css`; the skyline is an inline SVG in `index.html`. All
-animations are CSS-only and disabled under `prefers-reduced-motion`.
-Fonts (Space Grotesk + Inter variable) are self-hosted in `fonts/`.
+The design ("The Field") is a generative particle flow-field drawn on a
+full-viewport canvas by `js/site.js`, with sparse type above it. Bio copy
+lives in `index.html` (About section) along with a static mirror of the
+project index that serves no-JS visitors — update it when projects change.
+Colors are plain hex values in `css/styles.css` (ice-blue accent `#a8dcff`
+on near-black `#05070c`). The field pauses when the tab is hidden and
+renders a single static frame under `prefers-reduced-motion`. Fonts
+(Space Grotesk + Inter variable) are self-hosted in `fonts/`.
 
 ## Run locally
 

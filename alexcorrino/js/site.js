@@ -1,264 +1,264 @@
 /*
- * alexcorrino.com — AC OS logic
- * Renders the project windows from js/config.js, lays them out on the
- * desktop, and runs the OS chrome: live menu-bar clock, draggable windows
- * (wide screens with a fine pointer only), z-order raising, and desktop
- * icons that summon their window. Everything degrades: index.html carries
- * a <noscript> mirror of the project windows (keep it in sync when the
- * config changes) and windows stack statically on small screens.
+ * alexcorrino.com — site logic
+ * Re-renders the project index from js/config.js over the static HTML
+ * fallback, fills the footer year, reveals the "Elsewhere" links when
+ * configured, and draws the field: a value-noise particle flow advected
+ * across a fixed canvas, gently bent by the pointer. Under
+ * prefers-reduced-motion the field renders one static frame and stops;
+ * without JS the static HTML index stands as-is.
  */
 (function () {
   "use strict";
 
-  var cfg = window.SITE_CONFIG || {};
+  /* ---------- project index: re-render from config ---------- */
+  try {
+    var cfg = window.SITE_CONFIG;
+    if (cfg && cfg.projects && cfg.projects.length) {
+      var list = document.getElementById("projects");
+      list.textContent = "";
+      cfg.projects.forEach(function (p) {
+        var li = document.createElement("li");
+        li.className = "proj";
 
-  var reduceMotion =
-    window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  var canDrag =
-    window.matchMedia && window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+        var h3 = document.createElement("h3");
+        h3.className = "proj-name";
+        if (p.url) {
+          var a = document.createElement("a");
+          a.href = p.url;
+          a.setAttribute("aria-label", p.name);
+          a.textContent = p.name;
+          h3.appendChild(a);
+        } else {
+          var s = document.createElement("span");
+          s.className = "unlinked";
+          s.textContent = p.name;
+          h3.appendChild(s);
+        }
+        li.appendChild(h3);
 
-  var desktop = document.querySelector(".desktop");
-  var iconsNav = document.getElementById("icons");
+        var meta = document.createElement("p");
+        meta.className = "proj-meta";
+        var statusLabel = p.status === "live" && p.url ? "Live" : "In progress";
+          meta.textContent = [p.kicker, p.domain, statusLabel]
+          .filter(Boolean)
+          .join(" · ");
+        li.appendChild(meta);
 
-  /* ---- clock + dateline + footer year ---- */
-  function pad(n) { return (n < 10 ? "0" : "") + n; }
-  var clockEl = document.getElementById("clock");
-  function tick() {
-    if (!clockEl) return;
-    var d = new Date();
-    clockEl.textContent = pad(d.getHours()) + ":" + pad(d.getMinutes());
-  }
-  tick();
-  if (clockEl) setInterval(tick, 15000);
-
-  var now = new Date();
-  var datelineEl = document.getElementById("dateline");
-  if (datelineEl) {
-    var DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-    var MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    datelineEl.textContent = DAYS[now.getDay()] + " " + MONTHS[now.getMonth()] + " " + now.getDate();
-  }
-  var yearEl = document.getElementById("year");
-  if (yearEl) yearEl.textContent = String(now.getFullYear());
-
-  /* ---- build project windows from config ---- */
-  var windowsByName = {};
-
-  function buildWindow(p) {
-    var url = (p.url || "").trim();
-    var win = document.createElement("section");
-    win.className = "window project " + (url ? "is-linked" : "is-soon");
-    win.setAttribute("aria-label", p.name || "Project");
-
-    var bar = document.createElement("div");
-    bar.className = "titlebar";
-    bar.setAttribute("data-drag", "");
-    var close = document.createElement("span");
-    close.className = "closebox";
-    close.setAttribute("aria-hidden", "true");
-    var title = document.createElement("span");
-    title.className = "title";
-    title.textContent = (p.name || "Project").replace(/\s+/g, "") + ".app";
-    var zoom = document.createElement("span");
-    zoom.className = "zoombox";
-    zoom.setAttribute("aria-hidden", "true");
-    bar.appendChild(close);
-    bar.appendChild(title);
-    bar.appendChild(zoom);
-    win.appendChild(bar);
-
-    var body = document.createElement("div");
-    body.className = "window-body";
-
-    var kicker = document.createElement("p");
-    kicker.className = "project-kicker";
-    kicker.appendChild(document.createTextNode((p.kicker || "Project") + " · "));
-    var status = document.createElement("span");
-    var live = p.status === "live" && url;
-    status.className = live ? "status-live" : "status-soon";
-    status.textContent = live ? "Live" : "In progress";
-    kicker.appendChild(status);
-    body.appendChild(kicker);
-
-    var name = document.createElement("h3");
-    name.className = "project-name";
-    if (url) {
-      var link = document.createElement("a");
-      link.href = url;
-      link.textContent = p.name || "Untitled";
-      link.setAttribute("aria-label", p.name || "Untitled");
-      name.appendChild(link);
-    } else {
-      name.textContent = p.name || "Untitled";
+        if (p.blurb) {
+          var blurb = document.createElement("p");
+          blurb.className = "proj-blurb";
+          blurb.textContent = p.blurb;
+          li.appendChild(blurb);
+        }
+        list.appendChild(li);
+      });
     }
-    body.appendChild(name);
+  } catch (e) { /* static HTML stays in place */ }
 
-    if (p.blurb) {
-      var blurb = document.createElement("p");
-      blurb.className = "project-blurb";
-      blurb.textContent = p.blurb;
-      body.appendChild(blurb);
+  /* ---------- footer year ---------- */
+    var yearEl = document.getElementById("year");
+    if (yearEl) yearEl.textContent = String(new Date().getFullYear());
+
+    /* ---------- elsewhere (public links) ----------
+       The whole section stays hidden until at least one link is configured,
+       so no placeholder contact info is ever published. */
+    var LINK_LABELS = { x: "X", github: "GitHub", substack: "Substack", email: "Email" };
+    var elsewhere = document.getElementById("elsewhere");
+    var chipsWrap = document.getElementById("chips");
+    if (elsewhere && chipsWrap) {
+      var links = (window.SITE_CONFIG || {}).links || {};
+      var anyLink = false;
+      Object.keys(LINK_LABELS).forEach(function (key) {
+        var val = (links[key] || "").trim();
+        if (!val) return;
+        anyLink = true;
+        var chip = document.createElement("a");
+        chip.className = "chip";
+        chip.textContent = LINK_LABELS[key];
+        chip.href = key === "email" ? "mailto:" + val : val;
+        chipsWrap.appendChild(chip);
+      });
+      if (anyLink) elsewhere.hidden = false;
     }
 
-    var foot = document.createElement("div");
-    foot.className = "project-foot";
-    var domain = document.createElement("span");
-    domain.className = "project-domain";
-    domain.textContent = p.domain || "";
-    foot.appendChild(domain);
-    if (url) {
-      var open = document.createElement("a");
-      open.className = "project-open";
-      open.href = url;
-      open.setAttribute("aria-label", "Open " + (p.name || "project"));
-      open.textContent = "Open ↗";
-      foot.appendChild(open);
-    }
-    body.appendChild(foot);
-    win.appendChild(body);
-    return win;
-  }
+    /* ---------- the field: value-noise particle flow ---------- */
+  var canvas = document.getElementById("field");
+  var ctx = canvas.getContext("2d", { alpha: false });
+  if (!ctx) return;
 
-  var projects = cfg.projects || [];
-  if (desktop) {
-    projects.forEach(function (p) {
-      var win = buildWindow(p);
-      desktop.insertBefore(win, iconsNav);
-      windowsByName[p.name || ""] = win;
-    });
-  }
-
-  /* ---- desktop layout slots (wide screens; CSS stacks them otherwise) ---- */
-  var wide = window.matchMedia ? window.matchMedia("(min-width: 900px)") : null;
-
-  function layout() {
-    if (!desktop || !wide || !wide.matches) return;
-    var about = desktop.querySelector('[data-slot="about"]');
-    var contact = desktop.querySelector('[data-slot="contact"]');
-    var wins = projects.map(function (p) { return windowsByName[p.name || ""]; }).filter(Boolean);
-    var slots = [
-      { el: about, left: 0.04, top: 26 },
-      { el: wins[0], left: 0.40, top: 64 },
-      { el: wins[1], left: 0.16, top: 330 },
-      { el: wins[2], left: 0.55, top: 350 },
-      { el: contact, left: 0.68, top: 120 },
-    ];
-    var w = desktop.clientWidth;
-    slots.forEach(function (s) {
-      if (!s.el) return;
-      if (s.el.style.getPropertyValue("--placed")) return; // don't clobber a dragged window
-      s.el.style.left = Math.round(w * s.left) + "px";
-      s.el.style.top = s.top + "px";
-    });
-  }
-  layout();
-  if (wide && wide.addEventListener) wide.addEventListener("change", layout);
-  window.addEventListener("resize", function () {
-    if (wide && wide.matches) layout();
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var BG = "#05070c";
+  var FADE = "rgba(5, 7, 12, 0.035)";
+  var ALPHAS = [0.09, 0.14, 0.22];
+  var STROKES = ALPHAS.map(function (a) {
+    return "rgba(190, 225, 255, " + a + ")";
   });
 
-  /* ---- z-order + dragging ---- */
-  var zCounter = 10;
-  function raise(win) {
-    zCounter += 1;
-    win.style.zIndex = String(zCounter);
+  var W = 0, H = 0, dpr = 1;
+  var particles = [];
+  var buckets = [[], [], []];
+  var t = Math.random() * 400;
+  var running = false;
+  var rafId = 0;
+
+  /* deterministic-ish hashed value noise, seeded per load */
+  var seedX = Math.random() * 1024;
+  var seedY = Math.random() * 1024;
+  function hash(ix, iy) {
+    var n = (ix * 374761393 + iy * 668265263) | 0;
+    n = ((n ^ (n >>> 13)) * 1274126177) | 0;
+    return ((n ^ (n >>> 16)) >>> 0) / 4294967295;
+  }
+  function vnoise(x, y) {
+    var ix = Math.floor(x), iy = Math.floor(y);
+    var fx = x - ix, fy = y - iy;
+    var ux = fx * fx * (3 - 2 * fx);
+    var uy = fy * fy * (3 - 2 * fy);
+    var a = hash(ix, iy), b = hash(ix + 1, iy);
+    var c = hash(ix, iy + 1), d = hash(ix + 1, iy + 1);
+    return a + (b - a) * ux + (c - a) * uy + (a - b - c + d) * ux * uy;
+  }
+  function angleAt(x, y, tt) {
+    var s = 0.0010;
+    var n = 0.68 * vnoise(x * s + seedX + tt * 0.016, y * s + seedY - tt * 0.011)
+          + 0.24 * vnoise(x * s * 2.1 + seedY + 40 - tt * 0.021, y * s * 2.1 + seedX + tt * 0.014)
+          + 0.08 * (Math.sin(x * s * 0.55 + tt * 0.05) * Math.cos(y * s * 0.62 - tt * 0.04) * 0.5 + 0.5);
+    return n * Math.PI * 3.4;
   }
 
-  if (desktop && canDrag) {
-    desktop.classList.add("is-draggable");
-
-    desktop.querySelectorAll(".window").forEach(function (win) {
-      win.addEventListener("pointerdown", function () { raise(win); });
-    });
-
-    desktop.addEventListener("pointerdown", function (e) {
-      if (!wide || !wide.matches) return;
-      var bar = e.target.closest("[data-drag]");
-      if (!bar) return;
-      var win = bar.closest(".window");
-      if (!win) return;
-      e.preventDefault();
-      raise(win);
-      win.classList.add("is-dragging");
-      win.style.setProperty("--placed", "1");
-
-      var deskRect = desktop.getBoundingClientRect();
-      var winRect = win.getBoundingClientRect();
-      var offX = e.clientX - winRect.left;
-      var offY = e.clientY - winRect.top;
-
-      function move(ev) {
-        var left = ev.clientX - deskRect.left - offX;
-        var top = ev.clientY - deskRect.top - offY;
-        left = Math.max(-40, Math.min(left, deskRect.width - winRect.width + 40));
-        top = Math.max(0, Math.min(top, deskRect.height - 60));
-        win.style.left = left + "px";
-        win.style.top = top + "px";
-      }
-      function up() {
-        win.classList.remove("is-dragging");
-        document.removeEventListener("pointermove", move);
-        document.removeEventListener("pointerup", up);
-      }
-      document.addEventListener("pointermove", move);
-      document.addEventListener("pointerup", up);
-    });
+  /* pointer — gently bends the field */
+  var ptr = { x: -9999, y: -9999, k: 0, tk: 0, last: 0 };
+  function onMove(e) {
+    ptr.x = e.clientX;
+    ptr.y = e.clientY;
+    ptr.tk = 1;
+    ptr.last = performance.now();
   }
 
-  /* ---- desktop icons summon their window ---- */
-  if (iconsNav && desktop && wide && wide.matches) {
-    projects.forEach(function (p) {
-      var win = windowsByName[p.name || ""];
-      if (!win) return;
-      var btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "icon";
-      var pict = document.createElement("span");
-      pict.className = "pict";
-      pict.setAttribute("aria-hidden", "true");
-      var label = document.createElement("span");
-      label.className = "name";
-      label.textContent = (p.sym || p.name || "app").toLowerCase() + ".app";
-      btn.appendChild(pict);
-      btn.appendChild(label);
-      btn.setAttribute("aria-label", "Bring " + (p.name || "window") + " to front");
-      btn.addEventListener("click", function () {
-        raise(win);
-        if (!reduceMotion) {
-          win.classList.remove("is-summoned");
-          void win.offsetWidth; // restart the animation
-          win.classList.add("is-summoned");
-        }
-        win.scrollIntoView({ block: "nearest", behavior: reduceMotion ? "auto" : "smooth" });
-      });
-      iconsNav.appendChild(btn);
-    });
-    if (iconsNav.children.length) iconsNav.hidden = false;
+  function spawn(p) {
+    p.x = Math.random() * W;
+    p.y = Math.random() * H;
+    p.px = p.x;
+    p.py = p.y;
+    p.sp = 0.65 + Math.random() * 1.15;
+    p.life = 260 + Math.random() * 480;
   }
 
-  /* ---- elsewhere (public links) ----
-     The Contact window stays hidden until at least one link is configured,
-     so no placeholder contact info is ever published. */
-  var LINK_LABELS = { x: "X", github: "GitHub", substack: "Substack", email: "Email" };
-
-  var elsewhere = document.getElementById("elsewhere");
-  var chipsWrap = document.getElementById("chips");
-  if (elsewhere && chipsWrap) {
-    var links = cfg.links || {};
-    var any = false;
-    Object.keys(LINK_LABELS).forEach(function (key) {
-      var val = (links[key] || "").trim();
-      if (!val) return;
-      any = true;
-      var chip = document.createElement("a");
-      chip.className = "chip";
-      chip.textContent = LINK_LABELS[key];
-      chip.href = key === "email" ? "mailto:" + val : val;
-      chipsWrap.appendChild(chip);
-    });
-    if (any) {
-      elsewhere.hidden = false;
-      layout();
+  function buildParticles() {
+    var count = Math.min(2000, Math.max(400, Math.round((W * H) / 720)));
+    particles = [];
+    buckets = [[], [], []];
+    for (var i = 0; i < count; i++) {
+      var p = {};
+      spawn(p);
+      particles.push(p);
+      buckets[i % 3].push(p);
     }
   }
+
+  function resize() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = window.innerWidth;
+    H = window.innerHeight;
+    canvas.width = Math.round(W * dpr);
+    canvas.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.lineWidth = 1;
+    ctx.lineCap = "round";
+    ctx.fillStyle = BG;
+    ctx.fillRect(0, 0, W, H);
+    buildParticles();
+  }
+
+  function step(dt) {
+    t += 0.9 * dt;
+    ctx.fillStyle = FADE;
+    ctx.fillRect(0, 0, W, H);
+
+    ptr.k += (ptr.tk - ptr.k) * 0.06;
+    if (performance.now() - ptr.last > 2500) ptr.tk = 0;
+    var hasPtr = ptr.k > 0.01;
+    var R = 150, R2 = R * R;
+
+    for (var b = 0; b < 3; b++) {
+      var group = buckets[b];
+      ctx.strokeStyle = STROKES[b];
+      ctx.beginPath();
+      for (var i = 0; i < group.length; i++) {
+        var p = group[i];
+        var a = angleAt(p.x, p.y, t);
+        var vx = Math.cos(a) * p.sp * dt;
+        var vy = Math.sin(a) * p.sp * dt;
+
+        if (hasPtr) {
+          var dx = p.x - ptr.x, dy = p.y - ptr.y;
+          var d2 = dx * dx + dy * dy;
+          if (d2 < R2 && d2 > 0.01) {
+            var d = Math.sqrt(d2);
+            var f = (1 - d / R) * ptr.k * p.sp * dt;
+            vx += ((dx / d) * 0.35 - (dy / d) * 0.6) * f;
+            vy += ((dy / d) * 0.35 + (dx / d) * 0.6) * f;
+          }
+        }
+
+        p.px = p.x;
+        p.py = p.y;
+        p.x += vx;
+        p.y += vy;
+        p.life -= dt;
+
+        if (p.life <= 0 || p.x < -8 || p.x > W + 8 || p.y < -8 || p.y > H + 8) {
+          spawn(p);
+          continue;
+        }
+        ctx.moveTo(p.px, p.py);
+        ctx.lineTo(p.x, p.y);
+      }
+      ctx.stroke();
+    }
+  }
+
+  var lastTime = 0;
+  function frame(now) {
+    if (!running) return;
+    var dt = lastTime ? Math.min((now - lastTime) / 16.7, 2.2) : 1;
+    lastTime = now;
+    step(dt);
+    rafId = requestAnimationFrame(frame);
+  }
+  function start() {
+    if (running || reduced) return;
+    running = true;
+    lastTime = 0;
+    rafId = requestAnimationFrame(frame);
+  }
+  function stop() {
+    running = false;
+    cancelAnimationFrame(rafId);
+  }
+
+  function renderStatic() {
+    for (var i = 0; i < 300; i++) step(1);
+  }
+
+  resize();
+  if (reduced) {
+    renderStatic(); /* one beautiful frame, then nothing moves */
+  } else {
+    window.addEventListener("pointermove", onMove, { passive: true });
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden) stop();
+      else start();
+    });
+    start();
+  }
+
+  var resizeTimer = 0;
+  window.addEventListener("resize", function () {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function () {
+      resize();
+      if (reduced) renderStatic();
+    }, 150);
+  });
 })();

@@ -8,7 +8,7 @@
     name="description"
     content="Alex Corrino is a hedge fund CIO and former professional poker player. He builds tools and research around markets: Factor Watch, Memory Analyst, and Mind The Tape."
   />
-  <meta name="theme-color" content="#b7bdb1" />
+  <meta name="theme-color" content="#05070c" />
   <link rel="canonical" href="https://alexcorrino.com" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://alexcorrino.com" />
@@ -18,7 +18,7 @@
   <link rel="stylesheet" href="css/styles.css" />
   <link
     rel="icon"
-    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23b7bdb1'/%3E%3Crect x='14' y='22' width='72' height='56' fill='%23ffffff' stroke='%23141414' stroke-width='5'/%3E%3Crect x='14' y='22' width='72' height='14' fill='%23141414'/%3E%3Ctext x='50' y='68' font-family='monospace' font-weight='bold' font-size='28' fill='%23141414' text-anchor='middle'%3EAC%3C/text%3E%3C/svg%3E"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%2305070c'/%3E%3Ctext x='50' y='72' font-family='sans-serif' font-weight='700' font-size='56' fill='%23a8dcff' text-anchor='middle'%3EAC%3C/text%3E%3C/svg%3E"
   />
   <script type="application/ld+json">
   {
@@ -35,121 +35,68 @@
   }
   </script>
 </head>
-<body id="top">
-  <a class="skip-link" href="#projects">Skip to the work</a>
+<body>
+  <canvas id="field" aria-hidden="true"></canvas>
+  <div class="vignette" aria-hidden="true"></div>
 
-  <header class="menubar">
-    <span class="glyph">AC<span class="mark" aria-hidden="true">*</span> OS</span>
-    <nav aria-label="Primary">
-      <a href="#projects">Work</a>
-      <a href="#about-window">About</a>
-    </nav>
-    <span class="clock label"><span id="dateline"></span> <span id="clock" aria-hidden="true"></span></span>
-  </header>
+  <div class="content">
+    <main>
+      <section class="hero" aria-labelledby="site-title">
+        <header class="site-head">
+          <h1 id="site-title">Alex Corrino</h1>
+          <p class="role">Hedge Fund CIO &middot; Former Professional Poker Player</p>
+        </header>
 
-  <main id="projects" class="desktop" data-window-area>
-    <section id="about-window" class="window window-about" data-slot="about" aria-label="About Alex Corrino">
-      <div class="titlebar" data-drag>
-        <span class="closebox" aria-hidden="true"></span>
-        <span class="title">About.txt</span>
-        <span class="zoombox" aria-hidden="true"></span>
-      </div>
-      <div class="window-body">
-        <h1 class="nameplate">Alex Corrino</h1>
-        <p class="roles">Hedge Fund CIO · Former Professional Poker Player</p>
-        <div class="bio">
+        <div class="index">
+          <h2 class="vh">Projects</h2>
+          <!-- Static mirror of js/config.js — re-rendered from config when JS
+               runs; without JS this stands as-is. Keep in sync. -->
+          <ul id="projects">
+            <li class="proj">
+              <h3 class="proj-name"><a href="https://factorwatch.ai" aria-label="Factor Watch">Factor Watch</a></h3>
+              <p class="proj-meta">Daily Monitor &middot; factorwatch.ai &middot; Live</p>
+              <p class="proj-blurb">Daily factor internals over the FW 3000: point-in-time quintile portfolios, z-scored moves, rotation flags, breadth and seasonality. Updated through the session.</p>
+            </li>
+            <li class="proj">
+              <h3 class="proj-name"><a href="https://memoryanalyst.com" aria-label="Memory Analyst">Memory Analyst</a></h3>
+              <p class="proj-meta">Standing Thesis &middot; memoryanalyst.com &middot; Live</p>
+              <p class="proj-blurb">The AI memory thesis on annual rates. Yearly HBM demand is set to outrun global manufacturing capacity this decade. This site tracks the gap.</p>
+            </li>
+            <li class="proj">
+              <h3 class="proj-name"><a href="https://www.mindthetape.com" aria-label="Mind The Tape">Mind The Tape</a></h3>
+              <p class="proj-meta">Weekly Note &middot; mindthetape.com &middot; Live</p>
+              <p class="proj-blurb">A weekly read on global markets: price, flows and positioning. Fewer headlines, more signal.</p>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="about" aria-labelledby="about-h">
+        <h2 id="about-h">About</h2>
+        <div class="about-panel">
           <p>
             Alex Corrino is the name I publish under. I am the CIO of a hedge
             fund and a former professional poker player. Both jobs come down
             to the same thing: incomplete information, priced correctly.
           </p>
           <p>
-            The work on this desktop is public. A daily monitor of factor
-            internals, a standing thesis on AI memory supply, and a weekly
-            note on price, flows and positioning. No paywall, no newsletter
-            gate.
+            The work above is public. A daily monitor of factor internals, a
+            standing thesis on AI memory supply, and a weekly note on price,
+            flows and positioning. No paywall, no newsletter gate.
           </p>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <noscript>
-      <!-- Static mirror of js/config.js for visitors without JavaScript.
-           Keep in sync when projects change. -->
-      <ul class="projects">
-        <li class="window project is-linked">
-          <div class="titlebar">
-            <span class="closebox" aria-hidden="true"></span>
-            <span class="title">FactorWatch.app</span>
-            <span class="zoombox" aria-hidden="true"></span>
-          </div>
-          <div class="window-body">
-            <p class="project-kicker">Daily Monitor · <span class="status-live">Live</span></p>
-            <h3 class="project-name"><a href="https://factorwatch.ai" aria-label="Factor Watch">Factor Watch</a></h3>
-            <p class="project-blurb">Daily factor internals over the FW 3000: point-in-time quintile portfolios, z-scored moves, rotation flags, breadth and seasonality. Updated through the session.</p>
-            <div class="project-foot">
-              <span class="project-domain">factorwatch.ai</span>
-              <a class="project-open" href="https://factorwatch.ai" aria-label="Open Factor Watch">Open ↗</a>
-            </div>
-          </div>
-        </li>
-        <li class="window project is-linked">
-          <div class="titlebar">
-            <span class="closebox" aria-hidden="true"></span>
-            <span class="title">MemoryAnalyst.app</span>
-            <span class="zoombox" aria-hidden="true"></span>
-          </div>
-          <div class="window-body">
-            <p class="project-kicker">Standing Thesis · <span class="status-live">Live</span></p>
-            <h3 class="project-name"><a href="https://memoryanalyst.com" aria-label="Memory Analyst">Memory Analyst</a></h3>
-            <p class="project-blurb">The AI memory thesis on annual rates. Yearly HBM demand is set to outrun global manufacturing capacity this decade. This site tracks the gap.</p>
-            <div class="project-foot">
-              <span class="project-domain">memoryanalyst.com</span>
-              <a class="project-open" href="https://memoryanalyst.com" aria-label="Open Memory Analyst">Open ↗</a>
-            </div>
-          </div>
-        </li>
-        <li class="window project is-linked">
-          <div class="titlebar">
-            <span class="closebox" aria-hidden="true"></span>
-            <span class="title">MindTheTape.app</span>
-            <span class="zoombox" aria-hidden="true"></span>
-          </div>
-          <div class="window-body">
-            <p class="project-kicker">Weekly Note · <span class="status-live">Live</span></p>
-            <h3 class="project-name"><a href="https://www.mindthetape.com" aria-label="Mind The Tape">Mind The Tape</a></h3>
-            <p class="project-blurb">A weekly read on global markets: price, flows and positioning. Fewer headlines, more signal.</p>
-            <div class="project-foot">
-              <span class="project-domain">mindthetape.com</span>
-              <a class="project-open" href="https://www.mindthetape.com" aria-label="Open Mind The Tape">Open ↗</a>
-            </div>
-          </div>
-        </li>
-      </ul>
-    </noscript>
-
-    <nav id="icons" class="icons" aria-label="Desktop icons" hidden></nav>
-
-    <section id="elsewhere" class="window elsewhere" data-slot="contact" aria-label="Contact" hidden>
-      <div class="titlebar" data-drag>
-        <span class="closebox" aria-hidden="true"></span>
-        <span class="title">Contact.txt</span>
-        <span class="zoombox" aria-hidden="true"></span>
-      </div>
-      <div class="window-body">
+      <section id="elsewhere" class="about elsewhere" aria-labelledby="elsewhere-h" hidden>
+        <h2 id="elsewhere-h">Elsewhere</h2>
         <div id="chips" class="chips"></div>
-      </div>
-    </section>
-  </main>
+      </section>
+    </main>
 
-  <footer class="statusbar">
-    <span>© <span id="year">2026</span> Alex Corrino · AC OS 1.0</span>
-    <a href="#top">Back to top ↑</a>
-  </footer>
-
-  <nav class="switch" aria-label="Design variants">
-    Style: <span>OS</span> · <a href="/c">Canvas</a> · <a href="/g">Bento</a>
-  </nav>
+    <footer>
+      <p>&copy; <span id="year">2026</span> Alex Corrino</p>
+    </footer>
+  </div>
 
   <script src="js/config.js"></script>
   <script src="js/site.js"></script>
