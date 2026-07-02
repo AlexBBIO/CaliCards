@@ -25,7 +25,7 @@
     if (!projects.length) {
       var empty = document.createElement("p");
       empty.className = "projects-note";
-      empty.textContent = "Nothing public yet — first project lands here soon.";
+      empty.textContent = "Nothing public yet. First project lands here soon.";
       projectsWrap.appendChild(empty);
     }
     projects.forEach(function (p) {

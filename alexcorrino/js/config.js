@@ -19,7 +19,7 @@ window.SITE_CONFIG = {
       url: "https://factorwatch.ai",
       status: "live",
       blurb:
-        "Daily factor internals over the FW 3000 — point-in-time quintile portfolios, z-scored moves, rotation flags, breadth and seasonality, updated through the session.",
+        "Daily factor internals over the FW 3000: point-in-time quintile portfolios, z-scored moves, rotation flags, breadth and seasonality. Updated through the session.",
     },
     {
       name: "Memory Analyst",
@@ -27,7 +27,7 @@ window.SITE_CONFIG = {
       url: "https://memoryanalyst.com",
       status: "live",
       blurb:
-        "The AI memory thesis, on annual rates — why yearly HBM demand is on track to outrun what the world can actually manufacture this decade, and what it takes to close the gap.",
+        "The AI memory thesis on annual rates. Yearly HBM demand is set to outrun global manufacturing capacity this decade. This site tracks the gap.",
     },
     {
       name: "Mind The Tape",
@@ -35,7 +35,7 @@ window.SITE_CONFIG = {
       url: "https://www.mindthetape.com",
       status: "live",
       blurb:
-        "A running read on global markets — price, flows and positioning, roughly weekly. Fewer headlines, more signal.",
+        "A weekly read on global markets: price, flows and positioning. Fewer headlines, more signal.",
     },
     // Add future projects here, e.g.:
     // {
