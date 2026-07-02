@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alex Corrino | Hedge Fund CIO</title>
+  <meta
+    name="description"
+    content="Alex Corrino is a hedge fund CIO and former professional poker player. He builds tools and research around markets: Factor Watch, Memory Analyst, and Mind The Tape."
+  />
+  <meta name="theme-color" content="#08060f" />
+  <link rel="stylesheet" href="../css/fonts.css" />
+  <link
+    rel="icon"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%2308060f'/%3E%3Ctext x='50' y='72' font-family='sans-serif' font-weight='700' font-size='56' fill='%23ff8bd8' text-anchor='middle'%3EAC%3C/text%3E%3C/svg%3E"
+  />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { overflow-x: clip; }
+    html, body { background: #08060f; color: #e4def0; }
+    body {
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+      line-height: 1.6;
+      overflow-x: clip;
+      -webkit-font-smoothing: antialiased;
+      overflow-wrap: break-word;
+    }
+    a { color: inherit; text-decoration: none; }
+    :focus-visible { outline: 2px solid #ff8bd8; outline-offset: 3px; border-radius: 2px; }
+    ::selection { background: rgba(255, 139, 216, 0.3); }
+    .vh {
+      position: absolute; width: 1px; height: 1px;
+      margin: -1px; padding: 0; border: 0;
+      clip: rect(0 0 0 0); clip-path: inset(50%);
+      overflow: hidden; white-space: nowrap;
+    }
+
+    /* layers: crisp city + blurred neon bloom */
+    #field { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; background: #08060f; }
+    #bloom {
+      position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0;
+      pointer-events: none;
+      filter: blur(14px) saturate(1.5);
+      transform: scale(1.04);
+      mix-blend-mode: screen;
+    }
+    .vignette {
+      position: fixed; inset: 0; z-index: 1; pointer-events: none;
+      background: radial-gradient(120% 95% at 50% 42%, rgba(3, 2, 8, 0) 52%, rgba(3, 2, 8, 0.62) 100%);
+    }
+    .content { position: relative; z-index: 2; }
+
+    /* hero */
+    .hero {
+      min-height: 100vh; min-height: 100svh;
+      display: flex; flex-direction: column;
+      padding: clamp(1.4rem, 3.5vw, 2.6rem) clamp(1.25rem, 6vw, 6rem);
+    }
+    .site-head { display: flex; flex-wrap: wrap; column-gap: 0.6ch; align-items: baseline; }
+    .site-head h1, .site-head .role {
+      font-family: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+      font-size: 0.72rem; font-weight: 400;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      line-height: 1.8; color: #8d84a6;
+    }
+    .site-head h1 { color: #f6f1fc; }
+    .site-head .role::before { content: "\2014\00a0"; color: #8d84a6; }
+
+    .social { margin-top: 0.7rem; display: flex; flex-wrap: wrap; align-items: baseline; gap: 1.1rem; }
+    .social-label {
+      font-family: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #8d84a6;
+    }
+    .social[hidden] { display: none; }
+    .social a {
+      font-family: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: #ff8bd8;
+      padding: 0.15rem 0;
+      border-bottom: 1px solid #ff8bd855;
+      transition: color 0.25s ease, border-color 0.25s ease;
+    }
+    .social a:hover, .social a:focus-visible { color: #ffffff; border-bottom-color: #ffffff; }
+
+    /* project index */
+    .index { margin-top: auto; padding-bottom: clamp(2.5rem, 9vh, 7rem); max-width: 56rem; }
+    .proj { list-style: none; }
+    .proj + .proj { margin-top: clamp(1.6rem, 3.6vh, 2.6rem); }
+    .proj-name {
+      font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+      font-weight: 500;
+      font-size: clamp(1.6rem, 3.4vw, 2.6rem);
+      line-height: 1.15; letter-spacing: -0.01em;
+    }
+    .proj-name a, .proj-name .unlinked {
+      color: #efe8f8;
+      background-image: linear-gradient(#ff8bd8, #ff8bd8);
+      background-repeat: no-repeat; background-position: 0 100%; background-size: 0% 1px;
+      padding-bottom: 3px;
+      transition: color 0.35s ease, background-size 0.45s ease, text-shadow 0.35s ease;
+    }
+    .proj-meta {
+      font-family: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+      font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase;
+      color: #8d84a6; margin-top: 0.45rem;
+    }
+    .proj-blurb {
+      font-size: 0.86rem; line-height: 1.65; max-width: 42rem; margin-top: 0.4rem;
+      color: rgba(141, 132, 166, 0.66);
+      transition: color 0.35s ease;
+    }
+    .proj:hover .proj-name a, .proj:focus-within .proj-name a {
+      color: #ffffff; background-size: 100% 1px;
+      text-shadow: 0 0 24px rgba(255, 139, 216, 0.55);
+    }
+    .proj:hover .proj-blurb, .proj:focus-within .proj-blurb { color: #b0a7c6; }
+    @media (hover: none) { .proj-blurb { color: #a196ba; } }
+
+    /* about */
+    .about { padding: clamp(3rem, 10vh, 7rem) clamp(1.25rem, 6vw, 6rem) clamp(2rem, 6vh, 4rem); max-width: 60rem; }
+    .about h2 {
+      font-family: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+      font-size: 0.72rem; font-weight: 400; letter-spacing: 0.16em; text-transform: uppercase;
+      color: #8d84a6; margin-bottom: 1.1rem;
+    }
+    .about-panel {
+      max-width: 40rem; padding: clamp(1.4rem, 3vw, 2.2rem);
+      background: rgba(10, 7, 20, 0.9);
+      border: 1px solid rgba(255, 175, 228, 0.12);
+      border-radius: 4px;
+    }
+    @supports (backdrop-filter: blur(12px)) or (-webkit-backdrop-filter: blur(12px)) {
+      .about-panel { background: rgba(10, 7, 20, 0.62); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
+    }
+    .about-panel p { font-size: 0.95rem; color: #beb3d3; }
+    .about-panel p + p { margin-top: 1em; }
+    .about-panel .about-link { color: #ff8bd8; border-bottom: 1px solid #ff8bd855; }
+    .about-panel .about-link:hover, .about-panel .about-link:focus-visible { color: #ffffff; border-bottom-color: #ffffff; }
+
+    /* footer */
+    footer {
+      padding: 1.5rem clamp(1.25rem, 6vw, 6rem) 5.5rem;
+      font-family: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+      font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase; color: #8d84a6;
+    }
+    footer .fine {
+      max-width: 46rem;
+      margin-bottom: 0.9rem;
+      text-transform: none;
+      letter-spacing: 0.02em;
+      font-size: 0.66rem;
+      line-height: 1.7;
+      color: rgba(141, 132, 166, 0.78);
+    }
+
+    /* scene switcher */
+    .scene-pill {
+      position: fixed; right: 1rem; bottom: 1rem; z-index: 10;
+      display: flex; align-items: baseline; gap: 0.7ch;
+      padding: 0.45rem 0.85rem;
+      background: rgba(8, 6, 15, 0.85);
+      border: 1px solid rgba(255, 175, 228, 0.25);
+      border-radius: 999px;
+      font-family: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+      font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: #8d84a6;
+    }
+    .scene-pill a { color: #d9cfe8; transition: color 0.25s ease; }
+    .scene-pill a:hover, .scene-pill a:focus-visible { color: #ff8bd8; }
+    .scene-pill [aria-current="page"] { color: #ffffff; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="field" aria-hidden="true"></canvas>
+  <canvas id="bloom" aria-hidden="true"></canvas>
+  <div class="vignette" aria-hidden="true"></div>
+
+  <div class="content">
+    <main>
+      <section class="hero" aria-labelledby="site-title">
+        <header class="site-head">
+          <h1 id="site-title">Alex Corrino</h1>
+          <p class="role">Hedge Fund CIO &middot; Former Professional Poker Player</p>
+        </header>
+        <nav id="social" class="social" aria-label="Elsewhere" hidden>
+          <span class="social-label">Find me on:</span>
+        </nav>
+
+        <div class="index">
+          <h2 class="vh">Projects</h2>
+          <!-- Static mirror of ../js/config.js — re-rendered from config when JS runs. -->
+          <ul id="projects">
+            <li class="proj">
+              <h3 class="proj-name"><a href="https://factorwatch.ai" aria-label="Factor Watch">Factor Watch</a></h3>
+              <p class="proj-meta">Daily Monitor &middot; factorwatch.ai &middot; Live</p>
+              <p class="proj-blurb">Daily factor internals over the FW 3000: point-in-time quintile portfolios, z-scored moves, rotation flags, breadth and seasonality. Updated through the session.</p>
+            </li>
+            <li class="proj">
+              <h3 class="proj-name"><a href="https://memoryanalyst.com" aria-label="Memory Analyst">Memory Analyst</a></h3>
+              <p class="proj-meta">Standing Thesis &middot; memoryanalyst.com &middot; Live</p>
+              <p class="proj-blurb">The AI memory thesis on annual rates. Yearly HBM demand is set to outrun global manufacturing capacity this decade. This site tracks the gap.</p>
+            </li>
+            <li class="proj">
+              <h3 class="proj-name"><a href="https://www.mindthetape.com" aria-label="Mind The Tape">Mind The Tape</a></h3>
+              <p class="proj-meta">Weekly Note &middot; mindthetape.com &middot; Live</p>
+              <p class="proj-blurb">A weekly read on global markets: price, flows and positioning. Fewer headlines, more signal.</p>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="about" aria-labelledby="about-h">
+        <h2 id="about-h">About</h2>
+        <div class="about-panel">
+          <p>
+            Alex Corrino is the name I publish under. I am the CIO of a hedge
+            fund and a WSOP bracelet-winning former professional poker player.
+            Both jobs come down to the same thing: pricing incomplete
+            information and taking risk.
+          </p>
+          <p>
+            The links above are my public work and research. Check them out.
+            Questions about them? DM me on
+            <a class="about-link" href="https://x.com/alexcorrino">X</a>.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p class="fine">
+        Nothing on this site or the sites it links to is investment advice,
+        an offer, or a solicitation of any kind. Views are my own and not
+        those of any fund or employer. Positions may exist or change without
+        notice. Do your own work.
+      </p>
+      <p>&copy; <span id="year">2026</span> Alex Corrino</p>
+    </footer>
+  </div>
+
+  <nav class="scene-pill" aria-label="Scene variants">
+    <span>Scene:</span>
+    <a href="/">Wind</a>
+    <span aria-hidden="true">&middot;</span>
+    <a href="/s">Space</a>
+    <span aria-hidden="true">&middot;</span>
+    <a href="/i">Ice</a>
+    <span aria-hidden="true">&middot;</span>
+    <span aria-current="page">City</span>
+  </nav>
+
+  <script src="../js/config.js"></script>
+  <script>
+    (function () {
+      "use strict";
+
+      /* ---------- project index: re-render from config ---------- */
+      try {
+        var cfg = window.SITE_CONFIG;
+        if (cfg && cfg.projects && cfg.projects.length) {
+          var list = document.getElementById("projects");
+          list.textContent = "";
+          cfg.projects.forEach(function (p) {
+            var li = document.createElement("li");
+            li.className = "proj";
+            var h3 = document.createElement("h3");
+            h3.className = "proj-name";
+            if (p.url) {
+              var a = document.createElement("a");
+              a.href = p.url;
+              a.setAttribute("aria-label", p.name);
+              a.textContent = p.name;
+              h3.appendChild(a);
+            } else {
+              var s = document.createElement("span");
+              s.className = "unlinked";
+              s.textContent = p.name;
+              h3.appendChild(s);
+            }
+            li.appendChild(h3);
+            var meta = document.createElement("p");
+            meta.className = "proj-meta";
+            var statusLabel = p.status === "live" && p.url ? "Live" : "In progress";
+            meta.textContent = [p.kicker, p.domain, statusLabel].filter(Boolean).join(" · ");
+            li.appendChild(meta);
+            if (p.blurb) {
+              var blurb = document.createElement("p");
+              blurb.className = "proj-blurb";
+              blurb.textContent = p.blurb;
+              li.appendChild(blurb);
+            }
+            list.appendChild(li);
+          });
+        }
+      } catch (e) { /* static HTML stays in place */ }
+
+      var yearEl = document.getElementById("year");
+      if (yearEl) yearEl.textContent = String(new Date().getFullYear());
+
+      /* social links under the top bar: hidden until configured */
+      try {
+        var LINK_LABELS = { x: "X", github: "GitHub", substack: "Substack", email: "Email" };
+        var socialNav = document.getElementById("social");
+        if (socialNav) {
+          var links = (window.SITE_CONFIG || {}).links || {};
+          var anyLink = false;
+          Object.keys(LINK_LABELS).forEach(function (key) {
+            var val = (links[key] || "").trim();
+            if (!val) return;
+            anyLink = true;
+            var a = document.createElement("a");
+            a.appendChild(document.createTextNode(LINK_LABELS[key] + " "));
+            var arr = document.createElement("span");
+            arr.setAttribute("aria-hidden", "true");
+            arr.textContent = "↗";
+            a.appendChild(arr);
+            a.href = key === "email" ? "mailto:" + val : val;
+            socialNav.appendChild(a);
+          });
+          if (anyLink) socialNav.hidden = false;
+        }
+      } catch (e) { /* nav stays hidden */ }
+
+      /* ---------- night drive ----------
+         The city slides past the window in three parallax depths, drawn
+         crisp on #field while neon signs, reflections and traffic bloom on
+         a low-resolution #bloom canvas that CSS blurs into glow. The
+         pointer leans the drive: horizontal position eases the speed,
+         vertical shifts the horizon. */
+      var canvas = document.getElementById("field");
+      var ctx = canvas.getContext("2d", { alpha: false });
+      var bloomCanvas = document.getElementById("bloom");
+      var bctx = bloomCanvas ? bloomCanvas.getContext("2d") : null;
+      if (!ctx || !bctx) return;
+
+      var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      var BSCALE = 0.3;
+      var W = 0, H = 0, BW = 0, BH = 0, dpr = 1;
+      var t = 0;
+      var running = false;
+      var rafId = 0;
+
+      var NEON = ["#ff2fa0", "#22e6ff", "#ffb300", "#7dff6a", "#b07bff", "#ff5c5c"];
+      var WINDOW_TINTS = ["255, 217, 160", "126, 231, 255", "255, 154, 213"];
+
+      /* parallax layers: [speed, fill, minH, maxH, minW, maxW, windows?, signs?] */
+      var LAYER_SPECS = [
+        { sp: 0.22, fill: "#221a3a", hMin: 0.18, hMax: 0.42, wMin: 50, wMax: 130, win: 0.13, winA: 0.2, signs: false },
+        { sp: 0.65, fill: "#151028", hMin: 0.26, hMax: 0.55, wMin: 60, wMax: 150, win: 0.2, winA: 0.42, signs: false },
+        { sp: 1.55, fill: "#090614", hMin: 0.36, hMax: 0.72, wMin: 90, wMax: 210, win: 0.17, winA: 0.62, signs: true },
+      ];
+      var layers = [];
+      var traffic = [];
+
+      var ptr = { sx: 0, sy: 0, tx: 0, ty: 0 };
+      function onMove(e) {
+        ptr.tx = (e.clientX / W) * 2 - 1;
+        ptr.ty = (e.clientY / H) * 2 - 1;
+      }
+
+      function makeBuilding(spec, x) {
+        var w = spec.wMin + Math.random() * (spec.wMax - spec.wMin);
+        var h = (spec.hMin + Math.random() * (spec.hMax - spec.hMin)) * H;
+        var b = { x: x, w: w, h: h, wins: [], sign: null };
+        /* lit windows on a loose grid */
+        var cols = Math.max(2, Math.floor(w / 16));
+        var rows = Math.max(3, Math.floor(h / 22));
+        for (var c = 0; c < cols; c++) {
+          for (var r = 0; r < rows; r++) {
+            if (Math.random() < spec.win) {
+              b.wins.push({
+                ox: 6 + c * 16,
+                oy: 8 + r * 22,
+                tint: WINDOW_TINTS[(Math.random() * WINDOW_TINTS.length) | 0],
+                fl: Math.random() < 0.06 ? Math.random() * 6.28 : -1,
+              });
+            }
+          }
+        }
+        /* a neon sign on some foreground buildings */
+        if (spec.signs && Math.random() < 0.72 && w > 70) {
+          var vertical = Math.random() < 0.5;
+          b.sign = {
+            color: NEON[(Math.random() * NEON.length) | 0],
+            ox: 12 + Math.random() * (w - 34),
+            oy: 14 + Math.random() * Math.max(10, h * 0.35),
+            w: vertical ? 7 : 26 + Math.random() * 46,
+            h: vertical ? 26 + Math.random() * 60 : 7,
+            ph: Math.random() * 6.28,
+            buzz: Math.random() < 0.35,
+          };
+        }
+        return b;
+      }
+
+      function fillLayer(spec) {
+        var arr = [];
+        var x = -60;
+        while (x < W + 120) {
+          var b = makeBuilding(spec, x);
+          arr.push(b);
+          x += b.w + 1 + Math.random() * 8;
+        }
+        return arr;
+      }
+
+      function buildCity() {
+        layers = LAYER_SPECS.map(fillLayer);
+        traffic = [];
+        for (var i = 0; i < 7; i++) {
+          traffic.push({
+            x: Math.random() * W,
+            red: Math.random() < 0.55,
+            sp: 2.2 + Math.random() * 2.4,
+            drift: Math.random() * 6.28,
+          });
+        }
+      }
+
+      function streetY() { return H * 0.78 + ptr.sy * 14; }
+
+      function step(dt) {
+        t += dt;
+        ptr.sx += (ptr.tx - ptr.sx) * 0.03;
+        ptr.sy += (ptr.ty - ptr.sy) * 0.03;
+        var lean = 1 + ptr.sx * 0.3; /* lean into the drive */
+
+        var sy = streetY();
+
+        /* sky */
+        var sky = ctx.createLinearGradient(0, 0, 0, sy);
+        sky.addColorStop(0, "#08060f");
+        sky.addColorStop(0.62, "#0d0819");
+        sky.addColorStop(1, "#1b0f2e");
+        ctx.fillStyle = sky;
+        ctx.fillRect(0, 0, W, sy);
+        /* street */
+        var st = ctx.createLinearGradient(0, sy, 0, H);
+        st.addColorStop(0, "#0a0714");
+        st.addColorStop(1, "#05030a");
+        ctx.fillStyle = st;
+        ctx.fillRect(0, sy, W, H - sy);
+
+        bctx.clearRect(0, 0, BW, BH);
+
+        /* neon haze where the city meets the sky */
+        var hz = sy * BSCALE;
+        var haze = bctx.createLinearGradient(0, hz - 26, 0, hz);
+        haze.addColorStop(0, "rgba(255, 47, 160, 0)");
+        haze.addColorStop(1, "rgba(178, 90, 255, 0.16)");
+        bctx.fillStyle = haze;
+        bctx.fillRect(0, hz - 26, BW, 26);
+
+        /* city layers, back to front */
+        for (var li = 0; li < layers.length; li++) {
+          var spec = LAYER_SPECS[li];
+          var arr = layers[li];
+          var speed = spec.sp * lean * dt;
+          var rightEdge = 0;
+          for (var i = 0; i < arr.length; i++) {
+            var b = arr[i];
+            if (!reduced) b.x -= speed;
+            rightEdge = Math.max(rightEdge, b.x + b.w);
+          }
+          /* recycle buildings that left the screen */
+          for (var i2 = arr.length - 1; i2 >= 0; i2--) {
+            if (arr[i2].x + arr[i2].w < -80) {
+              arr.splice(i2, 1);
+            }
+          }
+          while (rightEdge < W + 100) {
+            var nb = makeBuilding(spec, rightEdge + 1 + Math.random() * 8);
+            arr.push(nb);
+            rightEdge = nb.x + nb.w;
+          }
+
+          for (var j = 0; j < arr.length; j++) {
+            var bd = arr[j];
+            var top = sy - bd.h;
+            ctx.fillStyle = spec.fill;
+            ctx.fillRect(bd.x, top, bd.w, bd.h);
+
+            /* windows */
+            for (var k = 0; k < bd.wins.length; k++) {
+              var wn = bd.wins[k];
+              if (wn.oy > bd.h - 10 || wn.ox > bd.w - 10) continue;
+              var a = spec.winA;
+              if (wn.fl >= 0) a *= 0.55 + 0.45 * Math.sin(t * 0.11 + wn.fl) > 0.6 ? 1 : 0.15;
+              ctx.fillStyle = "rgba(" + wn.tint + ", " + a.toFixed(3) + ")";
+              ctx.fillRect(bd.x + wn.ox, top + wn.oy, 5, 8);
+            }
+
+            /* neon sign: crisp core + bloom + reflection */
+            if (bd.sign) {
+              var sg = bd.sign;
+              var sx = bd.x + sg.ox, syy = top + sg.oy;
+              var flick = 1;
+              if (sg.buzz) {
+                var buzz = Math.sin(t * 0.9 + sg.ph) + Math.sin(t * 2.3 + sg.ph * 2);
+                flick = buzz < -1.55 ? 0.25 : 1;
+              }
+              ctx.fillStyle = sg.color;
+              ctx.globalAlpha = 0.92 * flick;
+              ctx.fillRect(sx, syy, sg.w, sg.h);
+              ctx.globalAlpha = 1;
+
+              bctx.fillStyle = sg.color;
+              bctx.globalAlpha = 0.8 * flick;
+              bctx.fillRect(sx * BSCALE - 2, syy * BSCALE - 2, sg.w * BSCALE + 4, sg.h * BSCALE + 4);
+              /* wet-street reflection: a smeared streak below the street line */
+              var rx = (sx + sg.w / 2) * BSCALE;
+              var rTop = sy * BSCALE;
+              var rLen = (12 + sg.h * 1.6) * BSCALE + 8;
+              var wob = Math.sin(t * 0.05 + sg.ph) * 1.5;
+              var rg = bctx.createLinearGradient(0, rTop, 0, rTop + rLen);
+              rg.addColorStop(0, sg.color);
+              rg.addColorStop(1, "rgba(0,0,0,0)");
+              bctx.fillStyle = rg;
+              bctx.globalAlpha = 0.38 * flick;
+              bctx.fillRect(rx - 1.5 + wob, rTop, 3, rLen);
+              bctx.globalAlpha = 1;
+            }
+          }
+        }
+
+        /* traffic: distant tail lights and headlights along the street */
+        for (var ti = 0; ti < traffic.length; ti++) {
+          var car = traffic[ti];
+          if (!reduced) car.x += (car.red ? -1 : 1) * car.sp * lean * dt;
+          if (car.x < -30) car.x = W + 30;
+          if (car.x > W + 30) car.x = -30;
+          var cy = sy - 3 + Math.sin(t * 0.02 + car.drift) * 1.5;
+          bctx.fillStyle = car.red ? "#ff3b30" : "#ffe9c4";
+          bctx.globalAlpha = 0.85;
+          bctx.beginPath();
+          bctx.arc(car.x * BSCALE, cy * BSCALE, car.red ? 1.6 : 2, 0, 6.2832);
+          bctx.fill();
+          bctx.globalAlpha = 1;
+        }
+      }
+
+      function resize() {
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        W = window.innerWidth;
+        H = window.innerHeight;
+        canvas.width = Math.round(W * dpr);
+        canvas.height = Math.round(H * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        BW = Math.max(120, Math.round(W * BSCALE));
+        BH = Math.max(90, Math.round(H * BSCALE));
+        bloomCanvas.width = BW;
+        bloomCanvas.height = BH;
+        buildCity();
+        step(0);
+      }
+
+      var lastTime = 0;
+      function frame(now) {
+        if (!running) return;
+        var dt = lastTime ? Math.min((now - lastTime) / 16.7, 2.2) : 1;
+        lastTime = now;
+        step(dt);
+        rafId = requestAnimationFrame(frame);
+      }
+      function start() {
+        if (running || reduced) return;
+        running = true;
+        lastTime = 0;
+        rafId = requestAnimationFrame(frame);
+      }
+      function stop() {
+        running = false;
+        cancelAnimationFrame(rafId);
+      }
+
+      resize();
+      if (!reduced) {
+        window.addEventListener("pointermove", onMove, { passive: true });
+        document.addEventListener("visibilitychange", function () {
+          if (document.hidden) stop();
+          else start();
+        });
+        start();
+      }
+
+      var resizeTimer = 0;
+      window.addEventListener("resize", function () {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(resize, 150);
+      });
+    })();
+  </script>
+</body>
+</html>

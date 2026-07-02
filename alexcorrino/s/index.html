@@ -260,6 +260,8 @@
     <span aria-current="page">Space</span>
     <span aria-hidden="true">&middot;</span>
     <a href="/i">Ice</a>
+    <span aria-hidden="true">&middot;</span>
+    <a href="/n">City</a>
   </nav>
 
   <script src="../js/config.js"></script>
@@ -355,9 +357,9 @@
 
       /* layer spec: density divisor, radius, base alpha, drift speed, parallax reach */
       var SPEC = [
-        { div: 4200, r: 0.6, a: 0.5, drift: 0.010, par: 5, tint: "255, 255, 255" },
-        { div: 9500, r: 0.9, a: 0.75, drift: 0.022, par: 11, tint: "220, 228, 255" },
-        { div: 24000, r: 1.4, a: 1.0, drift: 0.045, par: 19, tint: "255, 244, 214" },
+        { div: 4200, r: 0.6, a: 0.5, drift: 0.055, par: 5, tint: "255, 255, 255" },
+        { div: 9500, r: 0.9, a: 0.75, drift: 0.16, par: 11, tint: "220, 228, 255" },
+        { div: 24000, r: 1.4, a: 1.0, drift: 0.34, par: 19, tint: "255, 244, 214" },
       ];
 
       var ptr = { x: 0.0, y: 0.0, tx: 0.0, ty: 0.0 };
@@ -461,6 +463,10 @@
         /* galaxies: soft tilted smudges, drifting with the far layer */
         for (var gi = 0; gi < galaxies.length; gi++) {
           var gal = galaxies[gi];
+          if (!reduced) {
+            gal.x -= 0.03 * dt;
+            if (gal.x < -80) { gal.x = W + 80 + Math.random() * W * 0.6; gal.y = Math.random() * H * 0.8; }
+          }
           ctx.save();
           ctx.translate(gal.x - ptr.x * 5, gal.y - ptr.y * 3);
           ctx.rotate(gal.rot);
@@ -502,8 +508,16 @@
           ctx.fill();
         }
 
-        /* the ringed planet, drifting gently with the mid layer */
+        /* the ringed planet slides past the window; a new one arrives later */
         if (planet) {
+          if (!reduced) {
+            planet.x -= 0.11 * dt;
+            if (planet.x < -planet.r * 4) {
+              planet.x = W + planet.r * 4 + Math.random() * W * 1.4;
+              planet.y = H * (0.14 + Math.random() * 0.3);
+              planet.r = Math.max(26, Math.min(52, W * (0.022 + Math.random() * 0.018)));
+            }
+          }
           var px = planet.x - ptr.x * 15;
           var py = planet.y - ptr.y * 9 + Math.sin(t * 0.004) * 4;
           var pr = planet.r;

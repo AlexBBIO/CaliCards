@@ -284,6 +284,8 @@
     <a href="/s">Space</a>
     <span aria-hidden="true">&middot;</span>
     <span aria-current="page">Ice</span>
+    <span aria-hidden="true">&middot;</span>
+    <a href="/n">City</a>
   </nav>
 
   <script src="../js/config.js"></script>
@@ -413,6 +415,8 @@
       function onMove(e) {
         ptr.x = e.clientX * SCALE;
         ptr.y = e.clientY * SCALE;
+        ptr.dx = e.clientX;
+        ptr.dy = e.clientY;
         ptr.tk = 1;
         ptr.last = performance.now();
       }
@@ -435,6 +439,7 @@
         if (f.deep) { f.r *= 1.7; f.base *= 0.6; }
         f.ph = Math.random() * Math.PI * 2;
         f.wig = 0.14 + Math.random() * 0.08;    /* tail-beat rate */
+        f.curious = Math.random() < 0.5;        /* investigates lights on the ice */
       }
 
       function buildFish() {
@@ -483,6 +488,18 @@
         var R = 240 * SCALE * 2.6, R2 = R * R;
 
         octx.globalCompositeOperation = "lighter";
+
+        /* light bleeding through the ice under the hand */
+        if (ptr.k > 0.01) {
+          var pg = octx.createRadialGradient(ptr.x, ptr.y, 0, ptr.x, ptr.y, 36);
+          pg.addColorStop(0, "rgba(215, 240, 255, " + (0.022 * ptr.k).toFixed(4) + ")");
+          pg.addColorStop(1, "rgba(215, 240, 255, 0)");
+          octx.fillStyle = pg;
+          octx.beginPath();
+          octx.arc(ptr.x, ptr.y, 36, 0, 6.2832);
+          octx.fill();
+        }
+
         for (var i = 0; i < fish.length; i++) {
           var f = fish[i];
 
@@ -544,11 +561,17 @@
             if (hasPtr) {
               var dx = ptr.x - f.x, dy = ptr.y - f.y;
               var d2 = dx * dx + dy * dy;
-              if (d2 < R2 && d2 > 60) {
+              if (d2 < R2 && d2 > 20) {
                 var d = Math.sqrt(d2);
-                var prox = (1 - d / R) * 0.3 * ptr.k;
-                vx += (dx / d) * prox;
-                vy += (dy / d) * prox;
+                var toward = Math.atan2(dy, dx);
+                var wgt = (f.curious ? 0.9 : 0.25) * (1 - d / R) * ptr.k;
+                if (f.curious && d < 46) {
+                  /* close in: circle the light instead of bumping it */
+                  toward += 1.35;
+                  wgt = 0.95 * ptr.k;
+                }
+                vx += Math.cos(toward) * wgt;
+                vy += Math.sin(toward) * wgt;
               }
             }
             target = Math.atan2(vy, vx);
@@ -591,6 +614,25 @@
 
         /* ice glints: brief crisp sparkles on their own unblurred canvas */
         if (gctx) gctx.clearRect(0, 0, W, H);
+
+        /* the hand-light glow on the ice surface */
+        if (gctx && ptr.k > 0.01 && ptr.dx !== undefined) {
+          var hg = gctx.createRadialGradient(ptr.dx, ptr.dy, 0, ptr.dx, ptr.dy, 120);
+          hg.addColorStop(0, "rgba(208, 236, 255, " + (0.1 * ptr.k).toFixed(4) + ")");
+          hg.addColorStop(0.5, "rgba(190, 226, 252, " + (0.04 * ptr.k).toFixed(4) + ")");
+          hg.addColorStop(1, "rgba(190, 226, 252, 0)");
+          gctx.fillStyle = hg;
+          gctx.beginPath();
+          gctx.arc(ptr.dx, ptr.dy, 120, 0, 6.2832);
+          gctx.fill();
+          var hc = gctx.createRadialGradient(ptr.dx, ptr.dy, 0, ptr.dx, ptr.dy, 34);
+          hc.addColorStop(0, "rgba(235, 248, 255, " + (0.09 * ptr.k).toFixed(4) + ")");
+          hc.addColorStop(1, "rgba(235, 248, 255, 0)");
+          gctx.fillStyle = hc;
+          gctx.beginPath();
+          gctx.arc(ptr.dx, ptr.dy, 34, 0, 6.2832);
+          gctx.fill();
+        }
         if (!reduced && gctx) {
           if (glints.length < 22 && Math.random() < 0.3) {
             var host = fish[(Math.random() * fish.length) | 0];
