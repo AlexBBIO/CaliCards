@@ -175,6 +175,24 @@
     .scene-pill a:hover, .scene-pill a:focus-visible { color: #ff8bd8; }
     .scene-pill [aria-current="page"] { color: #ffffff; }
 
+    /* lofi beat toggle */
+    .beat-pill {
+      position: fixed; left: 1rem; bottom: 1rem; z-index: 10;
+      padding: 0.45rem 0.85rem;
+      background: rgba(8, 6, 15, 0.85);
+      border: 1px solid rgba(255, 175, 228, 0.25);
+      border-radius: 999px;
+      font-family: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+      font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase;
+      color: #d9cfe8; cursor: pointer;
+      transition: color 0.25s ease, border-color 0.25s ease;
+    }
+    .beat-pill:hover, .beat-pill:focus-visible { color: #ff8bd8; }
+    .beat-pill[aria-pressed="true"] { color: #ffffff; border-color: rgba(255, 139, 216, 0.6); }
+    @media (max-width: 540px) {
+      .beat-pill { left: auto; right: 1rem; bottom: 3.4rem; }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
         transition-duration: 0.01ms !important;
@@ -251,6 +269,8 @@
       <p>&copy; <span id="year">2026</span> Alex Corrino</p>
     </footer>
   </div>
+
+  <button class="beat-pill" id="beat" type="button" aria-pressed="false">&#9834; Lofi: Off</button>
 
   <nav class="scene-pill" aria-label="Scene variants">
     <span>Scene:</span>
@@ -359,9 +379,9 @@
 
       /* parallax layers: [speed, fill, minH, maxH, minW, maxW, windows?, signs?] */
       var LAYER_SPECS = [
-        { sp: 0.22, fill: "#221a3a", hMin: 0.18, hMax: 0.42, wMin: 50, wMax: 130, win: 0.13, winA: 0.2, signs: false },
-        { sp: 0.65, fill: "#151028", hMin: 0.26, hMax: 0.55, wMin: 60, wMax: 150, win: 0.2, winA: 0.42, signs: false },
-        { sp: 1.55, fill: "#090614", hMin: 0.36, hMax: 0.72, wMin: 90, wMax: 210, win: 0.17, winA: 0.62, signs: true },
+        { sp: 0.1, fill: "#221a3a", hMin: 0.18, hMax: 0.42, wMin: 50, wMax: 130, win: 0.13, winA: 0.2, signs: false },
+        { sp: 0.3, fill: "#151028", hMin: 0.26, hMax: 0.55, wMin: 60, wMax: 150, win: 0.2, winA: 0.42, signs: false },
+        { sp: 0.7, fill: "#090614", hMin: 0.36, hMax: 0.72, wMin: 90, wMax: 210, win: 0.17, winA: 0.62, signs: true },
       ];
       var layers = [];
       var traffic = [];
@@ -467,7 +487,7 @@
           traffic.push({
             x: Math.random() * W,
             red: Math.random() < 0.55,
-            sp: 2.2 + Math.random() * 2.4,
+            sp: 1.1 + Math.random() * 1.2,
             drift: Math.random() * 6.28,
           });
         }
@@ -478,7 +498,7 @@
       function spawnSpinner() {
         var ltr = Math.random() < 0.5;
         var sc = 0.9 + Math.random() * 1.1; /* nearer cars are bigger, faster */
-        var sp = (1.4 + Math.random() * 1.4) * sc;
+        var sp = (0.9 + Math.random() * 0.9) * sc;
         spinners.push({
           x: ltr ? -60 * sc : W + 60 * sc,
           y: H * (0.07 + Math.random() * 0.3),
@@ -811,6 +831,178 @@
         clearTimeout(resizeTimer);
         resizeTimer = setTimeout(resize, 150);
       });
+
+      /* ---------- lofi beat: synthesized in-page, opt-in ---------- */
+      (function () {
+        var btn = document.getElementById("beat");
+        var AC = window.AudioContext || window.webkitAudioContext;
+        if (!btn) return;
+        if (!AC) { btn.hidden = true; return; }
+
+        var actx = null, master = null, noiseBuf = null;
+        var playing = false, timer = 0, nextT = 0, stepIx = 0;
+
+        var BPM = 72, SPB = 60 / BPM, SWING = 0.09 * SPB;
+        /* Fmaj7 - Em7 - Dm7 - Cmaj7, one bar each; roots for the bass */
+        var CHORDS = [
+          { root: 41, notes: [53, 57, 60, 64] },
+          { root: 40, notes: [52, 55, 59, 62] },
+          { root: 38, notes: [50, 53, 57, 60] },
+          { root: 36, notes: [48, 52, 55, 59] },
+        ];
+        var PENTA = [72, 74, 76, 79, 81];
+        function hz(m) { return 440 * Math.pow(2, (m - 69) / 12); }
+
+        function ensureCtx() {
+          if (actx) return;
+          actx = new AC();
+          master = actx.createGain();
+          master.gain.value = 0;
+          var lp = actx.createBiquadFilter();
+          lp.type = "lowpass";
+          lp.frequency.value = 3400;
+          master.connect(lp);
+          lp.connect(actx.destination);
+          /* shared noise for drums */
+          var nl = actx.sampleRate;
+          noiseBuf = actx.createBuffer(1, nl, actx.sampleRate);
+          var nd = noiseBuf.getChannelData(0);
+          for (var i = 0; i < nl; i++) nd[i] = Math.random() * 2 - 1;
+          /* vinyl bed: faint hiss with sparse pops, looped */
+          var vl = actx.sampleRate * 2;
+          var vb = actx.createBuffer(1, vl, actx.sampleRate);
+          var vd = vb.getChannelData(0);
+          for (var j = 0; j < vl; j++) {
+            vd[j] = (Math.random() * 2 - 1) * 0.012;
+            if (Math.random() < 0.0005) vd[j] += (Math.random() * 2 - 1) * 0.35;
+          }
+          var vs = actx.createBufferSource();
+          vs.buffer = vb;
+          vs.loop = true;
+          var vg = actx.createGain();
+          vg.gain.value = 0.55;
+          vs.connect(vg);
+          vg.connect(master);
+          vs.start();
+        }
+
+        function env(g, t0, a, peak, dur) {
+          g.gain.setValueAtTime(0.0001, t0);
+          g.gain.linearRampToValueAtTime(peak, t0 + a);
+          g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+        }
+        function tone(freq, type, t0, a, peak, dur, det) {
+          var o = actx.createOscillator(), g = actx.createGain();
+          o.type = type;
+          o.frequency.value = freq;
+          if (det) o.detune.value = det;
+          env(g, t0, a, peak, dur);
+          o.connect(g);
+          g.connect(master);
+          o.start(t0);
+          o.stop(t0 + dur + 0.05);
+        }
+        function noise(t0, peak, dur, ft, ff, q) {
+          var s = actx.createBufferSource(), f = actx.createBiquadFilter(), g = actx.createGain();
+          s.buffer = noiseBuf;
+          s.loop = true;
+          f.type = ft;
+          f.frequency.value = ff;
+          f.Q.value = q || 0.8;
+          env(g, t0, 0.003, peak, dur);
+          s.connect(f);
+          f.connect(g);
+          g.connect(master);
+          s.start(t0);
+          s.stop(t0 + dur + 0.05);
+        }
+        function kick(t0) {
+          var o = actx.createOscillator(), g = actx.createGain();
+          o.type = "sine";
+          o.frequency.setValueAtTime(110, t0);
+          o.frequency.exponentialRampToValueAtTime(42, t0 + 0.11);
+          env(g, t0, 0.004, 0.7, 0.3);
+          o.connect(g);
+          g.connect(master);
+          o.start(t0);
+          o.stop(t0 + 0.35);
+        }
+        function snare(t0) {
+          noise(t0, 0.15, 0.16, "bandpass", 1900, 0.9);
+          tone(190, "triangle", t0, 0.002, 0.09, 0.09);
+        }
+        function hat(t0, open) {
+          noise(t0, 0.045, open ? 0.09 : 0.035, "highpass", 7500, 0.7);
+        }
+        function chord(ci, t0) {
+          var n = CHORDS[ci].notes;
+          for (var i = 0; i < n.length; i++) {
+            var det = Math.random() * 10 - 5; /* tape wobble */
+            tone(hz(n[i]), "sine", t0, 0.03, 0.1, 2.4, det);
+            tone(hz(n[i]), "triangle", t0, 0.05, 0.04, 1.9, det + 4);
+          }
+        }
+        function bass(ci, t0) {
+          tone(hz(CHORDS[ci].root), "sine", t0, 0.02, 0.3, 0.7);
+          tone(hz(CHORDS[ci].root) * 2, "triangle", t0, 0.02, 0.05, 0.4);
+        }
+        function pluck(t0) {
+          tone(hz(PENTA[(Math.random() * PENTA.length) | 0]), "sine", t0, 0.01, 0.07, 0.9, Math.random() * 8 - 4);
+        }
+
+        /* 8th-note grid, 8 steps a bar, chord changes each bar */
+        function scheduleStep(ix, t0) {
+          var ci = (ix / 8) | 0, pos = ix % 8;
+          var tt = t0 + (pos % 2 ? SWING : 0);
+          if (pos === 0) { chord(ci, tt); bass(ci, tt); kick(tt); }
+          if (pos === 5) { bass(ci, tt); kick(tt); }
+          if (pos === 2 || pos === 6) snare(tt);
+          if (pos !== 0 && Math.random() > 0.18) hat(tt, pos === 7 && Math.random() < 0.3);
+          if (pos % 2 === 1 && Math.random() < 0.16) pluck(tt);
+        }
+        function tick() {
+          while (nextT < actx.currentTime + 0.3) {
+            scheduleStep(stepIx, nextT);
+            stepIx = (stepIx + 1) % 32;
+            nextT += SPB / 2;
+          }
+        }
+
+        function setPlaying(on) {
+          playing = on;
+          btn.setAttribute("aria-pressed", on ? "true" : "false");
+          btn.innerHTML = on ? "&#9834; Lofi: On" : "&#9834; Lofi: Off";
+          if (on) {
+            ensureCtx();
+            if (actx.state === "suspended") actx.resume();
+            stepIx = 0;
+            nextT = actx.currentTime + 0.1;
+            master.gain.cancelScheduledValues(actx.currentTime);
+            master.gain.setTargetAtTime(0.34, actx.currentTime, 0.4);
+            timer = setInterval(tick, 100);
+            tick();
+          } else {
+            clearInterval(timer);
+            if (actx) {
+              master.gain.cancelScheduledValues(actx.currentTime);
+              master.gain.setTargetAtTime(0, actx.currentTime, 0.25);
+            }
+          }
+        }
+        btn.addEventListener("click", function () { setPlaying(!playing); });
+
+        document.addEventListener("visibilitychange", function () {
+          if (!actx || !playing) return;
+          if (document.hidden) {
+            clearInterval(timer);
+            actx.suspend();
+          } else {
+            actx.resume();
+            nextT = actx.currentTime + 0.1;
+            timer = setInterval(tick, 100);
+          }
+        });
+      })();
     })();
   </script>
 </body>
