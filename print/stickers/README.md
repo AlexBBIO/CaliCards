@@ -8,6 +8,7 @@ the CCC logo (`/icon.svg`). Three variants:
 | `sticker-holo-c` | Navy tile, gold + red C's printed, **middle C is bare rainbow foil** |
 | `sticker-holo-ccc` | Navy tile, **all three C's in rainbow foil** |
 | `sticker-holo-field` | **Whole tile is rainbow foil**, navy frame + gold/navy/red C's printed |
+| `sticker-card-trio` | Three mini cards, one C each, as three finishes: **reverse holo** (foil body) · **classic holo** (foil art window) · **illustration rare** (full-art sunset, foil glints). `-screen.svg` is the non-transparent version for digital use. |
 
 ## How the holo effect works
 

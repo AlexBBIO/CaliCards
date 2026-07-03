@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="3.6in" height="2.16in" viewBox="10 14.5 120 72">
+  <!--
+    Cali Coast Cards — "card trio" holographic sticker, PRINT version.
+    Transparent areas = bare rainbow foil (no white ink):
+    the reverse-holo card's body, the classic-holo card's art window,
+    and two glint streaks across the illustration-rare card.
+  -->
+  <defs>
+    <linearGradient id="gb" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F3D06A"/><stop offset="1" stop-color="#E0B137"/>
+    </linearGradient>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FBF3DF"/><stop offset="0.55" stop-color="#F1C878"/>
+      <stop offset="1" stop-color="#E8926B"/>
+    </linearGradient>
+    <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#333B58"/><stop offset="1" stop-color="#232838"/>
+    </linearGradient>
+    <clipPath id="rc"><rect x="-19" y="-26.5" width="38" height="53" rx="3.5"/></clipPath>
+    <!-- reverse holo: keep only the yellow border ring; body is bare foil -->
+    <mask id="ringL" maskUnits="userSpaceOnUse" x="-25" y="-32" width="50" height="64">
+      <rect x="-25" y="-32" width="50" height="64" fill="#fff"/>
+      <rect x="-16.6" y="-24.1" width="33.2" height="48.2" rx="2" fill="#000"/>
+    </mask>
+    <!-- classic holo: knock the art window out of border + body -->
+    <mask id="winC" maskUnits="userSpaceOnUse" x="-25" y="-32" width="50" height="64">
+      <rect x="-25" y="-32" width="50" height="64" fill="#fff"/>
+      <rect x="-13.5" y="-19" width="27" height="25" rx="1.5" fill="#000"/>
+    </mask>
+    <!-- illustration rare: two foil glint streaks across the art -->
+    <mask id="glintR" maskUnits="userSpaceOnUse" x="-25" y="-32" width="50" height="64">
+      <rect x="-25" y="-32" width="50" height="64" fill="#fff"/>
+      <g transform="rotate(-36)">
+        <rect x="-32" y="-3" width="64" height="1.6" fill="#000"/>
+        <rect x="-32" y="5.5" width="64" height="1" fill="#000"/>
+      </g>
+    </mask>
+  </defs>
+
+  <!-- LEFT — reverse holo: yellow border, FOIL body (transparent), printed navy window, gold C -->
+  <g transform="translate(36,54) rotate(-12)">
+    <rect x="-19" y="-26.5" width="38" height="53" rx="3.5" fill="url(#gb)" stroke="#C99E2E" stroke-width="0.8" mask="url(#ringL)"/>
+    <rect x="-13.5" y="-19" width="27" height="25" rx="1.5" fill="#232838" stroke="#C99E2E" stroke-width="0.7"/>
+    <path d="M 5.46 -13.01 A 8.5 8.5 0 1 0 5.46 0.01" fill="none" stroke="#E2B437" stroke-width="5" stroke-linecap="round"/>
+    <rect x="-11" y="9.5" width="22" height="2" rx="1" fill="#232838"/>
+    <rect x="-11" y="13.5" width="15" height="2" rx="1" fill="#232838"/>
+    <rect x="11.6" y="19.6" width="2.8" height="2.8" fill="#232838" transform="rotate(45 13 21)"/>
+  </g>
+
+  <!-- RIGHT — illustration rare: full-art, red C setting over the Pacific, foil glints -->
+  <g transform="translate(104,54) rotate(12)">
+    <g clip-path="url(#rc)" mask="url(#glintR)">
+      <rect x="-19" y="-26.5" width="38" height="34.5" fill="url(#sky)"/>
+      <circle cx="0" cy="-6.5" r="11" fill="#E2B437" opacity="0.4"/>
+      <path d="M 5.46 -13.01 A 8.5 8.5 0 1 0 5.46 0.01" fill="none" stroke="#D8433F" stroke-width="5" stroke-linecap="round"/>
+      <rect x="-19" y="8" width="38" height="18.5" fill="url(#sea)"/>
+      <rect x="-5.5" y="11" width="11" height="1.2" rx="0.6" fill="#D8433F" opacity="0.5"/>
+      <rect x="-3.5" y="14" width="7" height="1.2" rx="0.6" fill="#D8433F" opacity="0.38"/>
+      <rect x="-2" y="17" width="4" height="1.2" rx="0.6" fill="#D8433F" opacity="0.28"/>
+    </g>
+    <g transform="translate(13,21)">
+      <path d="M 0,-2.6 L 0.65,-0.89 L 2.47,-0.8 L 1.05,0.34 L 1.53,2.1 L 0,1.1 L -1.53,2.1 L -1.05,0.34 L -2.47,-0.8 L -0.65,-0.89 Z" fill="#E2B437"/>
+    </g>
+    <rect x="-19" y="-26.5" width="38" height="53" rx="3.5" fill="none" stroke="#232838" stroke-width="0.9"/>
+  </g>
+
+  <!-- CENTER (on top) — classic holo: cream body, FOIL art window (transparent), white C -->
+  <g transform="translate(70,44)">
+    <g mask="url(#winC)">
+      <rect x="-19" y="-26.5" width="38" height="53" rx="3.5" fill="url(#gb)" stroke="#C99E2E" stroke-width="0.8"/>
+      <rect x="-16.6" y="-24.1" width="33.2" height="48.2" rx="2" fill="#FAF6ED"/>
+    </g>
+    <rect x="-13.5" y="-19" width="27" height="25" rx="1.5" fill="none" stroke="#232838" stroke-width="0.7"/>
+    <path d="M 5.46 -13.01 A 8.5 8.5 0 1 0 5.46 0.01" fill="none" stroke="#232838" stroke-width="6.8" stroke-linecap="round"/>
+    <path d="M 5.46 -13.01 A 8.5 8.5 0 1 0 5.46 0.01" fill="none" stroke="#FFFDF7" stroke-width="5" stroke-linecap="round"/>
+    <rect x="-11" y="9.5" width="22" height="2" rx="1" fill="#DCD3BE"/>
+    <rect x="-11" y="13.5" width="15" height="2" rx="1" fill="#DCD3BE"/>
+    <g transform="translate(13,21)">
+      <path d="M 0,-2.6 L 0.65,-0.89 L 2.47,-0.8 L 1.05,0.34 L 1.53,2.1 L 0,1.1 L -1.53,2.1 L -1.05,0.34 L -2.47,-0.8 L -0.65,-0.89 Z" fill="#232838"/>
+    </g>
+  </g>
+</svg>
