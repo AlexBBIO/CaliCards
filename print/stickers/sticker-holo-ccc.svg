@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="3in" height="3in" viewBox="0 0 100 100">
+  <!--
+    Cali Coast Cards — holographic sticker, "Holo CCC" variant.
+    All three C's are knocked out (true transparency) so the full monogram
+    reads in bare rainbow foil against the printed navy square.
+  -->
+  <defs>
+    <mask id="knock" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="100">
+      <rect width="100" height="100" fill="#fff"/>
+      <path d="M 36.64 38.51 A 15 15 0 1 0 36.64 61.49" fill="none" stroke="#000" stroke-width="9" stroke-linecap="round"/>
+      <path d="M 59.64 38.51 A 15 15 0 1 0 59.64 61.49" fill="none" stroke="#000" stroke-width="9" stroke-linecap="round"/>
+      <path d="M 82.64 38.51 A 15 15 0 1 0 82.64 61.49" fill="none" stroke="#000" stroke-width="9" stroke-linecap="round"/>
+    </mask>
+  </defs>
+  <rect width="100" height="100" rx="23" fill="#232838" mask="url(#knock)"/>
+</svg>

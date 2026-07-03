@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="3in" height="3in" viewBox="0 0 100 100">
+  <!--
+    Cali Coast Cards — holographic sticker, "Holo field" variant.
+    Inverted: the whole tile is bare rainbow foil (transparent interior),
+    framed by a printed navy border, with the three C's printed solid in
+    gold / navy / red.
+  -->
+  <rect x="4.5" y="4.5" width="91" height="91" rx="19" fill="none" stroke="#232838" stroke-width="9"/>
+  <path d="M 36.64 38.51 A 15 15 0 1 0 36.64 61.49" fill="none" stroke="#E2B437" stroke-width="9" stroke-linecap="round"/>
+  <path d="M 59.64 38.51 A 15 15 0 1 0 59.64 61.49" fill="none" stroke="#232838" stroke-width="9" stroke-linecap="round"/>
+  <path d="M 82.64 38.51 A 15 15 0 1 0 82.64 61.49" fill="none" stroke="#D8433F" stroke-width="9" stroke-linecap="round"/>
+</svg>
