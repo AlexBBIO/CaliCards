@@ -14,7 +14,7 @@ window.CALICARDS_CONFIG = {
 
   // Social accounts (empty = shown as coming soon)
   socials: {
-    instagram: "",
+    instagram: "https://www.instagram.com/realcalicoastcards",
     tiktok: "",
     youtube: "",
     x: "",
