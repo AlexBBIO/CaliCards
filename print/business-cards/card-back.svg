@@ -4,9 +4,9 @@
   <path d="M 0,-3.2 Q 0.6400000000000001,-0.6400000000000001 3.2,0 Q 0.6400000000000001,0.6400000000000001 0,3.2 Q -0.6400000000000001,0.6400000000000001 -3.2,0 Q -0.6400000000000001,-0.6400000000000001 0,-3.2 Z" transform="translate(38,36)" fill="#E2B437" opacity="0.9"/>
   <path d="M 0,-2 Q 0.4,-0.4 2,0 Q 0.4,0.4 0,2 Q -0.4,0.4 -2,0 Q -0.4,-0.4 0,-2 Z" transform="translate(182,26)" fill="#FAF6ED" opacity="0.7"/>
   <path d="M 0,-2.4 Q 0.48,-0.48 2.4,0 Q 0.48,0.48 0,2.4 Q -0.48,0.48 -2.4,0 Q -0.48,-0.48 0,-2.4 Z" transform="translate(152,186)" fill="#E2B437" opacity="0.6"/>
-  <text x="30" y="60" font-family="Inter" font-weight="700" font-size="7.5" letter-spacing="1.8" fill="#E2B437">LIVE BREAKS · GRAILS · DEALS</text>
+  <text x="30" y="60" font-family="Inter" font-weight="700" font-size="7.5" letter-spacing="1.8" fill="#E2B437">SINGLES · SLABS · SEALED</text>
   <text x="30" y="88" font-family="Fraunces" font-weight="600" font-size="19" fill="#FAF6ED">Scan to follow</text>
-  <text x="30" y="111" font-family="Fraunces" font-weight="600" font-size="19" fill="#FAF6ED">the pulls.</text>
+  <text x="30" y="111" font-family="Fraunces" font-weight="600" font-size="19" fill="#FAF6ED">the shop.</text>
   <text x="30" y="138" font-family="Inter" font-weight="600" font-size="12.5" fill="#E2B437">@realcalicoastcards</text>
   <text x="30" y="162" font-family="Inter" font-weight="500" font-size="10" fill="#FAF6ED" opacity="0.6">calicoastcards.com</text>
   

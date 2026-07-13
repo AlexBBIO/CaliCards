@@ -9,7 +9,7 @@ decode correctly at print resolution.
 | File | What it is |
 | --- | --- |
 | `card-front.png` / `.svg` | Front: card-trio mark, wordmark, tagline, IG handle |
-| `card-back.png` / `.svg` | Back: navy, "Scan to follow the pulls", QR → Instagram |
+| `card-back.png` / `.svg` | Back: navy, "Scan to follow the shop", QR → Instagram |
 | `../signs/instagram-qr-sign.png` | 8.5"×11" booth/table sign with a big QR |
 | `../../art/qr-instagram.png` / `.svg` | Standalone QR — drop it on anything |
 

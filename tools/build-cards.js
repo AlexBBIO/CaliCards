@@ -128,9 +128,9 @@ const back = `<svg xmlns="http://www.w3.org/2000/svg" width="3.625in" height="2.
   ${sparkle(38, 36, 3.2, GOLD, 0.9)}
   ${sparkle(182, 26, 2, "#FAF6ED", 0.7)}
   ${sparkle(152, 186, 2.4, GOLD, 0.6)}
-  <text x="30" y="60" font-family="Inter" font-weight="700" font-size="7.5" letter-spacing="1.8" fill="${GOLD}">LIVE BREAKS · GRAILS · DEALS</text>
+  <text x="30" y="60" font-family="Inter" font-weight="700" font-size="7.5" letter-spacing="1.8" fill="${GOLD}">SINGLES · SLABS · SEALED</text>
   <text x="30" y="88" font-family="Fraunces" font-weight="600" font-size="19" fill="${CREAM}">Scan to follow</text>
-  <text x="30" y="111" font-family="Fraunces" font-weight="600" font-size="19" fill="${CREAM}">the pulls.</text>
+  <text x="30" y="111" font-family="Fraunces" font-weight="600" font-size="19" fill="${CREAM}">the shop.</text>
   <text x="30" y="138" font-family="Inter" font-weight="600" font-size="12.5" fill="${GOLD}">@realcalicoastcards</text>
   <text x="30" y="162" font-family="Inter" font-weight="500" font-size="10" fill="${CREAM}" opacity="0.6">calicoastcards.com</text>
   ${qrBlock(270, 106.25, 106, 130, CREAM, 20)}
@@ -146,8 +146,8 @@ const sign = `<svg xmlns="http://www.w3.org/2000/svg" width="8.5in" height="11in
   ${sparkle(120, 892, 7, GOLD, 0.7)}
   ${sparkle(736, 880, 5, GOLD, 0.8)}
   ${fan(425, 180, 2.0)}
-  <text x="425" y="336" text-anchor="middle" font-family="Fraunces" font-weight="700" font-size="56" fill="${NAVY}">Follow the pulls</text>
-  <text x="425" y="374" text-anchor="middle" font-family="Inter" font-weight="500" font-size="19" fill="${NAVY}" opacity="0.72">Live breaks, fresh grails &amp; show dates — first on Instagram.</text>
+  <text x="425" y="336" text-anchor="middle" font-family="Fraunces" font-weight="700" font-size="56" fill="${NAVY}">Follow the shop</text>
+  <text x="425" y="374" text-anchor="middle" font-family="Inter" font-weight="500" font-size="19" fill="${NAVY}" opacity="0.72">Fresh grails, new inventory &amp; show dates — first on Instagram.</text>
   <rect x="245" y="425" width="360" height="360" rx="24" fill="#FFFFFF" stroke="${GOLD}" stroke-width="5"/>
   ${qrBlock(425, 605, 300, 344, "#FFFFFF", 52)}
   <text x="425" y="852" text-anchor="middle" font-family="Fraunces" font-weight="600" font-size="34" fill="${NAVY}">@realcalicoastcards</text>
