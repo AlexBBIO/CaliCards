@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="3.75in" height="2.25in" viewBox="-6.25 -6.25 375 225">
-  <!-- Cali Coast Cards business card FRONT. Trim 3.5x2in; 0.125in bleed each side. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="4in" height="2.5in" viewBox="-18.75 -18.75 400 250">
+  <!-- Cali Coast Cards business card FRONT. Trim 3.5x2in; 0.25in bleed each side. -->
   
   <defs>
     <linearGradient id="gb" x1="0" y1="0" x2="0" y2="1">
@@ -26,7 +26,7 @@
     </linearGradient>
     <clipPath id="rc"><rect x="-19" y="-26.5" width="38" height="53" rx="3.5"/></clipPath>
   </defs>
-  <rect x="-6.25" y="-6.25" width="375" height="225" fill="#FAF6ED"/>
+  <rect x="-18.75" y="-18.75" width="400" height="250" fill="#FAF6ED"/>
   <path d="M 0,-4 Q 0.8,-0.8 4,0 Q 0.8,0.8 0,4 Q -0.8,0.8 -4,0 Q -0.8,-0.8 0,-4 Z" transform="translate(318,44)" fill="#E2B437" opacity="0.85"/>
   <path d="M 0,-2.6 Q 0.52,-0.52 2.6,0 Q 0.52,0.52 0,2.6 Q -0.52,0.52 -2.6,0 Q -0.52,-0.52 0,-2.6 Z" transform="translate(340,168)" fill="#D8433F" opacity="0.55"/>
   
@@ -69,6 +69,6 @@
   </g>
   <text x="166" y="92" font-family="Fraunces" font-weight="600" font-size="20" fill="#232838">Cali Coast Cards</text>
   <rect x="166" y="102" width="42" height="2.5" rx="1.25" fill="#E2B437"/>
-  <text x="166" y="124" font-family="Inter" font-weight="500" font-size="11.5" fill="#232838" opacity="0.78">Pokémon cards — bought &amp; sold.</text>
+  <text x="166" y="124" font-family="Inter" font-weight="500" font-size="10" fill="#232838" opacity="0.78">Pokémon cards — bought &amp; sold.</text>
   <text x="166" y="142" font-family="Inter" font-weight="600" font-size="10.5" fill="#D8433F">@realcalicoastcards</text>
 </svg>

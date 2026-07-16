@@ -15,10 +15,10 @@ decode correctly at print resolution.
 
 ## Specs (already baked in)
 
-- Trim size **3.5" × 2"** (US standard), files are **3.75" × 2.25"** with
-  1/8" bleed on each side — backgrounds run to the edge, text stays in the
+- Trim size **3.5" × 2"** (US standard), files are **4" × 2.5"** with
+  1/4" bleed on each side — backgrounds run to the edge, text stays in the
   safe zone.
-- PNGs are **300 dpi** (1125 × 675). Most printers accept PNG directly.
+- PNGs are **300 dpi** (1200 × 750). Most printers accept PNG directly.
 - QR is error-correction **H** (30% redundancy — survives the logo overlay
   and light print wear). Verified with a decoder before every reorder is a
   good habit: `node tools/render-cards.js` re-checks automatically.

@@ -107,24 +107,24 @@ const defs = `
     <clipPath id="rc"><rect x="-19" y="-26.5" width="38" height="53" rx="3.5"/></clipPath>
   </defs>`;
 
-/* ---- FRONT: 3.75 x 2.25 in (trim 3.5 x 2 + 1/8" bleed per side), 100 units/in ---- */
-const front = `<svg xmlns="http://www.w3.org/2000/svg" width="3.75in" height="2.25in" viewBox="-6.25 -6.25 375 225">
-  <!-- Cali Coast Cards business card FRONT. Trim 3.5x2in; 0.125in bleed each side. -->
+/* ---- FRONT: 4.0 x 2.5 in (trim 3.5 x 2 + 1/4" bleed per side), 100 units/in ---- */
+const front = `<svg xmlns="http://www.w3.org/2000/svg" width="4in" height="2.5in" viewBox="-18.75 -18.75 400 250">
+  <!-- Cali Coast Cards business card FRONT. Trim 3.5x2in; 0.25in bleed each side. -->
   ${defs}
-  <rect x="-6.25" y="-6.25" width="375" height="225" fill="${CREAM}"/>
+  <rect x="-18.75" y="-18.75" width="400" height="250" fill="${CREAM}"/>
   ${sparkle(318, 44, 4, GOLD, 0.85)}
   ${sparkle(340, 168, 2.6, RED, 0.55)}
   ${fan(92, 106, 1.02)}
   <text x="166" y="92" font-family="Fraunces" font-weight="600" font-size="20" fill="${NAVY}">Cali Coast Cards</text>
   <rect x="166" y="102" width="42" height="2.5" rx="1.25" fill="${GOLD}"/>
-  <text x="166" y="124" font-family="Inter" font-weight="500" font-size="11.5" fill="${NAVY}" opacity="0.78">Pokémon cards — bought &amp; sold.</text>
+  <text x="166" y="124" font-family="Inter" font-weight="500" font-size="10" fill="${NAVY}" opacity="0.78">Pokémon cards — bought &amp; sold.</text>
   <text x="166" y="142" font-family="Inter" font-weight="600" font-size="10.5" fill="${RED}">@realcalicoastcards</text>
 </svg>`;
 
 /* ---- BACK ---- */
-const back = `<svg xmlns="http://www.w3.org/2000/svg" width="3.75in" height="2.25in" viewBox="-6.25 -6.25 375 225">
+const back = `<svg xmlns="http://www.w3.org/2000/svg" width="4in" height="2.5in" viewBox="-18.75 -18.75 400 250">
   <!-- Cali Coast Cards business card BACK. QR -> ${URL} -->
-  <rect x="-6.25" y="-6.25" width="375" height="225" fill="${NAVY}"/>
+  <rect x="-18.75" y="-18.75" width="400" height="250" fill="${NAVY}"/>
   ${sparkle(38, 36, 3.2, GOLD, 0.9)}
   ${sparkle(182, 26, 2, "#FAF6ED", 0.7)}
   ${sparkle(152, 186, 2.4, GOLD, 0.6)}
