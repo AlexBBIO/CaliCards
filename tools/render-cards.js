@@ -9,8 +9,8 @@ const SCRATCH = require("os").tmpdir();
 const REPO = require("path").resolve(__dirname, "..");
 
 const ASSETS = [
-  { svg: "print/business-cards/card-front.svg", png: "print/business-cards/card-front.png", w: 1088, h: 638, qr: false },
-  { svg: "print/business-cards/card-back.svg", png: "print/business-cards/card-back.png", w: 1088, h: 638, qr: true },
+  { svg: "print/business-cards/card-front.svg", png: "print/business-cards/card-front.png", w: 1125, h: 675, qr: false },
+  { svg: "print/business-cards/card-back.svg", png: "print/business-cards/card-back.png", w: 1125, h: 675, qr: true },
   { svg: "print/signs/instagram-qr-sign.svg", png: "print/signs/instagram-qr-sign.png", w: 2550, h: 3300, qr: true },
   { svg: "art/qr-instagram.svg", png: "art/qr-instagram.png", w: 1000, h: 1000, qr: true },
 ];

@@ -107,11 +107,11 @@ const defs = `
     <clipPath id="rc"><rect x="-19" y="-26.5" width="38" height="53" rx="3.5"/></clipPath>
   </defs>`;
 
-/* ---- FRONT: 3.625 x 2.125 in (trim 3.5 x 2 + 1/16" bleed per side), 100 units/in ---- */
-const front = `<svg xmlns="http://www.w3.org/2000/svg" width="3.625in" height="2.125in" viewBox="0 0 362.5 212.5">
-  <!-- Cali Coast Cards business card FRONT. Trim 3.5x2in; 0.0625in bleed each side. -->
+/* ---- FRONT: 3.75 x 2.25 in (trim 3.5 x 2 + 1/8" bleed per side), 100 units/in ---- */
+const front = `<svg xmlns="http://www.w3.org/2000/svg" width="3.75in" height="2.25in" viewBox="-6.25 -6.25 375 225">
+  <!-- Cali Coast Cards business card FRONT. Trim 3.5x2in; 0.125in bleed each side. -->
   ${defs}
-  <rect width="362.5" height="212.5" fill="${CREAM}"/>
+  <rect x="-6.25" y="-6.25" width="375" height="225" fill="${CREAM}"/>
   ${sparkle(318, 44, 4, GOLD, 0.85)}
   ${sparkle(340, 168, 2.6, RED, 0.55)}
   ${fan(92, 106, 1.02)}
@@ -122,9 +122,9 @@ const front = `<svg xmlns="http://www.w3.org/2000/svg" width="3.625in" height="2
 </svg>`;
 
 /* ---- BACK ---- */
-const back = `<svg xmlns="http://www.w3.org/2000/svg" width="3.625in" height="2.125in" viewBox="0 0 362.5 212.5">
+const back = `<svg xmlns="http://www.w3.org/2000/svg" width="3.75in" height="2.25in" viewBox="-6.25 -6.25 375 225">
   <!-- Cali Coast Cards business card BACK. QR -> ${URL} -->
-  <rect width="362.5" height="212.5" fill="${NAVY}"/>
+  <rect x="-6.25" y="-6.25" width="375" height="225" fill="${NAVY}"/>
   ${sparkle(38, 36, 3.2, GOLD, 0.9)}
   ${sparkle(182, 26, 2, "#FAF6ED", 0.7)}
   ${sparkle(152, 186, 2.4, GOLD, 0.6)}
