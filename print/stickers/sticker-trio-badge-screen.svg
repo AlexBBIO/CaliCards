@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="3.6in" height="2.16in" viewBox="10 14.5 120 72">
-  <!-- Cali Coast Cards — "card trio" holographic sticker. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="3in" height="3in" viewBox="0 0 120 120">
+  <!-- Cali Coast Cards — card trio badge sticker (navy tile + wordmark). -->
   <!-- SCREEN version. Holo foil simulated with pastel gradients — for digital use only. -->
   <defs>
     <linearGradient id="gb" x1="0" y1="0" x2="0" y2="1">
@@ -25,7 +25,13 @@
       <stop offset="1" stop-color="#FFB3E8"/></linearGradient>
     
   </defs>
-  
+  <rect x="0" y="0" width="120" height="120" rx="27" fill="#232838"/>
+  <path d="M 0,-3 Q 0.6000000000000001,-0.6000000000000001 3,0 Q 0.6000000000000001,0.6000000000000001 0,3 Q -0.6000000000000001,0.6000000000000001 -3,0 Q -0.6000000000000001,-0.6000000000000001 0,-3 Z" transform="translate(16,13.5)" fill="url(#holoA)"/>
+  <path d="M 0,-2 Q 0.4,-0.4 2,0 Q 0.4,0.4 0,2 Q -0.4,0.4 -2,0 Q -0.4,-0.4 0,-2 Z" transform="translate(104,19)" fill="url(#holoA)"/>
+  <path d="M 0,-1.8 Q 0.36000000000000004,-0.36000000000000004 1.8,0 Q 0.36000000000000004,0.36000000000000004 0,1.8 Q -0.36000000000000004,0.36000000000000004 -1.8,0 Q -0.36000000000000004,-0.36000000000000004 0,-1.8 Z" transform="translate(8.5,55)" fill="url(#holoA)"/>
+  <path d="M 0,-1.8 Q 0.36000000000000004,-0.36000000000000004 1.8,0 Q 0.36000000000000004,0.36000000000000004 0,1.8 Q -0.36000000000000004,0.36000000000000004 -1.8,0 Q -0.36000000000000004,-0.36000000000000004 0,-1.8 Z" transform="translate(111,60)" fill="url(#holoA)"/>
+  <path d="M 0,-2.2 Q 0.44000000000000006,-0.44000000000000006 2.2,0 Q 0.44000000000000006,0.44000000000000006 0,2.2 Q -0.44000000000000006,0.44000000000000006 -2.2,0 Q -0.44000000000000006,-0.44000000000000006 0,-2.2 Z" transform="translate(106,104)" fill="url(#holoA)"/>
+  <g transform="translate(60,48) scale(0.72) translate(-70,-50.5)">
     <!-- LEFT: reverse holo — foil body, printed navy window, gold C -->
     <g transform="translate(36,54) rotate(-12)">
       <rect x="-19" y="-26.5" width="38" height="53" rx="3.5" fill="url(#gb)" stroke="#C99E2E" stroke-width="0.8"/>
@@ -65,4 +71,6 @@
       <rect x="-11" y="13.5" width="15" height="2" rx="1" fill="#DCD3BE"/>
       <g transform="translate(13,21)"><path d="M 0,-2.6 L 0.65,-0.89 L 2.47,-0.8 L 1.05,0.34 L 1.53,2.1 L 0,1.1 L -1.53,2.1 L -1.05,0.34 L -2.47,-0.8 L -0.65,-0.89 Z" fill="#232838"/></g>
     </g>
+  </g>
+  <text x="60" y="97" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-weight="600" font-size="10"><tspan fill="#E2B437">Cali</tspan><tspan fill="#FAF6ED"> Coast</tspan><tspan fill="#D8433F"> Cards</tspan></text>
 </svg>
