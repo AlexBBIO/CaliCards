@@ -200,19 +200,19 @@ const poster = `<svg xmlns="http://www.w3.org/2000/svg" width="36.5in" height="4
   <rect x="45" y="590" width="810" height="296" rx="24" fill="${RED}"/>
   <text x="450" y="668" text-anchor="middle" font-family="Inter" font-weight="700" font-size="44" letter-spacing="7" fill="${WHITE}">PAYING UP TO</text>
   <text x="450" y="798" text-anchor="middle" font-family="Inter" font-weight="700" font-size="138" fill="${YEL}">100%</text>
-  <rect x="150" y="818" width="600" height="58" rx="18" fill="#C9F2D0"/>
-  <text x="450" y="858" text-anchor="middle" font-family="Inter" font-weight="700" font-size="34" letter-spacing="2" fill="${NAVY}">FOR MINTY VINTAGE</text>
+  <rect x="130" y="818" width="640" height="58" rx="18" fill="#C9F2D0"/>
+  <text x="450" y="858" text-anchor="middle" font-family="Inter" font-weight="700" font-size="34" letter-spacing="2" fill="${NAVY}">FOR HIGH-END VINTAGE!</text>
 
-  <!-- footer: follow text + big QR -->
+  <!-- footer: follow text (centered on the QR axis) + big QR -->
   ${sparkle(80, 1150, 6, YEL, 0.75)}
   ${sparkle(575, 935, 5, WHITE, 0.6)}
-  <text x="335" y="985" text-anchor="middle" font-family="Inter" font-weight="700" font-size="26" letter-spacing="4" fill="${WHITE}">SCAN TO</text>
-  <text x="335" y="1042" text-anchor="middle" font-family="Inter" font-weight="700" font-size="52" letter-spacing="2" fill="${YEL}">FOLLOW</text>
-  <text x="335" y="1092" text-anchor="middle" font-family="Inter" font-weight="700" font-size="26" letter-spacing="4" fill="${WHITE}">DM TO SELL</text>
-  <text x="335" y="1126" text-anchor="middle" font-family="Inter" font-weight="500" font-size="19" fill="${WHITE}" opacity="0.75">@realcalicoastcards</text>
+  <text x="335" y="958" text-anchor="middle" font-family="Inter" font-weight="700" font-size="26" letter-spacing="4" fill="${WHITE}">SCAN TO</text>
+  <text x="335" y="1014" text-anchor="middle" font-family="Inter" font-weight="700" font-size="52" letter-spacing="2" fill="${YEL}">FOLLOW</text>
+  <text x="335" y="1060" text-anchor="middle" font-family="Inter" font-weight="700" font-size="26" letter-spacing="4" fill="${WHITE}">DM TO SELL</text>
+  <text x="335" y="1094" text-anchor="middle" font-family="Inter" font-weight="500" font-size="19" fill="${WHITE}" opacity="0.75">@realcalicoastcards</text>
+  <text x="335" y="1124" text-anchor="middle" font-family="Inter" font-weight="500" font-size="17" letter-spacing="1" fill="${WHITE}" opacity="0.55">calicoastcards.com</text>
   <rect x="630" y="918" width="228" height="228" rx="18" fill="#FFFFFF" stroke="${YEL}" stroke-width="5"/>
   ${qrBlock(744, 1032, 192, 216, "#FFFFFF", 34)}
-  <text x="450" y="1168" text-anchor="middle" font-family="Inter" font-weight="500" font-size="17" letter-spacing="2" fill="${WHITE}" opacity="0.6">calicoastcards.com</text>
 </svg>`;
 
 /* ---- standalone QR (put it anywhere) ---- */
