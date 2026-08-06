@@ -156,31 +156,61 @@ const sign = `<svg xmlns="http://www.w3.org/2000/svg" width="8.5in" height="11in
   <text x="425" y="1064" text-anchor="middle" font-family="Inter" font-weight="600" font-size="15" letter-spacing="3.5" fill="${CREAM}">CALI COAST CARDS · BUYING &amp; SELLING POKÉMON · CALIFORNIA</text>
 </svg>`;
 
-/* ---- POSTER: 36 x 48 in (3:4 — also prints at 18x24), navy high-contrast.
+/* ---- POSTER: 36 x 48 in (3:4 — also prints at 18x24), navy high-contrast buying poster.
    25 units/in; 0.25in bleed each side. Trim 0..900 x 0..1200. ---- */
+const pokeball = (x, y, r, o) => `
+  <g transform="translate(${x},${y})" stroke="#454E6E" stroke-width="${(r * 0.09).toFixed(1)}" fill="none" opacity="${o}">
+    <circle r="${r}"/>
+    <path d="M ${-r} 0 H ${-r * 0.34} M ${r * 0.34} 0 H ${r}"/>
+    <circle r="${r * 0.34}"/>
+    <circle r="${r * 0.15}"/>
+  </g>`;
+
 const poster = `<svg xmlns="http://www.w3.org/2000/svg" width="36.5in" height="48.5in" viewBox="-6.25 -6.25 912.5 1212.5">
-  <!-- Booth poster, high contrast. QR -> ${URL} -->
+  <!-- Booth buying poster, high contrast. QR -> ${URL} -->
   ${defs}
   <radialGradient id="pbg" cx="0.5" cy="0.22" r="1.1">
     <stop offset="0" stop-color="#2B3149"/><stop offset="0.55" stop-color="${NAVY}"/>
     <stop offset="1" stop-color="#1B1F2E"/>
   </radialGradient>
   <rect x="-6.25" y="-6.25" width="912.5" height="1212.5" fill="url(#pbg)"/>
-  ${sparkle(120, 140, 11, GOLD, 0.9)}
-  ${sparkle(778, 110, 7, CREAM, 0.75)}
-  ${sparkle(86, 420, 7, GOLD, 0.7)}
-  ${sparkle(816, 392, 6, CREAM, 0.6)}
-  ${sparkle(120, 1010, 7, GOLD, 0.8)}
-  ${sparkle(786, 1040, 9, GOLD, 0.75)}
-  ${fan(450, 195, 3.0)}
-  <text x="450" y="385" text-anchor="middle" font-family="Fraunces" font-weight="600" font-size="62"><tspan fill="${GOLD}">Cali</tspan><tspan fill="${CREAM}"> Coast</tspan><tspan fill="${RED}"> Cards</tspan></text>
-  <text x="450" y="448" text-anchor="middle" font-family="Inter" font-weight="600" font-size="30" fill="${CREAM}" opacity="0.92">Scan to follow the shop.</text>
-  <rect x="200" y="495" width="500" height="500" rx="30" fill="#FFFFFF" stroke="${GOLD}" stroke-width="7"/>
-  ${qrBlock(450, 745, 410, 470, "#FFFFFF", 70)}
-  <text x="450" y="1043" text-anchor="middle" font-family="Fraunces" font-weight="600" font-size="46" fill="${GOLD}">@realcalicoastcards</text>
-  <text x="450" y="1090" text-anchor="middle" font-family="Inter" font-weight="500" font-size="25" fill="${CREAM}" opacity="0.65">calicoastcards.com</text>
-  <rect x="-6.25" y="1128" width="912.5" height="84.5" fill="${GOLD}"/>
-  <text x="450" y="1174" text-anchor="middle" font-family="Inter" font-weight="700" font-size="18" letter-spacing="3.8" fill="${NAVY}">CALI COAST CARDS · BUYING &amp; SELLING POKÉMON · CALIFORNIA</text>
+  <rect x="18" y="18" width="864" height="1164" rx="28" fill="none" stroke="${GOLD}" stroke-width="5"/>
+
+  <!-- headline block, Poke Ball line art behind -->
+  ${pokeball(118, 152, 82, 0.5)}
+  ${pokeball(450, 118, 118, 0.42)}
+  ${pokeball(780, 158, 88, 0.5)}
+  ${sparkle(62, 62, 8, GOLD, 0.9)}
+  ${sparkle(842, 76, 6, CREAM, 0.75)}
+  <text x="450" y="132" text-anchor="middle" font-family="Inter" font-weight="700" font-size="62" letter-spacing="8" fill="${CREAM}">I BUY</text>
+  <text x="450" y="286" text-anchor="middle" font-family="Inter" font-weight="700" font-size="142" letter-spacing="3" fill="${GOLD}">POKÉMON</text>
+
+  <!-- what band -->
+  <rect x="45" y="345" width="810" height="110" rx="18" fill="${CREAM}"/>
+  <text x="450" y="399" text-anchor="middle" font-family="Inter" font-weight="700" font-size="41" letter-spacing="2" fill="${NAVY}">SLABS  /  SEALED  /  RAW</text>
+  <text x="450" y="438" text-anchor="middle" font-family="Inter" font-weight="700" font-size="24" letter-spacing="2" fill="${RED}">MODERN  /  MID-ERA  /  VINTAGE</text>
+
+  <!-- paying panel -->
+  <rect x="45" y="485" width="810" height="320" rx="24" fill="${RED}"/>
+  <text x="450" y="568" text-anchor="middle" font-family="Inter" font-weight="700" font-size="45" letter-spacing="6" fill="${CREAM}">PAYING UP TO</text>
+  <text x="450" y="706" text-anchor="middle" font-family="Inter" font-weight="700" font-size="148" fill="${GOLD}">100%</text>
+  <rect x="150" y="727" width="600" height="60" rx="18" fill="#C9F2D0"/>
+  <text x="450" y="770" text-anchor="middle" font-family="Inter" font-weight="700" font-size="34" letter-spacing="2" fill="${NAVY}">FOR MINTY VINTAGE</text>
+
+  <!-- footer: trio tile + brand / follow / QR -->
+  <rect x="45" y="835" width="390" height="295" rx="24" fill="#2B3149" stroke="${GOLD}" stroke-width="5"/>
+  ${sparkle(90, 878, 7, GOLD, 0.9)}
+  ${sparkle(390, 1088, 5, CREAM, 0.7)}
+  ${fan(240, 982, 2.05)}
+  <text x="655" y="898" text-anchor="middle" font-family="Fraunces" font-weight="600" font-size="42"><tspan fill="${GOLD}">Cali</tspan><tspan fill="${CREAM}"> Coast</tspan><tspan fill="${RED}"> Cards</tspan></text>
+  <rect x="515" y="914" width="280" height="4" rx="2" fill="${GOLD}"/>
+  <text x="575" y="972" text-anchor="middle" font-family="Inter" font-weight="700" font-size="22" letter-spacing="3" fill="${CREAM}">SCAN TO</text>
+  <text x="575" y="1012" text-anchor="middle" font-family="Inter" font-weight="700" font-size="38" letter-spacing="3" fill="${GOLD}">FOLLOW</text>
+  <text x="575" y="1052" text-anchor="middle" font-family="Inter" font-weight="700" font-size="22" letter-spacing="3" fill="${CREAM}">DM TO SELL</text>
+  <text x="575" y="1084" text-anchor="middle" font-family="Inter" font-weight="500" font-size="16" fill="${CREAM}" opacity="0.7">@realcalicoastcards</text>
+  <rect x="685" y="955" width="170" height="170" rx="16" fill="#FFFFFF" stroke="${GOLD}" stroke-width="4"/>
+  ${qrBlock(770, 1040, 140, 160, "#FFFFFF", 26)}
+  <text x="450" y="1163" text-anchor="middle" font-family="Inter" font-weight="500" font-size="19" letter-spacing="2" fill="${CREAM}" opacity="0.6">calicoastcards.com</text>
 </svg>`;
 
 /* ---- standalone QR (put it anywhere) ---- */
