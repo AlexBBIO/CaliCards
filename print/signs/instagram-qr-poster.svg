@@ -75,7 +75,7 @@
     </g>
   </g>
   <text x="563" y="124" text-anchor="middle" font-family="Fraunces" font-weight="600" font-size="56"><tspan fill="#FFCB05">Cali</tspan><tspan fill="#FFFDF7"> Coast</tspan><tspan fill="#D8433F"> Cards</tspan></text>
-  <rect x="45" y="192" width="810" height="3" rx="1.5" fill="#FFCB05" opacity="0.55"/>
+  <rect x="45" y="186" width="810" height="3" rx="1.5" fill="#FFCB05" opacity="0.55"/>
 
   <!-- headline block, Poke Ball line art behind -->
   
@@ -102,10 +102,10 @@
 
   <!-- paying panel -->
   <rect x="45" y="590" width="810" height="296" rx="24" fill="#D8433F"/>
-  <text x="450" y="668" text-anchor="middle" font-family="Inter" font-weight="700" font-size="44" letter-spacing="7" fill="#FFFFFF">PAYING UP TO</text>
-  <text x="450" y="798" text-anchor="middle" font-family="Inter" font-weight="700" font-size="138" fill="#FFCB05">100%</text>
-  <rect x="130" y="818" width="640" height="58" rx="18" fill="#C9F2D0"/>
-  <text x="450" y="858" text-anchor="middle" font-family="Inter" font-weight="700" font-size="34" letter-spacing="2" fill="#232838">FOR HIGH-END VINTAGE!</text>
+  <text x="450" y="650" text-anchor="middle" font-family="Inter" font-weight="700" font-size="44" letter-spacing="7" fill="#FFFFFF">PAYING UP TO</text>
+  <text x="450" y="780" text-anchor="middle" font-family="Inter" font-weight="700" font-size="138" fill="#FFCB05">100%</text>
+  <rect x="130" y="800" width="640" height="58" rx="18" fill="#C9F2D0"/>
+  <text x="450" y="840" text-anchor="middle" font-family="Inter" font-weight="700" font-size="34" letter-spacing="2" fill="#232838">FOR HIGH-END VINTAGE!</text>
 
   <!-- footer: follow text (centered on the QR axis) + big QR -->
   <path d="M 0,-6 Q 1.2000000000000002,-1.2000000000000002 6,0 Q 1.2000000000000002,1.2000000000000002 0,6 Q -1.2000000000000002,1.2000000000000002 -6,0 Q -1.2000000000000002,-1.2000000000000002 0,-6 Z" transform="translate(80,1150)" fill="#FFCB05" opacity="0.75"/>

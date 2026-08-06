@@ -183,7 +183,7 @@ const poster = `<svg xmlns="http://www.w3.org/2000/svg" width="36.5in" height="4
   ${sparkle(844, 72, 6, WHITE, 0.8)}
   ${fan(211, 105, 1.6)}
   <text x="563" y="124" text-anchor="middle" font-family="Fraunces" font-weight="600" font-size="56"><tspan fill="${YEL}">Cali</tspan><tspan fill="#FFFDF7"> Coast</tspan><tspan fill="${RED}"> Cards</tspan></text>
-  <rect x="45" y="192" width="810" height="3" rx="1.5" fill="${YEL}" opacity="0.55"/>
+  <rect x="45" y="186" width="810" height="3" rx="1.5" fill="${YEL}" opacity="0.55"/>
 
   <!-- headline block, Poke Ball line art behind -->
   ${pokeball(105, 285, 80, 0.55)}
@@ -198,10 +198,10 @@ const poster = `<svg xmlns="http://www.w3.org/2000/svg" width="36.5in" height="4
 
   <!-- paying panel -->
   <rect x="45" y="590" width="810" height="296" rx="24" fill="${RED}"/>
-  <text x="450" y="668" text-anchor="middle" font-family="Inter" font-weight="700" font-size="44" letter-spacing="7" fill="${WHITE}">PAYING UP TO</text>
-  <text x="450" y="798" text-anchor="middle" font-family="Inter" font-weight="700" font-size="138" fill="${YEL}">100%</text>
-  <rect x="130" y="818" width="640" height="58" rx="18" fill="#C9F2D0"/>
-  <text x="450" y="858" text-anchor="middle" font-family="Inter" font-weight="700" font-size="34" letter-spacing="2" fill="${NAVY}">FOR HIGH-END VINTAGE!</text>
+  <text x="450" y="650" text-anchor="middle" font-family="Inter" font-weight="700" font-size="44" letter-spacing="7" fill="${WHITE}">PAYING UP TO</text>
+  <text x="450" y="780" text-anchor="middle" font-family="Inter" font-weight="700" font-size="138" fill="${YEL}">100%</text>
+  <rect x="130" y="800" width="640" height="58" rx="18" fill="#C9F2D0"/>
+  <text x="450" y="840" text-anchor="middle" font-family="Inter" font-weight="700" font-size="34" letter-spacing="2" fill="${NAVY}">FOR HIGH-END VINTAGE!</text>
 
   <!-- footer: follow text (centered on the QR axis) + big QR -->
   ${sparkle(80, 1150, 6, YEL, 0.75)}
