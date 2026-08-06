@@ -92,8 +92,8 @@
     <circle r="28.560000000000002"/>
     <circle r="12.6"/>
   </g>
-  <text x="450" y="272" text-anchor="middle" font-family="Inter" font-weight="700" font-size="66" letter-spacing="12" fill="#FFFFFF">I BUY</text>
-  <text x="450" y="402" text-anchor="middle" font-family="Inter" font-weight="700" font-size="140" letter-spacing="2" fill="#FFCB05">POKÉMON</text>
+  <text x="450" y="258" text-anchor="middle" font-family="Inter" font-weight="700" font-size="66" letter-spacing="12" fill="#FFFFFF">I BUY</text>
+  <text x="450" y="414" text-anchor="middle" font-family="Inter" font-weight="700" font-size="140" letter-spacing="2" fill="#FFCB05">POKÉMON</text>
 
   <!-- what band -->
   <rect x="45" y="450" width="810" height="112" rx="18" fill="#FFFDF7"/>

@@ -188,8 +188,8 @@ const poster = `<svg xmlns="http://www.w3.org/2000/svg" width="36.5in" height="4
   <!-- headline block, Poke Ball line art behind -->
   ${pokeball(105, 285, 80, 0.55)}
   ${pokeball(795, 285, 84, 0.55)}
-  <text x="450" y="272" text-anchor="middle" font-family="Inter" font-weight="700" font-size="66" letter-spacing="12" fill="${WHITE}">I BUY</text>
-  <text x="450" y="402" text-anchor="middle" font-family="Inter" font-weight="700" font-size="140" letter-spacing="2" fill="${YEL}">POKÉMON</text>
+  <text x="450" y="258" text-anchor="middle" font-family="Inter" font-weight="700" font-size="66" letter-spacing="12" fill="${WHITE}">I BUY</text>
+  <text x="450" y="414" text-anchor="middle" font-family="Inter" font-weight="700" font-size="140" letter-spacing="2" fill="${YEL}">POKÉMON</text>
 
   <!-- what band -->
   <rect x="45" y="450" width="810" height="112" rx="18" fill="#FFFDF7"/>
