@@ -157,9 +157,11 @@ const sign = `<svg xmlns="http://www.w3.org/2000/svg" width="8.5in" height="11in
 </svg>`;
 
 /* ---- POSTER: 36 x 48 in (3:4 — also prints at 18x24), navy high-contrast buying poster.
-   25 units/in; 0.25in bleed each side. Trim 0..900 x 0..1200. ---- */
+   25 units/in; 0.25in bleed each side. Trim 0..900 x 0..1200.
+   Display accents use bright Pokemon yellow; the trio mark keeps its own brand gold. ---- */
+const YEL = "#FFCB05", WHITE = "#FFFFFF";
 const pokeball = (x, y, r, o) => `
-  <g transform="translate(${x},${y})" stroke="#454E6E" stroke-width="${(r * 0.09).toFixed(1)}" fill="none" opacity="${o}">
+  <g transform="translate(${x},${y})" stroke="#4A5375" stroke-width="${(r * 0.09).toFixed(1)}" fill="none" opacity="${o}">
     <circle r="${r}"/>
     <path d="M ${-r} 0 H ${-r * 0.34} M ${r * 0.34} 0 H ${r}"/>
     <circle r="${r * 0.34}"/>
@@ -174,43 +176,43 @@ const poster = `<svg xmlns="http://www.w3.org/2000/svg" width="36.5in" height="4
     <stop offset="1" stop-color="#1B1F2E"/>
   </radialGradient>
   <rect x="-6.25" y="-6.25" width="912.5" height="1212.5" fill="url(#pbg)"/>
-  <rect x="18" y="18" width="864" height="1164" rx="28" fill="none" stroke="${GOLD}" stroke-width="5"/>
+  <rect x="18" y="18" width="864" height="1164" rx="28" fill="none" stroke="${YEL}" stroke-width="6"/>
 
   <!-- headline block, Poke Ball line art behind -->
-  ${pokeball(118, 152, 82, 0.5)}
-  ${pokeball(450, 118, 118, 0.42)}
-  ${pokeball(780, 158, 88, 0.5)}
-  ${sparkle(62, 62, 8, GOLD, 0.9)}
-  ${sparkle(842, 76, 6, CREAM, 0.75)}
-  <text x="450" y="132" text-anchor="middle" font-family="Inter" font-weight="700" font-size="62" letter-spacing="8" fill="${CREAM}">I BUY</text>
-  <text x="450" y="286" text-anchor="middle" font-family="Inter" font-weight="700" font-size="142" letter-spacing="3" fill="${GOLD}">POKÉMON</text>
+  ${pokeball(112, 168, 86, 0.55)}
+  ${pokeball(450, 106, 122, 0.45)}
+  ${pokeball(788, 172, 92, 0.55)}
+  ${sparkle(60, 60, 8, YEL, 0.95)}
+  ${sparkle(844, 72, 6, WHITE, 0.8)}
+  <text x="450" y="148" text-anchor="middle" font-family="Inter" font-weight="700" font-size="72" letter-spacing="14" fill="${WHITE}">I BUY</text>
+  <text x="450" y="296" text-anchor="middle" font-family="Inter" font-weight="700" font-size="148" letter-spacing="2" fill="${YEL}">POKÉMON</text>
 
   <!-- what band -->
-  <rect x="45" y="345" width="810" height="110" rx="18" fill="${CREAM}"/>
-  <text x="450" y="399" text-anchor="middle" font-family="Inter" font-weight="700" font-size="41" letter-spacing="2" fill="${NAVY}">SLABS  /  SEALED  /  RAW</text>
-  <text x="450" y="438" text-anchor="middle" font-family="Inter" font-weight="700" font-size="24" letter-spacing="2" fill="${RED}">MODERN  /  MID-ERA  /  VINTAGE</text>
+  <rect x="45" y="348" width="810" height="112" rx="18" fill="#FFFDF7"/>
+  <text x="450" y="401" text-anchor="middle" font-family="Inter" font-weight="700" font-size="42" letter-spacing="2" fill="${NAVY}">SLABS  /  SEALED  /  RAW</text>
+  <text x="450" y="441" text-anchor="middle" font-family="Inter" font-weight="700" font-size="25" letter-spacing="2" fill="${RED}">MODERN  /  MID-ERA  /  VINTAGE</text>
 
   <!-- paying panel -->
-  <rect x="45" y="485" width="810" height="320" rx="24" fill="${RED}"/>
-  <text x="450" y="568" text-anchor="middle" font-family="Inter" font-weight="700" font-size="45" letter-spacing="6" fill="${CREAM}">PAYING UP TO</text>
-  <text x="450" y="706" text-anchor="middle" font-family="Inter" font-weight="700" font-size="148" fill="${GOLD}">100%</text>
-  <rect x="150" y="727" width="600" height="60" rx="18" fill="#C9F2D0"/>
-  <text x="450" y="770" text-anchor="middle" font-family="Inter" font-weight="700" font-size="34" letter-spacing="2" fill="${NAVY}">FOR MINTY VINTAGE</text>
+  <rect x="45" y="492" width="810" height="316" rx="24" fill="${RED}"/>
+  <text x="450" y="572" text-anchor="middle" font-family="Inter" font-weight="700" font-size="46" letter-spacing="7" fill="${WHITE}">PAYING UP TO</text>
+  <text x="450" y="708" text-anchor="middle" font-family="Inter" font-weight="700" font-size="150" fill="${YEL}">100%</text>
+  <rect x="150" y="728" width="600" height="62" rx="18" fill="#C9F2D0"/>
+  <text x="450" y="771" text-anchor="middle" font-family="Inter" font-weight="700" font-size="35" letter-spacing="2" fill="${NAVY}">FOR MINTY VINTAGE</text>
 
   <!-- footer: trio tile + brand / follow / QR -->
-  <rect x="45" y="835" width="390" height="295" rx="24" fill="#2B3149" stroke="${GOLD}" stroke-width="5"/>
-  ${sparkle(90, 878, 7, GOLD, 0.9)}
-  ${sparkle(390, 1088, 5, CREAM, 0.7)}
-  ${fan(240, 982, 2.05)}
-  <text x="655" y="898" text-anchor="middle" font-family="Fraunces" font-weight="600" font-size="42"><tspan fill="${GOLD}">Cali</tspan><tspan fill="${CREAM}"> Coast</tspan><tspan fill="${RED}"> Cards</tspan></text>
-  <rect x="515" y="914" width="280" height="4" rx="2" fill="${GOLD}"/>
-  <text x="575" y="972" text-anchor="middle" font-family="Inter" font-weight="700" font-size="22" letter-spacing="3" fill="${CREAM}">SCAN TO</text>
-  <text x="575" y="1012" text-anchor="middle" font-family="Inter" font-weight="700" font-size="38" letter-spacing="3" fill="${GOLD}">FOLLOW</text>
-  <text x="575" y="1052" text-anchor="middle" font-family="Inter" font-weight="700" font-size="22" letter-spacing="3" fill="${CREAM}">DM TO SELL</text>
-  <text x="575" y="1084" text-anchor="middle" font-family="Inter" font-weight="500" font-size="16" fill="${CREAM}" opacity="0.7">@realcalicoastcards</text>
-  <rect x="685" y="955" width="170" height="170" rx="16" fill="#FFFFFF" stroke="${GOLD}" stroke-width="4"/>
-  ${qrBlock(770, 1040, 140, 160, "#FFFFFF", 26)}
-  <text x="450" y="1163" text-anchor="middle" font-family="Inter" font-weight="500" font-size="19" letter-spacing="2" fill="${CREAM}" opacity="0.6">calicoastcards.com</text>
+  <rect x="45" y="838" width="380" height="292" rx="24" fill="#2B3149" stroke="${YEL}" stroke-width="5"/>
+  ${sparkle(88, 880, 7, YEL, 0.9)}
+  ${sparkle(382, 1088, 5, WHITE, 0.7)}
+  ${fan(235, 984, 2.0)}
+  <text x="662" y="896" text-anchor="middle" font-family="Fraunces" font-weight="600" font-size="44"><tspan fill="${YEL}">Cali</tspan><tspan fill="#FFFDF7"> Coast</tspan><tspan fill="${RED}"> Cards</tspan></text>
+  <rect x="522" y="912" width="280" height="4" rx="2" fill="${YEL}"/>
+  <text x="550" y="974" text-anchor="middle" font-family="Inter" font-weight="700" font-size="23" letter-spacing="3" fill="${WHITE}">SCAN TO</text>
+  <text x="550" y="1016" text-anchor="middle" font-family="Inter" font-weight="700" font-size="40" letter-spacing="2" fill="${YEL}">FOLLOW</text>
+  <text x="550" y="1056" text-anchor="middle" font-family="Inter" font-weight="700" font-size="23" letter-spacing="3" fill="${WHITE}">DM TO SELL</text>
+  <text x="550" y="1090" text-anchor="middle" font-family="Inter" font-weight="500" font-size="17" fill="${WHITE}" opacity="0.75">@realcalicoastcards</text>
+  <rect x="672" y="938" width="186" height="186" rx="16" fill="#FFFFFF" stroke="${YEL}" stroke-width="4"/>
+  ${qrBlock(765, 1031, 152, 174, "#FFFFFF", 28)}
+  <text x="450" y="1164" text-anchor="middle" font-family="Inter" font-weight="500" font-size="19" letter-spacing="2" fill="${WHITE}" opacity="0.6">calicoastcards.com</text>
 </svg>`;
 
 /* ---- standalone QR (put it anywhere) ---- */
