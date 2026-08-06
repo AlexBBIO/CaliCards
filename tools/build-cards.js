@@ -178,41 +178,40 @@ const poster = `<svg xmlns="http://www.w3.org/2000/svg" width="36.5in" height="4
   <rect x="-6.25" y="-6.25" width="912.5" height="1212.5" fill="url(#pbg)"/>
   <rect x="18" y="18" width="864" height="1164" rx="28" fill="none" stroke="${YEL}" stroke-width="6"/>
 
-  <!-- headline block, Poke Ball line art behind -->
-  ${pokeball(112, 168, 86, 0.55)}
-  ${pokeball(450, 106, 122, 0.45)}
-  ${pokeball(788, 172, 92, 0.55)}
+  <!-- brand block: trio logo + wordmark -->
   ${sparkle(60, 60, 8, YEL, 0.95)}
   ${sparkle(844, 72, 6, WHITE, 0.8)}
-  <text x="450" y="148" text-anchor="middle" font-family="Inter" font-weight="700" font-size="72" letter-spacing="14" fill="${WHITE}">I BUY</text>
-  <text x="450" y="296" text-anchor="middle" font-family="Inter" font-weight="700" font-size="148" letter-spacing="2" fill="${YEL}">POKÉMON</text>
+  ${fan(450, 110, 1.6)}
+  <text x="450" y="222" text-anchor="middle" font-family="Fraunces" font-weight="600" font-size="54"><tspan fill="${YEL}">Cali</tspan><tspan fill="#FFFDF7"> Coast</tspan><tspan fill="${RED}"> Cards</tspan></text>
+
+  <!-- headline block, Poke Ball line art behind -->
+  ${pokeball(105, 300, 80, 0.55)}
+  ${pokeball(795, 300, 84, 0.55)}
+  <text x="450" y="296" text-anchor="middle" font-family="Inter" font-weight="700" font-size="66" letter-spacing="12" fill="${WHITE}">I BUY</text>
+  <text x="450" y="424" text-anchor="middle" font-family="Inter" font-weight="700" font-size="140" letter-spacing="2" fill="${YEL}">POKÉMON</text>
 
   <!-- what band -->
-  <rect x="45" y="348" width="810" height="112" rx="18" fill="#FFFDF7"/>
-  <text x="450" y="401" text-anchor="middle" font-family="Inter" font-weight="700" font-size="42" letter-spacing="2" fill="${NAVY}">SLABS  /  SEALED  /  RAW</text>
-  <text x="450" y="441" text-anchor="middle" font-family="Inter" font-weight="700" font-size="25" letter-spacing="2" fill="${RED}">MODERN  /  MID-ERA  /  VINTAGE</text>
+  <rect x="45" y="462" width="810" height="112" rx="18" fill="#FFFDF7"/>
+  <text x="450" y="515" text-anchor="middle" font-family="Inter" font-weight="700" font-size="42" letter-spacing="2" fill="${NAVY}">SLABS  /  SEALED  /  RAW</text>
+  <text x="450" y="555" text-anchor="middle" font-family="Inter" font-weight="700" font-size="25" letter-spacing="2" fill="${RED}">MODERN  /  MID-ERA  /  VINTAGE</text>
 
   <!-- paying panel -->
-  <rect x="45" y="492" width="810" height="316" rx="24" fill="${RED}"/>
-  <text x="450" y="572" text-anchor="middle" font-family="Inter" font-weight="700" font-size="46" letter-spacing="7" fill="${WHITE}">PAYING UP TO</text>
-  <text x="450" y="708" text-anchor="middle" font-family="Inter" font-weight="700" font-size="150" fill="${YEL}">100%</text>
-  <rect x="150" y="728" width="600" height="62" rx="18" fill="#C9F2D0"/>
-  <text x="450" y="771" text-anchor="middle" font-family="Inter" font-weight="700" font-size="35" letter-spacing="2" fill="${NAVY}">FOR MINTY VINTAGE</text>
+  <rect x="45" y="600" width="810" height="292" rx="24" fill="${RED}"/>
+  <text x="450" y="674" text-anchor="middle" font-family="Inter" font-weight="700" font-size="44" letter-spacing="7" fill="${WHITE}">PAYING UP TO</text>
+  <text x="450" y="802" text-anchor="middle" font-family="Inter" font-weight="700" font-size="138" fill="${YEL}">100%</text>
+  <rect x="150" y="822" width="600" height="58" rx="18" fill="#C9F2D0"/>
+  <text x="450" y="862" text-anchor="middle" font-family="Inter" font-weight="700" font-size="34" letter-spacing="2" fill="${NAVY}">FOR MINTY VINTAGE</text>
 
-  <!-- footer: trio tile + brand / follow / QR -->
-  <rect x="45" y="838" width="380" height="292" rx="24" fill="#2B3149" stroke="${YEL}" stroke-width="5"/>
-  ${sparkle(88, 880, 7, YEL, 0.9)}
-  ${sparkle(382, 1088, 5, WHITE, 0.7)}
-  ${fan(235, 984, 2.0)}
-  <text x="662" y="896" text-anchor="middle" font-family="Fraunces" font-weight="600" font-size="44"><tspan fill="${YEL}">Cali</tspan><tspan fill="#FFFDF7"> Coast</tspan><tspan fill="${RED}"> Cards</tspan></text>
-  <rect x="522" y="912" width="280" height="4" rx="2" fill="${YEL}"/>
-  <text x="550" y="974" text-anchor="middle" font-family="Inter" font-weight="700" font-size="23" letter-spacing="3" fill="${WHITE}">SCAN TO</text>
-  <text x="550" y="1016" text-anchor="middle" font-family="Inter" font-weight="700" font-size="40" letter-spacing="2" fill="${YEL}">FOLLOW</text>
-  <text x="550" y="1056" text-anchor="middle" font-family="Inter" font-weight="700" font-size="23" letter-spacing="3" fill="${WHITE}">DM TO SELL</text>
-  <text x="550" y="1090" text-anchor="middle" font-family="Inter" font-weight="500" font-size="17" fill="${WHITE}" opacity="0.75">@realcalicoastcards</text>
-  <rect x="672" y="938" width="186" height="186" rx="16" fill="#FFFFFF" stroke="${YEL}" stroke-width="4"/>
-  ${qrBlock(765, 1031, 152, 174, "#FFFFFF", 28)}
-  <text x="450" y="1164" text-anchor="middle" font-family="Inter" font-weight="500" font-size="19" letter-spacing="2" fill="${WHITE}" opacity="0.6">calicoastcards.com</text>
+  <!-- footer: follow text + big QR -->
+  ${sparkle(80, 1150, 6, YEL, 0.75)}
+  ${sparkle(575, 935, 5, WHITE, 0.6)}
+  <text x="335" y="985" text-anchor="middle" font-family="Inter" font-weight="700" font-size="26" letter-spacing="4" fill="${WHITE}">SCAN TO</text>
+  <text x="335" y="1042" text-anchor="middle" font-family="Inter" font-weight="700" font-size="52" letter-spacing="2" fill="${YEL}">FOLLOW</text>
+  <text x="335" y="1092" text-anchor="middle" font-family="Inter" font-weight="700" font-size="26" letter-spacing="4" fill="${WHITE}">DM TO SELL</text>
+  <text x="335" y="1126" text-anchor="middle" font-family="Inter" font-weight="500" font-size="19" fill="${WHITE}" opacity="0.75">@realcalicoastcards</text>
+  <rect x="630" y="918" width="228" height="228" rx="18" fill="#FFFFFF" stroke="${YEL}" stroke-width="5"/>
+  ${qrBlock(744, 1032, 192, 216, "#FFFFFF", 34)}
+  <text x="450" y="1168" text-anchor="middle" font-family="Inter" font-weight="500" font-size="17" letter-spacing="2" fill="${WHITE}" opacity="0.6">calicoastcards.com</text>
 </svg>`;
 
 /* ---- standalone QR (put it anywhere) ---- */
