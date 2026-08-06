@@ -156,6 +156,33 @@ const sign = `<svg xmlns="http://www.w3.org/2000/svg" width="8.5in" height="11in
   <text x="425" y="1064" text-anchor="middle" font-family="Inter" font-weight="600" font-size="15" letter-spacing="3.5" fill="${CREAM}">CALI COAST CARDS · BUYING &amp; SELLING POKÉMON · CALIFORNIA</text>
 </svg>`;
 
+/* ---- POSTER: 36 x 48 in (3:4 — also prints at 18x24), navy high-contrast.
+   25 units/in; 0.25in bleed each side. Trim 0..900 x 0..1200. ---- */
+const poster = `<svg xmlns="http://www.w3.org/2000/svg" width="36.5in" height="48.5in" viewBox="-6.25 -6.25 912.5 1212.5">
+  <!-- Booth poster, high contrast. QR -> ${URL} -->
+  ${defs}
+  <radialGradient id="pbg" cx="0.5" cy="0.22" r="1.1">
+    <stop offset="0" stop-color="#2B3149"/><stop offset="0.55" stop-color="${NAVY}"/>
+    <stop offset="1" stop-color="#1B1F2E"/>
+  </radialGradient>
+  <rect x="-6.25" y="-6.25" width="912.5" height="1212.5" fill="url(#pbg)"/>
+  ${sparkle(120, 140, 11, GOLD, 0.9)}
+  ${sparkle(778, 110, 7, CREAM, 0.75)}
+  ${sparkle(86, 420, 7, GOLD, 0.7)}
+  ${sparkle(816, 392, 6, CREAM, 0.6)}
+  ${sparkle(120, 1010, 7, GOLD, 0.8)}
+  ${sparkle(786, 1040, 9, GOLD, 0.75)}
+  ${fan(450, 195, 3.0)}
+  <text x="450" y="385" text-anchor="middle" font-family="Fraunces" font-weight="600" font-size="62"><tspan fill="${GOLD}">Cali</tspan><tspan fill="${CREAM}"> Coast</tspan><tspan fill="${RED}"> Cards</tspan></text>
+  <text x="450" y="448" text-anchor="middle" font-family="Inter" font-weight="600" font-size="30" fill="${CREAM}" opacity="0.92">Scan to follow the shop.</text>
+  <rect x="200" y="495" width="500" height="500" rx="30" fill="#FFFFFF" stroke="${GOLD}" stroke-width="7"/>
+  ${qrBlock(450, 745, 410, 470, "#FFFFFF", 70)}
+  <text x="450" y="1043" text-anchor="middle" font-family="Fraunces" font-weight="600" font-size="46" fill="${GOLD}">@realcalicoastcards</text>
+  <text x="450" y="1090" text-anchor="middle" font-family="Inter" font-weight="500" font-size="25" fill="${CREAM}" opacity="0.65">calicoastcards.com</text>
+  <rect x="-6.25" y="1128" width="912.5" height="84.5" fill="${GOLD}"/>
+  <text x="450" y="1174" text-anchor="middle" font-family="Inter" font-weight="700" font-size="18" letter-spacing="3.8" fill="${NAVY}">CALI COAST CARDS · BUYING &amp; SELLING POKÉMON · CALIFORNIA</text>
+</svg>`;
+
 /* ---- standalone QR (put it anywhere) ---- */
 const pad = 4; /* quiet zone in modules */
 const standalone = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${N + pad * 2} ${N + pad * 2}">
@@ -171,5 +198,6 @@ fs.mkdirSync(REPO + "/print/signs", { recursive: true });
 fs.writeFileSync(REPO + "/print/business-cards/card-front.svg", front);
 fs.writeFileSync(REPO + "/print/business-cards/card-back.svg", back);
 fs.writeFileSync(REPO + "/print/signs/instagram-qr-sign.svg", sign);
+fs.writeFileSync(REPO + "/print/signs/instagram-qr-poster.svg", poster);
 fs.writeFileSync(REPO + "/art/qr-instagram.svg", standalone);
 console.log("SVGs written");

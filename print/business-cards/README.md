@@ -11,6 +11,7 @@ decode correctly at print resolution.
 | `card-front.png` / `.svg` | Front: card-trio mark, wordmark, tagline, IG handle |
 | `card-back.png` / `.svg` | Back: navy, "Scan to follow the shop", QR → Instagram |
 | `../signs/instagram-qr-sign.png` | 8.5"×11" booth/table sign with a big QR |
+| `../signs/instagram-qr-poster.png` | 3ft×4ft high-contrast navy poster (3:4 — also prints at 18"×24"), 1/4" bleed |
 | `../../art/qr-instagram.png` / `.svg` | Standalone QR — drop it on anything |
 
 ## Specs (already baked in)
