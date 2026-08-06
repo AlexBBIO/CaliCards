@@ -181,26 +181,27 @@ const poster = `<svg xmlns="http://www.w3.org/2000/svg" width="36.5in" height="4
   <!-- brand block: trio logo + wordmark -->
   ${sparkle(60, 60, 8, YEL, 0.95)}
   ${sparkle(844, 72, 6, WHITE, 0.8)}
-  ${fan(450, 110, 1.6)}
-  <text x="450" y="222" text-anchor="middle" font-family="Fraunces" font-weight="600" font-size="54"><tspan fill="${YEL}">Cali</tspan><tspan fill="#FFFDF7"> Coast</tspan><tspan fill="${RED}"> Cards</tspan></text>
+  ${fan(211, 105, 1.6)}
+  <text x="563" y="124" text-anchor="middle" font-family="Fraunces" font-weight="600" font-size="56"><tspan fill="${YEL}">Cali</tspan><tspan fill="#FFFDF7"> Coast</tspan><tspan fill="${RED}"> Cards</tspan></text>
+  <rect x="45" y="192" width="810" height="3" rx="1.5" fill="${YEL}" opacity="0.55"/>
 
   <!-- headline block, Poke Ball line art behind -->
-  ${pokeball(105, 300, 80, 0.55)}
-  ${pokeball(795, 300, 84, 0.55)}
-  <text x="450" y="296" text-anchor="middle" font-family="Inter" font-weight="700" font-size="66" letter-spacing="12" fill="${WHITE}">I BUY</text>
-  <text x="450" y="424" text-anchor="middle" font-family="Inter" font-weight="700" font-size="140" letter-spacing="2" fill="${YEL}">POKÉMON</text>
+  ${pokeball(105, 285, 80, 0.55)}
+  ${pokeball(795, 285, 84, 0.55)}
+  <text x="450" y="272" text-anchor="middle" font-family="Inter" font-weight="700" font-size="66" letter-spacing="12" fill="${WHITE}">I BUY</text>
+  <text x="450" y="402" text-anchor="middle" font-family="Inter" font-weight="700" font-size="140" letter-spacing="2" fill="${YEL}">POKÉMON</text>
 
   <!-- what band -->
-  <rect x="45" y="462" width="810" height="112" rx="18" fill="#FFFDF7"/>
-  <text x="450" y="515" text-anchor="middle" font-family="Inter" font-weight="700" font-size="42" letter-spacing="2" fill="${NAVY}">SLABS  /  SEALED  /  RAW</text>
-  <text x="450" y="555" text-anchor="middle" font-family="Inter" font-weight="700" font-size="25" letter-spacing="2" fill="${RED}">MODERN  /  MID-ERA  /  VINTAGE</text>
+  <rect x="45" y="450" width="810" height="112" rx="18" fill="#FFFDF7"/>
+  <text x="450" y="503" text-anchor="middle" font-family="Inter" font-weight="700" font-size="42" letter-spacing="2" fill="${NAVY}">SLABS  /  SEALED  /  RAW</text>
+  <text x="450" y="543" text-anchor="middle" font-family="Inter" font-weight="700" font-size="25" letter-spacing="2" fill="${RED}">MODERN  /  MID-ERA  /  VINTAGE</text>
 
   <!-- paying panel -->
-  <rect x="45" y="600" width="810" height="292" rx="24" fill="${RED}"/>
-  <text x="450" y="674" text-anchor="middle" font-family="Inter" font-weight="700" font-size="44" letter-spacing="7" fill="${WHITE}">PAYING UP TO</text>
-  <text x="450" y="802" text-anchor="middle" font-family="Inter" font-weight="700" font-size="138" fill="${YEL}">100%</text>
-  <rect x="150" y="822" width="600" height="58" rx="18" fill="#C9F2D0"/>
-  <text x="450" y="862" text-anchor="middle" font-family="Inter" font-weight="700" font-size="34" letter-spacing="2" fill="${NAVY}">FOR MINTY VINTAGE</text>
+  <rect x="45" y="590" width="810" height="296" rx="24" fill="${RED}"/>
+  <text x="450" y="668" text-anchor="middle" font-family="Inter" font-weight="700" font-size="44" letter-spacing="7" fill="${WHITE}">PAYING UP TO</text>
+  <text x="450" y="798" text-anchor="middle" font-family="Inter" font-weight="700" font-size="138" fill="${YEL}">100%</text>
+  <rect x="150" y="818" width="600" height="58" rx="18" fill="#C9F2D0"/>
+  <text x="450" y="858" text-anchor="middle" font-family="Inter" font-weight="700" font-size="34" letter-spacing="2" fill="${NAVY}">FOR MINTY VINTAGE</text>
 
   <!-- footer: follow text + big QR -->
   ${sparkle(80, 1150, 6, YEL, 0.75)}
