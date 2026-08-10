@@ -274,6 +274,53 @@ const banner = `<svg xmlns="http://www.w3.org/2000/svg" width="32.48in" height="
   ${fan(400, 1790, 2.5)}
 </svg>`;
 
+/* ---- TABLE THROW: flat template ~1.75:1 (8ft table). Panel lines measured off the
+   vendor diagram: verticals at 21.9% / 78%, horizontals at 31.8% / 66.8%.
+   Bottom-center = front drop (the message); everything else decorative-only so
+   fold orientation never matters. Scale to fill the whole template in the editor. ---- */
+const tablecloth = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1750 1000">
+  <!-- Table throw, front drop panel x 383..1365 y 668..1000 -->
+  ${defs}
+  <radialGradient id="tbg" cx="0.5" cy="0.82" r="1.25">
+    <stop offset="0" stop-color="#2B3149"/><stop offset="0.5" stop-color="${NAVY}"/>
+    <stop offset="1" stop-color="#1B1F2E"/>
+  </radialGradient>
+  <rect width="1750" height="1000" fill="url(#tbg)"/>
+
+  <!-- back drop (top band): decorative -->
+  ${pokeball(320, 160, 70, 0.45)}
+  ${pokeball(875, 150, 92, 0.4)}
+  ${pokeball(1440, 160, 70, 0.45)}
+  ${sparkle(160, 90, 9, YEL, 0.85)}
+  ${sparkle(610, 230, 7, WHITE, 0.6)}
+  ${sparkle(1130, 95, 8, YEL, 0.8)}
+  ${sparkle(1590, 245, 7, YEL, 0.7)}
+
+  <!-- table top (middle band): decorative -->
+  ${pokeball(875, 493, 110, 0.35)}
+  ${sparkle(410, 405, 9, YEL, 0.75)}
+  ${sparkle(1350, 575, 8, WHITE, 0.55)}
+  ${sparkle(255, 600, 7, YEL, 0.7)}
+  ${sparkle(1500, 385, 7, YEL, 0.7)}
+
+  <!-- side drops: decorative -->
+  ${pokeball(250, 790, 48, 0.5)}
+  ${sparkle(150, 720, 8, YEL, 0.8)}
+  ${sparkle(290, 935, 6, WHITE, 0.6)}
+  ${pokeball(1500, 790, 48, 0.5)}
+  ${sparkle(1600, 720, 8, YEL, 0.8)}
+  ${sparkle(1460, 935, 6, WHITE, 0.6)}
+
+  <!-- FRONT DROP: logo + message -->
+  ${fan(550, 845, 1.9)}
+  ${sparkle(710, 732, 8, YEL, 0.9)}
+  ${sparkle(1295, 748, 7, WHITE, 0.7)}
+  ${sparkle(755, 952, 6, WHITE, 0.6)}
+  ${sparkle(1258, 942, 8, YEL, 0.85)}
+  <text x="995" y="800" text-anchor="middle" font-family="Inter" font-weight="700" font-size="64" letter-spacing="3" fill="${WHITE}">WE BUY <tspan fill="${YEL}">POKÉMON</tspan></text>
+  <text x="995" y="912" text-anchor="middle" font-family="Inter" font-weight="700" font-size="96" letter-spacing="2" fill="${WHITE}">UP TO <tspan fill="${YEL}">100%</tspan></text>
+</svg>`;
+
 /* ---- standalone QR (put it anywhere) ---- */
 const pad = 4; /* quiet zone in modules */
 const standalone = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${N + pad * 2} ${N + pad * 2}">
@@ -291,5 +338,6 @@ fs.writeFileSync(REPO + "/print/business-cards/card-back.svg", back);
 fs.writeFileSync(REPO + "/print/signs/instagram-qr-sign.svg", sign);
 fs.writeFileSync(REPO + "/print/signs/instagram-qr-poster.svg", poster);
 fs.writeFileSync(REPO + "/print/signs/retractable-banner-32x80.svg", banner);
+fs.writeFileSync(REPO + "/print/signs/tablecloth-8x10.svg", tablecloth);
 fs.writeFileSync(REPO + "/art/qr-instagram.svg", standalone);
 console.log("SVGs written");

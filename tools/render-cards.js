@@ -14,6 +14,7 @@ const ASSETS = [
   { svg: "print/signs/instagram-qr-sign.svg", png: "print/signs/instagram-qr-sign.png", w: 2550, h: 3300, qr: true, dpi: 300 },
   { svg: "print/signs/instagram-qr-poster.svg", png: "print/signs/instagram-qr-poster.png", w: 5475, h: 7275, qr: true, dpi: 150 },
   { svg: "print/signs/retractable-banner-32x80.svg", png: "print/signs/retractable-banner-32x80.png", w: 4872, h: 12072, qr: true, dpi: 150 },
+  { svg: "print/signs/tablecloth-8x10.svg", png: "print/signs/tablecloth-8x10.png", w: 10500, h: 6000, qr: false, dpi: 100 },
   { svg: "art/qr-instagram.svg", png: "art/qr-instagram.png", w: 1000, h: 1000, qr: true, dpi: 300 },
 ];
 
