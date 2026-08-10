@@ -311,14 +311,16 @@ const tablecloth = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1750 10
   ${sparkle(1600, 720, 8, YEL, 0.8)}
   ${sparkle(1460, 935, 6, WHITE, 0.6)}
 
-  <!-- FRONT DROP: logo + message -->
-  ${fan(550, 845, 1.9)}
-  ${sparkle(710, 732, 8, YEL, 0.9)}
-  ${sparkle(1295, 748, 7, WHITE, 0.7)}
-  ${sparkle(755, 952, 6, WHITE, 0.6)}
-  ${sparkle(1258, 942, 8, YEL, 0.85)}
-  <text x="995" y="800" text-anchor="middle" font-family="Inter" font-weight="700" font-size="64" letter-spacing="3" fill="${WHITE}">WE BUY <tspan fill="${YEL}">POKÉMON</tspan></text>
-  <text x="995" y="912" text-anchor="middle" font-family="Inter" font-weight="700" font-size="96" letter-spacing="2" fill="${WHITE}">UP TO <tspan fill="${YEL}">100%</tspan></text>
+  <!-- FRONT DROP: logo + wordmark + message + small QR -->
+  ${fan(520, 830, 1.85)}
+  <text x="520" y="940" text-anchor="middle" font-family="Fraunces" font-weight="600" font-size="30"><tspan fill="${YEL}">Cali</tspan><tspan fill="#FFFDF7"> Coast</tspan><tspan fill="${RED}"> Cards</tspan></text>
+  ${sparkle(690, 732, 8, YEL, 0.9)}
+  ${sparkle(1240, 748, 7, WHITE, 0.7)}
+  ${sparkle(725, 952, 6, WHITE, 0.6)}
+  ${sparkle(1228, 952, 8, YEL, 0.85)}
+  <text x="965" y="800" text-anchor="middle" font-family="Inter" font-weight="700" font-size="61" letter-spacing="3" fill="${WHITE}">WE BUY <tspan fill="${YEL}">POKÉMON</tspan></text>
+  <text x="965" y="912" text-anchor="middle" font-family="Inter" font-weight="700" font-size="92" letter-spacing="2" fill="${WHITE}">UP TO <tspan fill="${YEL}">100%</tspan></text>
+  ${qrBlock(1318, 898, 58, 72, "#FFFFFF", 11)}
 </svg>`;
 
 /* ---- standalone QR (put it anywhere) ---- */
