@@ -311,16 +311,19 @@ const tablecloth = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1750 10
   ${sparkle(1600, 720, 8, YEL, 0.8)}
   ${sparkle(1460, 935, 6, WHITE, 0.6)}
 
-  <!-- FRONT DROP: logo + wordmark + message + small QR -->
-  ${fan(520, 830, 1.85)}
-  <text x="520" y="940" text-anchor="middle" font-family="Fraunces" font-weight="600" font-size="30"><tspan fill="${YEL}">Cali</tspan><tspan fill="#FFFDF7"> Coast</tspan><tspan fill="${RED}"> Cards</tspan></text>
-  ${sparkle(690, 732, 8, YEL, 0.9)}
-  ${sparkle(1240, 748, 7, WHITE, 0.7)}
-  ${sparkle(725, 952, 6, WHITE, 0.6)}
-  ${sparkle(1228, 952, 8, YEL, 0.85)}
-  <text x="965" y="800" text-anchor="middle" font-family="Inter" font-weight="700" font-size="61" letter-spacing="3" fill="${WHITE}">WE BUY <tspan fill="${YEL}">POKÉMON</tspan></text>
-  <text x="965" y="912" text-anchor="middle" font-family="Inter" font-weight="700" font-size="92" letter-spacing="2" fill="${WHITE}">UP TO <tspan fill="${YEL}">100%</tspan></text>
-  ${qrBlock(1318, 898, 58, 72, "#FFFFFF", 11)}
+  <!-- FRONT DROP: logo + wordmark + message + QR.
+       Text and QR stay inside the central ~66in so an 8ft cloth tucked onto a
+       6ft table wraps only decorative edges around the corners. QR rides high,
+       near the table edge, for a flatter scan angle. -->
+  ${fan(575, 860, 1.55)}
+  <text x="575" y="955" text-anchor="middle" font-family="Fraunces" font-weight="600" font-size="25"><tspan fill="${YEL}">Cali</tspan><tspan fill="#FFFDF7"> Coast</tspan><tspan fill="${RED}"> Cards</tspan></text>
+  ${sparkle(760, 722, 8, YEL, 0.9)}
+  ${sparkle(1215, 728, 7, WHITE, 0.7)}
+  ${sparkle(740, 965, 6, WHITE, 0.6)}
+  ${sparkle(1268, 938, 8, YEL, 0.85)}
+  ${qrBlock(955, 742, 58, 72, "#FFFFFF", 11)}
+  <text x="955" y="836" text-anchor="middle" font-family="Inter" font-weight="700" font-size="58" letter-spacing="3" fill="${WHITE}">WE BUY <tspan fill="${YEL}">POKÉMON</tspan></text>
+  <text x="955" y="933" text-anchor="middle" font-family="Inter" font-weight="700" font-size="86" letter-spacing="2" fill="${WHITE}">UP TO <tspan fill="${YEL}">100%</tspan></text>
 </svg>`;
 
 /* ---- standalone QR (put it anywhere) ---- */
