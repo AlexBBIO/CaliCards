@@ -215,6 +215,65 @@ const poster = `<svg xmlns="http://www.w3.org/2000/svg" width="36.5in" height="4
   ${qrBlock(744, 1032, 192, 216, "#FFFFFF", 34)}
 </svg>`;
 
+/* ---- RETRACTABLE BANNER: 32 x 80 in, same flow as the poster stacked for 2:5.
+   25 units/in; 0.24in bleed each side. Trim 0..800 x 0..2000.
+   Top = eye level (brand + pitch), middle = big QR at scan height,
+   bottom ~16in = decorative only (floor zone, often blocked by tables/base). ---- */
+const banner = `<svg xmlns="http://www.w3.org/2000/svg" width="32.48in" height="80.48in" viewBox="-6 -6 812 2012">
+  <!-- Retractable banner. QR -> ${URL} -->
+  ${defs}
+  <radialGradient id="bbg" cx="0.5" cy="0.14" r="1.4">
+    <stop offset="0" stop-color="#2B3149"/><stop offset="0.5" stop-color="${NAVY}"/>
+    <stop offset="1" stop-color="#1B1F2E"/>
+  </radialGradient>
+  <rect x="-6" y="-6" width="812" height="2012" fill="url(#bbg)"/>
+  <rect x="18" y="18" width="764" height="1964" rx="28" fill="none" stroke="${YEL}" stroke-width="6"/>
+
+  <!-- brand row -->
+  ${sparkle(58, 58, 8, YEL, 0.95)}
+  ${sparkle(744, 70, 6, WHITE, 0.8)}
+  ${fan(179, 110, 1.5)}
+  <text x="505" y="129" text-anchor="middle" font-family="Fraunces" font-weight="600" font-size="52"><tspan fill="${YEL}">Cali</tspan><tspan fill="#FFFDF7"> Coast</tspan><tspan fill="${RED}"> Cards</tspan></text>
+  <rect x="45" y="196" width="710" height="3" rx="1.5" fill="${YEL}" opacity="0.55"/>
+
+  <!-- headline -->
+  ${pokeball(95, 300, 62, 0.55)}
+  ${pokeball(705, 300, 66, 0.55)}
+  <text x="400" y="272" text-anchor="middle" font-family="Inter" font-weight="700" font-size="62" letter-spacing="12" fill="${WHITE}">I BUY</text>
+  <text x="400" y="412" text-anchor="middle" font-family="Inter" font-weight="700" font-size="124" letter-spacing="2" fill="${YEL}">POKÉMON</text>
+
+  <!-- what band -->
+  <rect x="45" y="470" width="710" height="120" rx="18" fill="#FFFDF7"/>
+  <text x="400" y="527" text-anchor="middle" font-family="Inter" font-weight="700" font-size="40" letter-spacing="2" fill="${NAVY}">SLABS  /  SEALED  /  RAW</text>
+  <text x="400" y="568" text-anchor="middle" font-family="Inter" font-weight="700" font-size="24" letter-spacing="2" fill="${RED}">MODERN  /  MID-ERA  /  VINTAGE</text>
+
+  <!-- paying panel -->
+  <rect x="45" y="630" width="710" height="320" rx="24" fill="${RED}"/>
+  <text x="400" y="698" text-anchor="middle" font-family="Inter" font-weight="700" font-size="42" letter-spacing="6" fill="${WHITE}">PAYING UP TO</text>
+  <text x="400" y="832" text-anchor="middle" font-family="Inter" font-weight="700" font-size="132" fill="${YEL}">100%</text>
+  <rect x="90" y="854" width="620" height="58" rx="18" fill="#C9F2D0"/>
+  <text x="400" y="894" text-anchor="middle" font-family="Inter" font-weight="700" font-size="34" letter-spacing="2" fill="${NAVY}">FOR HIGH-END VINTAGE!</text>
+
+  <!-- QR block at scan height -->
+  ${sparkle(70, 1000, 6, YEL, 0.75)}
+  ${sparkle(732, 1080, 5, WHITE, 0.6)}
+  <text x="400" y="1022" text-anchor="middle" font-family="Inter" font-weight="700" font-size="40" letter-spacing="3" fill="${WHITE}">SCAN TO <tspan fill="${YEL}">FOLLOW</tspan></text>
+  <rect x="236" y="1050" width="328" height="328" rx="24" fill="#FFFFFF" stroke="${YEL}" stroke-width="6"/>
+  ${qrBlock(400, 1214, 272, 308, "#FFFFFF", 48)}
+  <text x="400" y="1448" text-anchor="middle" font-family="Inter" font-weight="700" font-size="36" letter-spacing="4" fill="${WHITE}">DM TO <tspan fill="${YEL}">SELL</tspan></text>
+  <text x="400" y="1492" text-anchor="middle" font-family="Inter" font-weight="500" font-size="24" fill="${WHITE}" opacity="0.8">@realcalicoastcards</text>
+  <text x="400" y="1528" text-anchor="middle" font-family="Inter" font-weight="500" font-size="20" letter-spacing="1" fill="${WHITE}" opacity="0.55">calicoastcards.com</text>
+
+  <!-- floor zone: decorative only -->
+  ${pokeball(115, 1700, 55, 0.4)}
+  ${pokeball(688, 1820, 60, 0.4)}
+  ${sparkle(160, 1628, 7, YEL, 0.8)}
+  ${sparkle(648, 1660, 5, WHITE, 0.6)}
+  ${sparkle(120, 1920, 6, YEL, 0.7)}
+  ${sparkle(672, 1940, 7, YEL, 0.8)}
+  ${fan(400, 1790, 2.5)}
+</svg>`;
+
 /* ---- standalone QR (put it anywhere) ---- */
 const pad = 4; /* quiet zone in modules */
 const standalone = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${N + pad * 2} ${N + pad * 2}">
@@ -231,5 +290,6 @@ fs.writeFileSync(REPO + "/print/business-cards/card-front.svg", front);
 fs.writeFileSync(REPO + "/print/business-cards/card-back.svg", back);
 fs.writeFileSync(REPO + "/print/signs/instagram-qr-sign.svg", sign);
 fs.writeFileSync(REPO + "/print/signs/instagram-qr-poster.svg", poster);
+fs.writeFileSync(REPO + "/print/signs/retractable-banner-32x80.svg", banner);
 fs.writeFileSync(REPO + "/art/qr-instagram.svg", standalone);
 console.log("SVGs written");
